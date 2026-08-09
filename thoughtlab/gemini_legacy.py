@@ -21,13 +21,13 @@ def generate_content(
     timeout: int = 90,
     api_base: str = DEFAULT_API_BASE,
 ) -> tuple[int, dict[str, Any]]:
-    """Call legacy Gemini generateContent with explicit content history.
+    """Call Gemini generateContent with explicit content history.
 
-    This path is intentional: historical BookForge artifacts stored
-    thoughtSignature on response parts produced by generateContent.
+    Historical BookForge artifacts stored thoughtSignature on response parts
+    produced by this API shape. The key is sent in a header rather than the URL.
     """
     model_name = urllib.parse.quote(model, safe="-._/")
-    url = f"{api_base.rstrip('/')}/models/{model_name}:generateContent?key={urllib.parse.quote(api_key)}"
+    url = f"{api_base.rstrip('/')}/models/{model_name}:generateContent"
 
     generation_config: dict[str, Any] = {
         "temperature": temperature,
@@ -47,7 +47,10 @@ def generate_content(
         url,
         data=json.dumps(body).encode("utf-8"),
         method="POST",
-        headers={"Content-Type": "application/json"},
+        headers={
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+        },
     )
 
     try:
@@ -72,11 +75,17 @@ def response_text(payload: dict[str, Any]) -> str:
     parts = content.get("parts")
     if not isinstance(parts, list):
         return ""
-    return "".join(
-        str(part.get("text") or "")
-        for part in parts
-        if isinstance(part, dict)
-    ).strip()
+    pieces: list[str] = []
+    for part in parts:
+        if not isinstance(part, dict):
+            continue
+        # Do not mix provider-marked internal thought content into the visible result.
+        if part.get("thought") is True:
+            continue
+        text = part.get("text")
+        if isinstance(text, str):
+            pieces.append(text)
+    return "".join(pieces).strip()
 
 
 def error_text(payload: dict[str, Any]) -> str:

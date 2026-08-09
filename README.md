@@ -1,55 +1,97 @@
 # thought-testing
 
-Small controlled experiments around provider-native LLM reasoning state.
+Controlled experiments around provider-native LLM reasoning state.
 
-## Current results
+## Layout
 
-`googleThoughts.py` established a clean Gemini Interactions-API ablation:
-information created only inside a `thought` step was recoverable from the
-standalone thought artifact in two independent trials, while seed-only,
-output-only, and probe-only controls did not recover the original nonce.
+```text
+thoughtlab/
+  initialTests/
+    googleThoughts.py
+    gemini_thought_ablation_results.json
+    harvest_bookforge_thoughts.py
+  historicalTests/
+    inspect_corpus.py
+    historical_probe.py
+    tomography.py
+    capsule.py
+    probes.py
+  gemini_legacy.py
 
-## Historical BookForge experiments
-
-The next phase uses old BookForge `generateContent` logs that contain
-`thoughtSignature` metadata. Historical signatures are more awkward than modern
-Interactions `thought` steps because the signature is attached to a response
-part, so the important control is:
-
-- exact signed historical part
-- the exact same visible part with the signature removed
-- signature-only carrier (may be rejected; rejection is data)
-- probe-only baseline
-
-The original BookForge prompt is kept **withheld** from Gemini and is used only as
-local ground truth after the probe.
-
-### Security / repository hygiene
-
-Raw reasoning capsules are intentionally gitignored. We have direct evidence that
-provider-native reasoning artifacts can preserve semantically recoverable hidden
-state. Treat raw capsules and probe results as potentially sensitive bearer-like
-artifacts, not as ordinary debug logs.
-
-### Run
-
-Set a throwaway developer API key locally:
-
-```powershell
-$env:GEMINI_API_KEY="..."
+historical_probe.py   # compatibility launcher
 ```
 
-Then probe one harvested capsule:
+## Established result
+
+`thoughtlab/initialTests/googleThoughts.py` demonstrated, in two independent
+Gemini Interactions API trials, that a fact created only inside a `thought` step
+could be recovered from the detached thought artifact while seed-only,
+output-only, and probe-only controls failed to recover the original fact.
+
+## Historical BookForge corpus
+
+The historical corpus comes from old BookForge `generateContent` logs containing
+`thoughtSignature` metadata.
+
+Raw capsules and probe results are intentionally **not committed**. We have direct
+evidence that provider-native reasoning artifacts can preserve semantically
+recoverable hidden state, so treat them as potentially sensitive bearer-like
+artifacts.
+
+### 1. Inspect the local scrape (zero API calls)
 
 ```powershell
-python .\historical_probe.py --capsule .\bookforge-thought-corpus\capsules\0001_example.json
+python .\thoughtlab\historicalTests\inspect_corpus.py
 ```
 
-Override the model if the historical model name is no longer callable:
+Pick one of the largest capsules with a useful source label.
+
+### 2. Run the historical ablation
 
 ```powershell
-python .\historical_probe.py --capsule .\bookforge-thought-corpus\capsules\0001_example.json --model gemini-3.6-flash
+$env:GEMINI_API_KEY="your-throwaway-key"
+
+python .\historical_probe.py `
+  --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
+  --model gemini-3.6-flash
 ```
 
-HTTP 4xx responses from deliberately mutilated history arms are experiment
-outcomes, not necessarily harness failures.
+The five arms are:
+
+- `signed_part`: exact historical signed response part
+- `text_only`: same visible response part with the signature removed
+- `signature_blank`: signed carrier with visible payload erased
+- `signature_minimal`: almost only the signature metadata
+- `probe_only`: no prior carrier
+
+The original BookForge prompt is **withheld from Gemini** and retained locally
+only as ground truth.
+
+Some legacy history shapes may be rejected because the request begins with a
+`model` role. If that happens, rerun with a content-free structural stub:
+
+```powershell
+python .\historical_probe.py `
+  --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
+  --model gemini-3.6-flash `
+  --neutral-stub
+```
+
+An HTTP 4xx from a deliberately mutilated carrier is experimental evidence.
+
+### 3. Cognitive tomography
+
+Only after a historical capsule proves usable:
+
+```powershell
+python .\thoughtlab\historicalTests\tomography.py `
+  --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
+  --model gemini-3.6-flash
+```
+
+That asks independent stateless questions of the exact same reasoning artifact:
+objective, constraints, uncertainty, intended next steps, and a counterfactual
+alternative.
+
+Add `--controls` to run text-only and probe-only controls for every semantic
+slice. That costs three API calls per slice, so use it intentionally.

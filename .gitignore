@@ -16,3 +16,7 @@ raw/
 
 # Probe outputs may also recover hidden state; keep local by default.
 results/
+
+# Local experiment scratch
+*.local.json
+scratch/
