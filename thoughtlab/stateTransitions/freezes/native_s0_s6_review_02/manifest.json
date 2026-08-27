@@ -1,0 +1,4831 @@
+{
+  "schema_version": "native_planning_transition_manifest_v1",
+  "experiment_id": "native_mutable_planning_state_s0_s6_v1",
+  "protocol_revision": "1.1_canonical_ack_json",
+  "status": "excluded_exploratory_native_to_task_pilot",
+  "estimand": "R_native_checkpoint_by_field_by_carrier_outcomes_controls_and_deltas",
+  "master_seed": 7631801246228819094,
+  "model": "gemini-3.7-flash",
+  "api": {
+    "surface": "interactions",
+    "version": "v1beta",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "api_revision_header": null,
+    "schema_epoch": "post_2026_06_08_steps_response_format",
+    "store": false,
+    "stream": false,
+    "background": false,
+    "previous_interaction_id": null
+  },
+  "request_templates": {
+    "generation_config": {
+      "thinking_level": "high",
+      "thinking_summaries": "none",
+      "seed": "per_call_int32_best_effort",
+      "max_output_tokens": 8192
+    },
+    "probe_generation_config": {
+      "thinking_level": "high",
+      "thinking_summaries": "none",
+      "seed": "per_field_int32_best_effort_matched_across_checkpoints_and_arms",
+      "max_output_tokens": 8192
+    },
+    "ack_response_format": {
+      "type": "text",
+      "mime_type": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ack": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ack"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "probe_response_formats": {
+      "candidate_registry": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "utility_ranking": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids_high_to_low": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids_high_to_low"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "viability_partition": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "viable_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nonviable_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "viable_ids",
+            "nonviable_ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "selected_candidate": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "checkpoints": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+  ],
+  "fields": [
+    "candidate_registry",
+    "utility_ranking",
+    "viability_partition",
+    "selected_candidate"
+  ],
+  "arms": [
+    "target_full_prefix",
+    "target_latest_thought",
+    "target_cumulative_thought",
+    "target_visible_only",
+    "probe_only",
+    "wrong_trial_latest",
+    "donor_full_prefix"
+  ],
+  "source_arms": {
+    "target_full_prefix": "target",
+    "target_latest_thought": "target",
+    "target_cumulative_thought": "target",
+    "target_visible_only": "target",
+    "probe_only": null,
+    "wrong_trial_latest": "donor",
+    "donor_full_prefix": "donor"
+  },
+  "delta_arms": [
+    "target_latest_thought",
+    "target_cumulative_thought",
+    "target_full_prefix",
+    "wrong_trial_latest",
+    "donor_full_prefix"
+  ],
+  "control_arms": [
+    "target_visible_only",
+    "probe_only"
+  ],
+  "expected_changed_fields": {
+    "S0->S1": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S1->S2": [
+      "utility_ranking"
+    ],
+    "S2->S3": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S3->S4": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S4->S5": [
+      "viability_partition"
+    ],
+    "S5->S6": [
+      "selected_candidate"
+    ]
+  },
+  "prompt_firewall_terms": [
+    "hermeneutic",
+    "metacognitive",
+    "counterfactual register",
+    "reversal condition",
+    "unresolved uncertainty",
+    "staged reasoning",
+    "checkpoint tool",
+    "adversarial alternative"
+  ],
+  "generation_eligibility_contract": {
+    "http": "selected bounded-retry result is 2xx",
+    "interaction_status": "completed",
+    "returned_model": "gemini-3.7-flash",
+    "request_store": false,
+    "previous_interaction_id": "absent",
+    "response_step_types": [
+      "thought",
+      "model_output"
+    ],
+    "thought_steps": "one_or_more; every step has a nonempty signature and empty summary",
+    "model_output_steps": "exactly_one step with exactly_one text block",
+    "visible_json_value": {
+      "ack": true
+    },
+    "visible_text_rule": "strict_json_parse_with_duplicate_and_nonfinite_value_rejection_then_canonicalize_expected_and_actual_and_compare_canonical_utf8_bytes",
+    "post_extraction_text_byte_equality": "diagnostic_only_not_an_eligibility_condition",
+    "visible_state_leakage": "forbidden_in_the_complete_model_output_step",
+    "artifact_distinctness": "all_14_selected_response_step_hashes_and_all_14_latest_thought_bundle_hashes_are_pairwise_distinct"
+  },
+  "carrier_contract": {
+    "target_full_prefix": "target stateless generation input through the checkpoint plus every selected provider response step at that checkpoint",
+    "target_latest_thought": "all thought steps from the target checkpoint response",
+    "target_cumulative_thought": "all target thought steps from S0 through the checkpoint in provider order",
+    "target_visible_only": "the target checkpoint model_output step only",
+    "probe_only": "no carrier steps",
+    "wrong_trial_latest": "all donor thought steps from the same checkpoint",
+    "donor_full_prefix": "donor stateless generation input through the same checkpoint plus every selected provider response step at that checkpoint",
+    "probe_append_rule": "append exactly one fresh probe user_input step"
+  },
+  "scoring_policy": {
+    "state_matrix": {
+      "keys": "exactly_196_unique_checkpoint_field_arm_keys",
+      "failed_or_invalid_outcomes": "retained_at_intended_key_and_scored_nonexact",
+      "known_empty_is_distinct_from_unknown_empty": true
+    },
+    "common_validity_gate": {
+      "generation": "14_of_14_eligible_with_exact_lineages_and_distinct_artifacts",
+      "target_full_prefix": "28_of_28_exact",
+      "donor_full_prefix": "28_of_28_exact",
+      "controls": "56_of_56_schema_valid_unknown_exact_empty_shape_zero_id_leakage",
+      "identifier_anomalies": "zero_duplicate_noncanonical_foreign_cross_trial_or_condition_ids"
+    },
+    "latest_bundle_components": {
+      "replication_under_history": "11_of_11",
+      "registry_trajectory": "7_of_7",
+      "ranking_trajectory": "7_of_7",
+      "viability_extension": "7_of_7",
+      "preselection_known_empty": "6_of_6",
+      "joint_state": "28_of_28",
+      "history_dependent_s2_s6": "20_of_20",
+      "prompt_sufficient_s0_s1": "8_cells_reported_separately"
+    },
+    "delta_policy": {
+      "matrix": "exactly_120_unique_transition_field_arm_keys",
+      "endpoint_rule": "both_schema_valid_and_source_exact_before_delta_can_be_exact",
+      "per_arm": "24_of_24_total_12_of_12_changed_12_of_12_stable",
+      "arms": [
+        "target_latest_thought",
+        "target_cumulative_thought",
+        "target_full_prefix",
+        "wrong_trial_latest",
+        "donor_full_prefix"
+      ]
+    },
+    "causal_specificity": {
+      "wrong_trial_donor": "28_of_28_exact",
+      "wrong_trial_distinguishing": "19_of_19_donor_exact_target_inexact",
+      "directional_adjacent_changed_pairs": "12_of_12",
+      "future_exact_hits": 0,
+      "premature_ids": 0,
+      "cross_trial_condition_or_unexplained_ids": 0,
+      "full_prefix_requirements_included": true
+    },
+    "timeline_definitions": {
+      "future_exact": "current_inexact_and_exact_for_a_later_differing_source_truth",
+      "stale_exact": "current_inexact_and_exact_for_an_earlier_differing_source_truth_diagnostic_only",
+      "premature_id": "any_source_trial_id_returned_before_its_frozen_introduction_checkpoint_regardless_of_schema_validity",
+      "partial_future_alignment": "diagnostic_only"
+    },
+    "latest_vs_cumulative": {
+      "report_per_field_agreement_and_exactness": true,
+      "exclude_s0_from_inference": true
+    },
+    "independence_boundary": "cells_and_deltas_are_correlated_completeness_checks_not_independent_replications"
+  },
+  "transport_policy": {
+    "timeout_seconds_per_attempt": 120,
+    "inter_logical_request_delay_seconds": 1.0,
+    "max_attempts_per_logical_request": 3,
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "retryable": [
+      "transport_error",
+      "http_408",
+      "http_429",
+      "http_500_502_503_504"
+    ],
+    "nonretryable": [
+      "http_400_protocol_rejection",
+      "http_other",
+      "all_2xx_including_incomplete_malformed_or_unfavorable"
+    ],
+    "selection_rule": "first_observed_nonretryable_response_or_final_attempt",
+    "retry_body": "byte_identical_canonical_json",
+    "retry_after_header": "recorded_but_ignored",
+    "estimand": "outcome_under_frozen_bounded_retry_policy"
+  },
+  "stopping_policy": {
+    "planned_run_attempts": 2,
+    "replacement_condition": "run_02_permitted_only_if_run_01_fails_generation_eligibility_before_any_tomography_request",
+    "semantic_reruns": "forbidden",
+    "first_run_entering_tomography": "final_regardless_of_missingness_or_outcome",
+    "pool_across_protocol_or_retry_revisions": false,
+    "complete_run_logical_requests": 210,
+    "complete_run_max_physical_attempts": 630,
+    "two_run_logical_ceiling": 224,
+    "two_run_max_physical_attempts": 672
+  },
+  "id_scheme": "ID_ plus 26 type-neutral Crockford-base32 characters",
+  "planned_run_attempts": [
+    {
+      "run_id": "run_01",
+      "run_master_seed": 4270570277568478808,
+      "generation_trial_order": [
+        "donor",
+        "target"
+      ],
+      "generation_tasks": [
+        {
+          "request_order": 1,
+          "trial": "donor",
+          "checkpoint": "S0",
+          "logical_label": "run_01_generate_donor_S0"
+        },
+        {
+          "request_order": 2,
+          "trial": "donor",
+          "checkpoint": "S1",
+          "logical_label": "run_01_generate_donor_S1"
+        },
+        {
+          "request_order": 3,
+          "trial": "donor",
+          "checkpoint": "S2",
+          "logical_label": "run_01_generate_donor_S2"
+        },
+        {
+          "request_order": 4,
+          "trial": "donor",
+          "checkpoint": "S3",
+          "logical_label": "run_01_generate_donor_S3"
+        },
+        {
+          "request_order": 5,
+          "trial": "donor",
+          "checkpoint": "S4",
+          "logical_label": "run_01_generate_donor_S4"
+        },
+        {
+          "request_order": 6,
+          "trial": "donor",
+          "checkpoint": "S5",
+          "logical_label": "run_01_generate_donor_S5"
+        },
+        {
+          "request_order": 7,
+          "trial": "donor",
+          "checkpoint": "S6",
+          "logical_label": "run_01_generate_donor_S6"
+        },
+        {
+          "request_order": 8,
+          "trial": "target",
+          "checkpoint": "S0",
+          "logical_label": "run_01_generate_target_S0"
+        },
+        {
+          "request_order": 9,
+          "trial": "target",
+          "checkpoint": "S1",
+          "logical_label": "run_01_generate_target_S1"
+        },
+        {
+          "request_order": 10,
+          "trial": "target",
+          "checkpoint": "S2",
+          "logical_label": "run_01_generate_target_S2"
+        },
+        {
+          "request_order": 11,
+          "trial": "target",
+          "checkpoint": "S3",
+          "logical_label": "run_01_generate_target_S3"
+        },
+        {
+          "request_order": 12,
+          "trial": "target",
+          "checkpoint": "S4",
+          "logical_label": "run_01_generate_target_S4"
+        },
+        {
+          "request_order": 13,
+          "trial": "target",
+          "checkpoint": "S5",
+          "logical_label": "run_01_generate_target_S5"
+        },
+        {
+          "request_order": 14,
+          "trial": "target",
+          "checkpoint": "S6",
+          "logical_label": "run_01_generate_target_S6"
+        }
+      ],
+      "trials": {
+        "target": {
+          "trial_id": "target",
+          "report_aliases": {
+            "A": "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+            "B": "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+            "C": "ID_G3SDW0CE014JX3VX7PG8R42XTZ",
+            "D": "ID_PRK0F74EG7BJD8ENWSC3PF25HP",
+            "K": "ID_QW3ZFH6P14GW4KF49NXAWR47JP"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 373151,
+            "A_S1": 339209,
+            "B_S1": 329779,
+            "C_S1": 271138,
+            "D_S4": 142209
+          },
+          "s1_presentation_order": [
+            "A",
+            "C",
+            "B"
+          ],
+          "generation_seeds": {
+            "S0": 1833920296,
+            "S1": 1373291512,
+            "S2": 577490952,
+            "S3": 1370735251,
+            "S4": 1733457882,
+            "S5": 608655170,
+            "S6": 787704715
+          },
+          "candidate_universe": [
+            "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+            "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+            "ID_G3SDW0CE014JX3VX7PG8R42XTZ",
+            "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+          ],
+          "condition_id": "ID_QW3ZFH6P14GW4KF49NXAWR47JP",
+          "id_universe": [
+            "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+            "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+            "ID_G3SDW0CE014JX3VX7PG8R42XTZ",
+            "ID_PRK0F74EG7BJD8ENWSC3PF25HP",
+            "ID_QW3ZFH6P14GW4KF49NXAWR47JP"
+          ],
+          "introduction_checkpoint": {
+            "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F": "S1",
+            "ID_AB0VSB34VWNXWQKR6KEVCMX15K": "S1",
+            "ID_G3SDW0CE014JX3VX7PG8R42XTZ": "S1",
+            "ID_PRK0F74EG7BJD8ENWSC3PF25HP": "S4",
+            "ID_QW3ZFH6P14GW4KF49NXAWR47JP": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_G3SDW0CE014JX3VX7PG8R42XTZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ],
+                "nonviable_ids": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K",
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F",
+                  "ID_PRK0F74EG7BJD8ENWSC3PF25HP"
+                ],
+                "nonviable_ids": [
+                  "ID_AB0VSB34VWNXWQKR6KEVCMX15K"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_1SQ3HNBMYBRM5KEPQP6E2AT31F"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_1SQ3HNBMYBRM5KEPQP6E2AT31F\nrole: candidate\nviability: viable\nutility: 339209\nselection: not_selected\n\nidentifier: ID_G3SDW0CE014JX3VX7PG8R42XTZ\nrole: candidate\nviability: viable\nutility: 271138\nselection: not_selected\n\nidentifier: ID_AB0VSB34VWNXWQKR6KEVCMX15K\nrole: candidate\nviability: viable\nutility: 329779\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_AB0VSB34VWNXWQKR6KEVCMX15K\nnew_utility: 373151\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_G3SDW0CE014JX3VX7PG8R42XTZ\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_PRK0F74EG7BJD8ENWSC3PF25HP\nrole: candidate\nviability: viable\nutility: 142209\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_QW3ZFH6P14GW4KF49NXAWR47JP\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_AB0VSB34VWNXWQKR6KEVCMX15K\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n"
+          }
+        },
+        "donor": {
+          "trial_id": "donor",
+          "report_aliases": {
+            "A": "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+            "B": "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+            "C": "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+            "D": "ID_CGZQJDFF2733NWQX8GV206RQ29",
+            "K": "ID_F7A30G3GGPC0YT5M3HF8RG92MH"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 653237,
+            "A_S1": 564541,
+            "B_S1": 474535,
+            "C_S1": 135458,
+            "D_S4": 125177
+          },
+          "s1_presentation_order": [
+            "B",
+            "C",
+            "A"
+          ],
+          "generation_seeds": {
+            "S0": 400445312,
+            "S1": 1572366682,
+            "S2": 1806867042,
+            "S3": 2098628367,
+            "S4": 2041266051,
+            "S5": 50154530,
+            "S6": 231365125
+          },
+          "candidate_universe": [
+            "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+            "ID_CGZQJDFF2733NWQX8GV206RQ29",
+            "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+            "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+          ],
+          "condition_id": "ID_F7A30G3GGPC0YT5M3HF8RG92MH",
+          "id_universe": [
+            "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+            "ID_CGZQJDFF2733NWQX8GV206RQ29",
+            "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+            "ID_F7A30G3GGPC0YT5M3HF8RG92MH",
+            "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+          ],
+          "introduction_checkpoint": {
+            "ID_D93MA0TBTGWN16VCGMEGRHSBS3": "S1",
+            "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97": "S1",
+            "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z": "S1",
+            "ID_CGZQJDFF2733NWQX8GV206RQ29": "S4",
+            "ID_F7A30G3GGPC0YT5M3HF8RG92MH": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3"
+                ],
+                "nonviable_ids": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3",
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_CGZQJDFF2733NWQX8GV206RQ29",
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3"
+                ],
+                "nonviable_ids": [
+                  "ID_J5DGR7AWSSVBS8AJXM2Y6QXX97"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_D93MA0TBTGWN16VCGMEGRHSBS3"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_J5DGR7AWSSVBS8AJXM2Y6QXX97\nrole: candidate\nviability: viable\nutility: 474535\nselection: not_selected\n\nidentifier: ID_7YXXM42C7W8DTVEFWQZ4CWTX2Z\nrole: candidate\nviability: viable\nutility: 135458\nselection: not_selected\n\nidentifier: ID_D93MA0TBTGWN16VCGMEGRHSBS3\nrole: candidate\nviability: viable\nutility: 564541\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_J5DGR7AWSSVBS8AJXM2Y6QXX97\nnew_utility: 653237\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_7YXXM42C7W8DTVEFWQZ4CWTX2Z\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_CGZQJDFF2733NWQX8GV206RQ29\nrole: candidate\nviability: viable\nutility: 125177\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_F7A30G3GGPC0YT5M3HF8RG92MH\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_J5DGR7AWSSVBS8AJXM2Y6QXX97\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n"
+          }
+        }
+      },
+      "probe_seeds": {
+        "candidate_registry": 89000758,
+        "utility_ranking": 1013003046,
+        "viability_partition": 1389911522,
+        "selected_candidate": 749967257
+      },
+      "probe_tasks": [
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 1,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_001_S4_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 2,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_002_S5_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 3,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_003_S2_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 4,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_004_S0_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 5,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_005_S4_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 6,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_006_S4_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 7,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_007_S6_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 8,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_008_S1_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 9,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_009_S5_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 10,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_010_S3_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 11,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_011_S5_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 12,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_012_S3_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 13,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_013_S2_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 14,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_014_S5_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 15,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_015_S1_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 16,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_016_S0_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 17,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_017_S5_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 18,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_018_S6_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 19,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_019_S3_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 20,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_020_S1_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 21,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_021_S3_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 22,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_022_S0_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 23,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_023_S5_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 24,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_024_S4_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 25,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_025_S3_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 26,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_026_S1_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 27,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_027_S4_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 28,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_028_S4_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 29,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_029_S4_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 30,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_030_S1_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 31,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_031_S4_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 32,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_032_S6_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 33,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_033_S1_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 34,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_034_S2_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 35,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_035_S0_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 36,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_036_S1_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 37,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_037_S0_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 38,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_038_S3_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 39,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_039_S0_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 40,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_040_S1_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 41,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_041_S5_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 42,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_042_S5_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 43,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_043_S2_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 44,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_044_S4_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 45,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_045_S0_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 46,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_046_S3_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 47,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_047_S2_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 48,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_048_S2_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 49,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_049_S6_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 50,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_050_S1_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 51,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_051_S2_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 52,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_052_S0_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 53,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_053_S3_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 54,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_054_S3_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 55,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_055_S1_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 56,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_056_S2_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 57,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_057_S5_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 58,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_058_S5_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 59,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_059_S2_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 60,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_060_S3_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 61,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_061_S1_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 62,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_062_S4_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 63,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_063_S6_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 64,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_064_S6_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 65,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_065_S5_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 66,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_066_S1_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 67,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_067_S4_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 68,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_068_S0_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 69,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_069_S4_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 70,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_070_S1_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 71,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_071_S3_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 72,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_072_S3_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 73,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_073_S0_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 74,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_074_S2_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 75,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_075_S3_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 76,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_076_S4_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 77,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_077_S1_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 78,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_078_S4_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 79,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_079_S3_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 80,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_080_S1_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 81,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_081_S1_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 82,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_082_S6_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 83,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_083_S2_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 84,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_084_S2_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 85,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_085_S5_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 86,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_086_S6_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 87,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_087_S0_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 88,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_088_S5_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 89,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_089_S4_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 90,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_090_S3_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 91,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_091_S6_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 92,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_092_S0_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 93,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_093_S2_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 94,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_094_S1_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 95,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_095_S3_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 96,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_096_S0_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 97,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_097_S4_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 98,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_098_S6_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 99,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_099_S5_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 100,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_100_S6_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 101,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_101_S3_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 102,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_102_S6_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 103,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_103_S2_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 104,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_104_S0_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 105,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_105_S1_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 106,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_106_S1_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 107,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_107_S3_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 108,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_108_S6_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 109,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_109_S4_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 110,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_110_S5_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 111,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_111_S5_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 112,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_112_S2_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 113,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_113_S1_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 114,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_114_S3_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 115,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_115_S5_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 116,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_116_S5_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 117,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_117_S6_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 118,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_118_S4_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 119,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_119_S0_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 120,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_120_S3_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 121,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_121_S6_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 122,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_122_S6_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 123,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_123_S2_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 124,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_124_S5_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 125,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_125_S2_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 126,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_126_S2_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 127,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_127_S0_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 128,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_128_S6_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 129,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_129_S6_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 130,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_130_S2_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 131,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_131_S0_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 132,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_132_S1_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 133,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_133_S6_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 134,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_134_S3_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 135,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_135_S4_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 136,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_136_S3_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 137,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_137_S0_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 138,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_138_S5_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 139,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_139_S5_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 140,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_140_S0_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 141,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_141_S3_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 142,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_142_S4_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 143,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_143_S1_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 144,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_144_S4_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 145,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_145_S5_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 146,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_146_S0_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 147,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_147_S2_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 148,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_148_S0_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 149,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_149_S2_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 150,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_150_S1_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 151,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_151_S1_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 152,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_152_S6_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 153,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_153_S4_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 154,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_154_S6_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 155,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_155_S4_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 156,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_156_S0_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 157,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_157_S0_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 158,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_158_S4_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 159,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_159_S3_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 160,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_160_S3_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 161,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_161_S5_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 162,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_162_S2_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 163,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_163_S1_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 164,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_164_S5_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 165,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_165_S6_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 166,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_166_S6_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 167,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_167_S0_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 168,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_168_S5_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 169,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_169_S3_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 170,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_170_S2_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 171,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_171_S4_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 172,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_172_S3_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 173,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_173_S4_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 174,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_174_S4_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 175,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_175_S2_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 176,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_176_S6_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 177,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_177_S1_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 178,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_178_S6_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 179,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_179_S2_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 180,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_180_S5_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 181,
+          "seed": 749967257,
+          "logical_label": "run_01_probe_181_S5_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 182,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_182_S0_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 183,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_183_S1_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 184,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_184_S3_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 185,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_185_S4_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 186,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_186_S6_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 187,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_187_S2_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 188,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_188_S6_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 189,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_189_S0_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 190,
+          "seed": 1013003046,
+          "logical_label": "run_01_probe_190_S1_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 191,
+          "seed": 89000758,
+          "logical_label": "run_01_probe_191_S2_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 192,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_192_S6_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 193,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_193_S0_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 194,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_194_S2_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 195,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_195_S0_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 196,
+          "seed": 1389911522,
+          "logical_label": "run_01_probe_196_S5_viability_partition_probe_only"
+        }
+      ]
+    },
+    {
+      "run_id": "run_02",
+      "run_master_seed": 16934392681090653432,
+      "generation_trial_order": [
+        "target",
+        "donor"
+      ],
+      "generation_tasks": [
+        {
+          "request_order": 1,
+          "trial": "target",
+          "checkpoint": "S0",
+          "logical_label": "run_02_generate_target_S0"
+        },
+        {
+          "request_order": 2,
+          "trial": "target",
+          "checkpoint": "S1",
+          "logical_label": "run_02_generate_target_S1"
+        },
+        {
+          "request_order": 3,
+          "trial": "target",
+          "checkpoint": "S2",
+          "logical_label": "run_02_generate_target_S2"
+        },
+        {
+          "request_order": 4,
+          "trial": "target",
+          "checkpoint": "S3",
+          "logical_label": "run_02_generate_target_S3"
+        },
+        {
+          "request_order": 5,
+          "trial": "target",
+          "checkpoint": "S4",
+          "logical_label": "run_02_generate_target_S4"
+        },
+        {
+          "request_order": 6,
+          "trial": "target",
+          "checkpoint": "S5",
+          "logical_label": "run_02_generate_target_S5"
+        },
+        {
+          "request_order": 7,
+          "trial": "target",
+          "checkpoint": "S6",
+          "logical_label": "run_02_generate_target_S6"
+        },
+        {
+          "request_order": 8,
+          "trial": "donor",
+          "checkpoint": "S0",
+          "logical_label": "run_02_generate_donor_S0"
+        },
+        {
+          "request_order": 9,
+          "trial": "donor",
+          "checkpoint": "S1",
+          "logical_label": "run_02_generate_donor_S1"
+        },
+        {
+          "request_order": 10,
+          "trial": "donor",
+          "checkpoint": "S2",
+          "logical_label": "run_02_generate_donor_S2"
+        },
+        {
+          "request_order": 11,
+          "trial": "donor",
+          "checkpoint": "S3",
+          "logical_label": "run_02_generate_donor_S3"
+        },
+        {
+          "request_order": 12,
+          "trial": "donor",
+          "checkpoint": "S4",
+          "logical_label": "run_02_generate_donor_S4"
+        },
+        {
+          "request_order": 13,
+          "trial": "donor",
+          "checkpoint": "S5",
+          "logical_label": "run_02_generate_donor_S5"
+        },
+        {
+          "request_order": 14,
+          "trial": "donor",
+          "checkpoint": "S6",
+          "logical_label": "run_02_generate_donor_S6"
+        }
+      ],
+      "trials": {
+        "target": {
+          "trial_id": "target",
+          "report_aliases": {
+            "A": "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+            "B": "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+            "C": "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+            "D": "ID_3448TVP67Y50XX75YH17861MZB",
+            "K": "ID_4S75QBEQA5062Y7Y9FN356FM3P"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 963658,
+            "A_S1": 815538,
+            "B_S1": 800244,
+            "C_S1": 483259,
+            "D_S4": 103238
+          },
+          "s1_presentation_order": [
+            "A",
+            "B",
+            "C"
+          ],
+          "generation_seeds": {
+            "S0": 1714321588,
+            "S1": 765390688,
+            "S2": 1814878169,
+            "S3": 1555654328,
+            "S4": 1367371599,
+            "S5": 821601994,
+            "S6": 51299103
+          },
+          "candidate_universe": [
+            "ID_3448TVP67Y50XX75YH17861MZB",
+            "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+            "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+            "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+          ],
+          "condition_id": "ID_4S75QBEQA5062Y7Y9FN356FM3P",
+          "id_universe": [
+            "ID_3448TVP67Y50XX75YH17861MZB",
+            "ID_4S75QBEQA5062Y7Y9FN356FM3P",
+            "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+            "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+            "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+          ],
+          "introduction_checkpoint": {
+            "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2": "S1",
+            "ID_VASF0YNG3YFK8MJTJ5G07VCGP7": "S1",
+            "ID_8V0D9GSASX9ZCZGM62F3SC88Z3": "S1",
+            "ID_3448TVP67Y50XX75YH17861MZB": "S4",
+            "ID_4S75QBEQA5062Y7Y9FN356FM3P": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_8V0D9GSASX9ZCZGM62F3SC88Z3",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_3448TVP67Y50XX75YH17861MZB"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_3448TVP67Y50XX75YH17861MZB"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2"
+                ],
+                "nonviable_ids": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2",
+                  "ID_3448TVP67Y50XX75YH17861MZB"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_3448TVP67Y50XX75YH17861MZB",
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2"
+                ],
+                "nonviable_ids": [
+                  "ID_VASF0YNG3YFK8MJTJ5G07VCGP7"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_F5ZTKQRDB8882JTXMDV5Z7Y1T2\nrole: candidate\nviability: viable\nutility: 815538\nselection: not_selected\n\nidentifier: ID_VASF0YNG3YFK8MJTJ5G07VCGP7\nrole: candidate\nviability: viable\nutility: 800244\nselection: not_selected\n\nidentifier: ID_8V0D9GSASX9ZCZGM62F3SC88Z3\nrole: candidate\nviability: viable\nutility: 483259\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_VASF0YNG3YFK8MJTJ5G07VCGP7\nnew_utility: 963658\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_8V0D9GSASX9ZCZGM62F3SC88Z3\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_3448TVP67Y50XX75YH17861MZB\nrole: candidate\nviability: viable\nutility: 103238\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_4S75QBEQA5062Y7Y9FN356FM3P\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_VASF0YNG3YFK8MJTJ5G07VCGP7\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n"
+          }
+        },
+        "donor": {
+          "trial_id": "donor",
+          "report_aliases": {
+            "A": "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+            "B": "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+            "C": "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+            "D": "ID_WHPK7CW2HNF1TM3831YNY83ZSN",
+            "K": "ID_GGCQ3VFQBEWYFY87S923E7RY63"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 897076,
+            "A_S1": 578273,
+            "B_S1": 460184,
+            "C_S1": 219524,
+            "D_S4": 139474
+          },
+          "s1_presentation_order": [
+            "C",
+            "B",
+            "A"
+          ],
+          "generation_seeds": {
+            "S0": 782328082,
+            "S1": 1077057065,
+            "S2": 82428763,
+            "S3": 119050334,
+            "S4": 1763642197,
+            "S5": 1585556090,
+            "S6": 878098728
+          },
+          "candidate_universe": [
+            "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+            "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+            "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+            "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+          ],
+          "condition_id": "ID_GGCQ3VFQBEWYFY87S923E7RY63",
+          "id_universe": [
+            "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+            "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+            "ID_GGCQ3VFQBEWYFY87S923E7RY63",
+            "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+            "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+          ],
+          "introduction_checkpoint": {
+            "ID_7YGW0V5QC9JNQMWFSG15HF6XC4": "S1",
+            "ID_SRMGPYTWBB39NC46R7HG3CMVG1": "S1",
+            "ID_640SGZ8BZ3QS4H0RRVE421X2QJ": "S1",
+            "ID_WHPK7CW2HNF1TM3831YNY83ZSN": "S4",
+            "ID_GGCQ3VFQBEWYFY87S923E7RY63": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_640SGZ8BZ3QS4H0RRVE421X2QJ",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ],
+                "nonviable_ids": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1",
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4",
+                  "ID_WHPK7CW2HNF1TM3831YNY83ZSN"
+                ],
+                "nonviable_ids": [
+                  "ID_SRMGPYTWBB39NC46R7HG3CMVG1"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_7YGW0V5QC9JNQMWFSG15HF6XC4"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_640SGZ8BZ3QS4H0RRVE421X2QJ\nrole: candidate\nviability: viable\nutility: 219524\nselection: not_selected\n\nidentifier: ID_SRMGPYTWBB39NC46R7HG3CMVG1\nrole: candidate\nviability: viable\nutility: 460184\nselection: not_selected\n\nidentifier: ID_7YGW0V5QC9JNQMWFSG15HF6XC4\nrole: candidate\nviability: viable\nutility: 578273\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_SRMGPYTWBB39NC46R7HG3CMVG1\nnew_utility: 897076\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_640SGZ8BZ3QS4H0RRVE421X2QJ\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_WHPK7CW2HNF1TM3831YNY83ZSN\nrole: candidate\nviability: viable\nutility: 139474\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_GGCQ3VFQBEWYFY87S923E7RY63\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_SRMGPYTWBB39NC46R7HG3CMVG1\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be the JSON object below. Insignificant JSON\nwhitespace is allowed:\n{\"ack\": true}\n"
+          }
+        }
+      },
+      "probe_seeds": {
+        "candidate_registry": 812594056,
+        "utility_ranking": 536681700,
+        "viability_partition": 1307017764,
+        "selected_candidate": 1175195353
+      },
+      "probe_tasks": [
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 1,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_001_S6_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 2,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_002_S1_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 3,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_003_S1_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 4,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_004_S1_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 5,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_005_S4_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 6,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_006_S2_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 7,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_007_S2_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 8,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_008_S5_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 9,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_009_S6_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 10,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_010_S2_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 11,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_011_S4_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 12,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_012_S5_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 13,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_013_S5_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 14,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_014_S5_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 15,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_015_S3_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 16,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_016_S2_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 17,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_017_S1_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 18,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_018_S6_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 19,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_019_S4_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 20,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_020_S5_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 21,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_021_S0_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 22,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_022_S0_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 23,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_023_S6_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 24,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_024_S4_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 25,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_025_S2_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 26,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_026_S0_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 27,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_027_S3_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 28,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_028_S1_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 29,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_029_S5_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 30,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_030_S6_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 31,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_031_S4_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 32,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_032_S1_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 33,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_033_S1_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 34,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_034_S6_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 35,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_035_S1_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 36,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_036_S4_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 37,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_037_S0_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 38,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_038_S5_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 39,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_039_S3_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 40,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_040_S4_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 41,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_041_S2_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 42,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_042_S5_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 43,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_043_S4_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 44,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_044_S3_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 45,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_045_S4_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 46,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_046_S6_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 47,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_047_S2_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 48,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_048_S1_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 49,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_049_S5_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 50,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_050_S2_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 51,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_051_S5_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 52,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_052_S3_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 53,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_053_S4_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 54,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_054_S2_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 55,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_055_S0_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 56,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_056_S4_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 57,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_057_S5_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 58,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_058_S6_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 59,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_059_S6_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 60,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_060_S0_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 61,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_061_S4_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 62,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_062_S4_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 63,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_063_S2_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 64,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_064_S2_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 65,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_065_S4_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 66,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_066_S0_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 67,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_067_S3_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 68,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_068_S6_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 69,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_069_S1_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 70,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_070_S0_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 71,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_071_S1_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 72,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_072_S1_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 73,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_073_S1_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 74,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_074_S1_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 75,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_075_S0_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 76,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_076_S2_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 77,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_077_S2_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 78,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_078_S0_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 79,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_079_S3_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 80,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_080_S4_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 81,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_081_S0_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 82,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_082_S0_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 83,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_083_S1_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 84,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_084_S4_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 85,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_085_S3_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 86,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_086_S6_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 87,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_087_S0_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 88,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_088_S6_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 89,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_089_S0_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 90,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_090_S0_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 91,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_091_S1_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 92,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_092_S5_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 93,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_093_S2_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 94,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_094_S1_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 95,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_095_S6_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 96,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_096_S5_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 97,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_097_S0_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 98,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_098_S2_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 99,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_099_S1_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 100,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_100_S3_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 101,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_101_S6_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 102,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_102_S1_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 103,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_103_S2_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 104,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_104_S2_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 105,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_105_S3_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 106,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_106_S2_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 107,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_107_S3_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 108,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_108_S5_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 109,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_109_S5_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 110,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_110_S3_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 111,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_111_S5_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 112,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_112_S6_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 113,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_113_S3_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 114,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_114_S5_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 115,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_115_S2_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 116,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_116_S0_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 117,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_117_S2_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 118,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_118_S4_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 119,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_119_S1_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 120,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_120_S3_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 121,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_121_S5_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 122,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_122_S1_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 123,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_123_S4_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 124,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_124_S6_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 125,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_125_S4_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 126,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_126_S2_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 127,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_127_S0_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 128,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_128_S6_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 129,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_129_S1_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 130,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_130_S3_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 131,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_131_S3_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 132,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_132_S1_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 133,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_133_S3_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 134,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_134_S0_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 135,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_135_S2_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 136,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_136_S0_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 137,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_137_S5_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 138,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_138_S5_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 139,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_139_S2_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 140,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_140_S1_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 141,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_141_S6_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 142,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_142_S5_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 143,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_143_S0_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 144,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_144_S4_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 145,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_145_S2_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 146,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_146_S1_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 147,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_147_S6_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 148,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_148_S5_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 149,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_149_S6_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 150,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_150_S2_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 151,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_151_S6_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 152,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_152_S0_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 153,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_153_S3_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 154,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_154_S5_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 155,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_155_S0_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 156,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_156_S2_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 157,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_157_S5_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 158,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_158_S6_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 159,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_159_S3_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 160,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_160_S0_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 161,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_161_S0_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 162,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_162_S3_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 163,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_163_S4_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 164,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_164_S3_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 165,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_165_S5_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 166,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_166_S4_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 167,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_167_S2_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 168,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_168_S4_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 169,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_169_S6_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 170,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_170_S5_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 171,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_171_S3_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 172,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_172_S1_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 173,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_173_S4_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 174,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_174_S6_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 175,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_175_S3_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 176,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_176_S2_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 177,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_177_S0_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 178,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_178_S4_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 179,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_179_S6_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 180,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_180_S3_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 181,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_181_S0_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 182,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_182_S5_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 183,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_183_S6_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 184,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_184_S6_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 185,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_185_S4_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 186,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_186_S3_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 187,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_187_S3_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 188,
+          "seed": 1307017764,
+          "logical_label": "run_02_probe_188_S3_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 189,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_189_S3_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 190,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_190_S1_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 191,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_191_S5_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 192,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_192_S1_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 193,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_193_S6_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 194,
+          "seed": 536681700,
+          "logical_label": "run_02_probe_194_S4_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 195,
+          "seed": 812594056,
+          "logical_label": "run_02_probe_195_S0_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 196,
+          "seed": 1175195353,
+          "logical_label": "run_02_probe_196_S4_selected_candidate_target_latest_thought"
+        }
+      ]
+    }
+  ],
+  "planned_calls": {
+    "per_complete_run": {
+      "generation": 14,
+      "tomography": 196,
+      "logical_total": 210,
+      "max_physical_attempts": 630
+    },
+    "two_run_stopping_ceiling": {
+      "logical_total": 224,
+      "max_physical_attempts": 672
+    }
+  }
+}

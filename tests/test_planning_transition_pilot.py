@@ -113,6 +113,10 @@ def ack_response(index):
     return interaction_response('{"ack":true}', index)
 
 
+def pretty_ack_response(index):
+    return interaction_response('{\n  "ack": true\n}', index)
+
+
 def unknown_answer(field):
     kind = PROBES[field]["kind"]
     if kind == "viability":
@@ -808,10 +812,75 @@ class PlanningScoreTests(unittest.TestCase):
             trial=self.trial,
         )
         self.assertIn(
-            "visible output was not the strict acknowledgement object",
+            "visible output did not canonically match the required acknowledgement object",
             reasons,
         )
-        self.assertFalse(details["visible_ack_parse_valid"])
+        self.assertFalse(details["visible_ack_json_parse_valid"])
+        self.assertFalse(details["visible_ack_canonical_match"])
+
+    def test_ack_eligibility_compares_canonical_json_both_ways(self):
+        request_body = {
+            "store": False,
+            "stream": False,
+            "background": False,
+        }
+        pretty = interaction_response('{\n  "ack": true\n}', 1)
+        reasons, details = _checkpoint_eligibility(
+            result=pretty,
+            payload=pretty.payload,
+            steps=pretty.payload["steps"],
+            request_body=request_body,
+            trial=self.trial,
+        )
+        self.assertEqual(reasons, [])
+        self.assertTrue(details["visible_ack_json_parse_valid"])
+        self.assertTrue(details["visible_ack_canonical_match"])
+        self.assertFalse(
+            details["visible_ack_post_extraction_text_exact"]
+        )
+        self.assertEqual(
+            details["visible_ack_canonical_sha256"],
+            details["expected_ack_canonical_sha256"],
+        )
+
+        escaped_key = interaction_response(r'{"\u0061ck":true}', 2)
+        escaped_reasons, escaped_details = _checkpoint_eligibility(
+            result=escaped_key,
+            payload=escaped_key.payload,
+            steps=escaped_key.payload["steps"],
+            request_body=request_body,
+            trial=self.trial,
+        )
+        self.assertEqual(escaped_reasons, [])
+        self.assertTrue(escaped_details["visible_ack_canonical_match"])
+        self.assertFalse(
+            escaped_details["visible_ack_post_extraction_text_exact"]
+        )
+
+        for text in (
+            '{"ack":1}',
+            '{"ack":false}',
+            '{"ack":true,"extra":null}',
+            '{"ack":true,"ack":true}',
+            "null",
+            '{"ack":NaN}',
+            '{"ack":1e999}',
+            '{"ack":-1e999}',
+        ):
+            with self.subTest(text=text):
+                result = interaction_response(text, 2)
+                invalid_reasons, invalid_details = _checkpoint_eligibility(
+                    result=result,
+                    payload=result.payload,
+                    steps=result.payload["steps"],
+                    request_body=request_body,
+                    trial=self.trial,
+                )
+                self.assertIn(
+                    "visible output did not canonically match the required acknowledgement object",
+                    invalid_reasons,
+                )
+                self.assertFalse(invalid_details["visible_ack_canonical_match"])
 
     def test_delta_derivation_distinguishes_changed_and_stable(self):
         before = expected_normalized("ranking", self.trial["truth"]["S1"]["utility_ranking"])
@@ -917,6 +986,48 @@ class GenerationAndPrivacyTests(unittest.TestCase):
             compact = json.dumps(summaries)
             self.assertNotIn("private-signature-0", compact)
             self.assertIn("signature_sha256", compact)
+
+    def test_all_fourteen_pretty_acknowledgements_pass_generation(self):
+        run = create_manifest(master_seed=984113)["planned_run_attempts"][0]
+        pending = [pretty_ack_response(index) for index in range(14)]
+
+        with tempfile.TemporaryDirectory() as temporary:
+            store = CallStore(
+                run_dir=Path(temporary),
+                api_key="not-written",
+                timeout=1,
+                delay_seconds=0,
+                transport=lambda **_kwargs: pending.pop(0),
+                sleeper=lambda _seconds: None,
+            )
+            runtimes = {}
+            summaries = []
+            for trial_name in run["generation_trial_order"]:
+                trial_runtimes, trial_summaries = generate_trial(
+                    run_id=run["run_id"],
+                    trial=run["trials"][trial_name],
+                    generation_tasks=run["generation_tasks"],
+                    store=store,
+                )
+                runtimes[trial_name] = trial_runtimes
+                summaries.extend(trial_summaries)
+
+            self.assertFalse(pending)
+            self.assertTrue(
+                generation_status(
+                    checkpoint_summaries=summaries,
+                    runtimes=runtimes,
+                )["eligible"]
+            )
+            self.assertTrue(
+                all(row["visible_ack_canonical_match"] for row in summaries)
+            )
+            self.assertTrue(
+                all(
+                    not row["visible_ack_post_extraction_text_exact"]
+                    for row in summaries
+                )
+            )
 
     def test_generation_failure_drops_provider_controlled_free_text(self):
         run = create_manifest(master_seed=10101)["planned_run_attempts"][0]

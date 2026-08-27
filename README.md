@@ -167,9 +167,11 @@ results retain their original model identifiers; runs should always record the
 explicit requested and returned model IDs rather than silently relabeling them.
 
 The first excluded true-fork pilot is documented in
-`thoughtlab/stateTransitions/README.md`. It stops at two S5 descendants and does
-not begin the later supersession/deactivation or confirmatory trial program.
-The current evidence review and approval recommendation are in
-`thoughtlab/stateTransitions/PILOT_REVIEW.md`. The review-ready mutable
-planning-state follow-up is in
+`thoughtlab/stateTransitions/README.md`, with its evidence review in
+`thoughtlab/stateTransitions/PILOT_REVIEW.md`. The completed mutable S0-S6
+native-to-task follow-up is reported in
+`thoughtlab/stateTransitions/NATIVE_S0_S6_REVIEW_02.md`: full histories and
+controls calibrated perfectly, while detached thought carriers produced sparse,
+registry-only recovery and no changed-transition localization. The governing
+design and interpretation decision tree remain in
 `thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md`.

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import random
 import re
 from pathlib import Path
@@ -22,7 +23,7 @@ from thoughtlab.stateTransitions.planning_transition_probes import (
 
 
 SCHEMA_VERSION: Final[str] = "native_planning_transition_manifest_v1"
-PROTOCOL_REVISION: Final[str] = "1.0_native_s0_s6_review_freeze"
+PROTOCOL_REVISION: Final[str] = "1.1_canonical_ack_json"
 MODEL: Final[str] = "gemini-3.7-flash"
 CHECKPOINTS: Final[tuple[str, ...]] = ("S0", "S1", "S2", "S3", "S4", "S5", "S6")
 FIELDS: Final[tuple[str, ...]] = tuple(PROBES)
@@ -116,8 +117,14 @@ GENERATION_ELIGIBILITY_CONTRACT: Final[dict[str, Any]] = {
     "response_step_types": ["thought", "model_output"],
     "thought_steps": "one_or_more; every step has a nonempty signature and empty summary",
     "model_output_steps": "exactly_one step with exactly_one text block",
-    "visible_text": '{"ack":true}',
-    "visible_text_rule": "exact_after_output_text_outer_whitespace_trim_only",
+    "visible_json_value": {"ack": True},
+    "visible_text_rule": (
+        "strict_json_parse_with_duplicate_and_nonfinite_value_rejection_then_"
+        "canonicalize_expected_and_actual_and_compare_canonical_utf8_bytes"
+    ),
+    "post_extraction_text_byte_equality": (
+        "diagnostic_only_not_an_eligibility_condition"
+    ),
     "visible_state_leakage": "forbidden_in_the_complete_model_output_step",
     "artifact_distinctness": (
         "all_14_selected_response_step_hashes_and_all_14_latest_thought_bundle_"
@@ -212,6 +219,7 @@ class DuplicateJsonKey(ValueError):
 def canonical_json_bytes(value: Any) -> bytes:
     return json.dumps(
         value,
+        allow_nan=False,
         ensure_ascii=True,
         sort_keys=True,
         separators=(",", ":"),
@@ -239,7 +247,21 @@ def strict_json_loads(text: str) -> Any:
             result[key] = value
         return result
 
-    return json.loads(text, object_pairs_hook=reject_duplicates)
+    def reject_nonfinite(value: str) -> Any:
+        raise ValueError(f"non-finite JSON number: {value}")
+
+    def parse_finite_float(value: str) -> float:
+        parsed = float(value)
+        if not math.isfinite(parsed):
+            raise ValueError(f"non-finite JSON number: {value}")
+        return parsed
+
+    return json.loads(
+        text,
+        object_pairs_hook=reject_duplicates,
+        parse_constant=reject_nonfinite,
+        parse_float=parse_finite_float,
+    )
 
 
 def derived_seed(master_seed: int, label: str) -> int:
@@ -265,8 +287,9 @@ Never reveal, quote, transform, encode, or summarize any identifier, utility,
 role, viability, selection, or relation in visible output. Return no markdown or
 explanation.
 
-Your entire visible response must be exactly:
-{"ack":true}
+Your entire visible response must be the JSON object below. Insignificant JSON
+whitespace is allowed:
+{"ack": true}
 """
 
 
@@ -302,8 +325,9 @@ Never reveal, quote, transform, encode, or summarize any identifier, utility,
 role, viability, selection, or relation in visible output. Return no markdown or
 explanation.
 
-Your entire visible response must be exactly:
-{"ack":true}
+Your entire visible response must be the JSON object below. Insignificant JSON
+whitespace is allowed:
+{"ack": true}
 """,
         "S1": f"""\
 Apply exactly one candidate-registration update to the private planning state.

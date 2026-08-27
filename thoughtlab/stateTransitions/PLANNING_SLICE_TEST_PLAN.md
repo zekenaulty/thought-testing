@@ -129,8 +129,14 @@ makes the current leader B nonviable so the selection transition tests whether
 viability affects action, not merely whether two independent labels can be
 recovered.
 
-Every visible generation response remains exactly `{"ack":true}` and must not
-contain any prescribed identifier, utility, role, status, or relation.
+Every visible generation response must parse as the JSON value `{"ack": true}`
+and must not contain any prescribed identifier, utility, role, status, or
+relation. Eligibility strictly parses with duplicate-key and non-finite-number
+rejection, canonicalizes both the returned value and the expected value with the
+same deterministic JSON serializer, and compares those canonical UTF-8 bytes.
+Post-extraction text-byte equality is diagnostic only; insignificant whitespace
+is not a semantic failure. Original provider response bytes and response steps
+remain preserved unchanged as evidence and carrier material.
 
 ## Atomic tomography fields
 

@@ -414,16 +414,21 @@ def _checkpoint_eligibility(
     if unexpected_types:
         reasons.append("response contained an unexpected step type")
 
-    ack_parse_valid = False
+    expected_ack_canonical = canonical_json_bytes({"ack": True})
+    visible_json_parse_valid = False
+    actual_ack_canonical: bytes | None = None
     try:
-        ack_parse_valid = strict_json_loads(visible) == {"ack": True}
-    except (ValueError, RecursionError):
+        parsed_visible = strict_json_loads(visible)
+        visible_json_parse_valid = True
+        actual_ack_canonical = canonical_json_bytes(parsed_visible)
+    except (TypeError, ValueError, RecursionError):
         pass
-    visible_exact = visible == '{"ack":true}'
-    if not ack_parse_valid:
-        reasons.append("visible output was not the strict acknowledgement object")
-    if not visible_exact:
-        reasons.append("visible output bytes were not the frozen acknowledgement text")
+    ack_canonical_match = actual_ack_canonical == expected_ack_canonical
+    visible_text_exact = visible.encode("utf-8") == expected_ack_canonical
+    if not ack_canonical_match:
+        reasons.append(
+            "visible output did not canonically match the required acknowledgement object"
+        )
 
     leak_markers = [
         *trial["id_universe"],
@@ -445,8 +450,15 @@ def _checkpoint_eligibility(
     return reasons, {
         "visible_output_sha256": sha256_text(visible),
         "visible_output_chars": len(visible),
-        "visible_ack_parse_valid": ack_parse_valid,
-        "visible_ack_text_exact": visible_exact,
+        "visible_ack_json_parse_valid": visible_json_parse_valid,
+        "visible_ack_canonical_match": ack_canonical_match,
+        "visible_ack_canonical_sha256": (
+            sha256_bytes(actual_ack_canonical)
+            if actual_ack_canonical is not None
+            else None
+        ),
+        "expected_ack_canonical_sha256": sha256_bytes(expected_ack_canonical),
+        "visible_ack_post_extraction_text_exact": visible_text_exact,
         "visible_leak_marker_count": leak_count,
         "thought_step_count": len(thought_steps),
         "model_output_step_count": len(output_steps),

@@ -1,0 +1,25 @@
+{
+  "schema_version": "native_planning_transition_freeze_validation_v1",
+  "validated": true,
+  "manifest_errors": [],
+  "planned_run_attempts": 2,
+  "tomography_keys_per_run": 196,
+  "generation_keys_per_complete_run": 14,
+  "complete_run_logical_requests": 210,
+  "complete_run_max_physical_attempts": 630,
+  "two_run_logical_ceiling": 224,
+  "two_run_max_physical_attempts": 672,
+  "evidence_kind": "static_architectural_attestation_plus_hashed_regression_source",
+  "preparation_transport_path_present": false,
+  "preparation_credential_access_path_present": false,
+  "hashed_no_call_regression_source": "tests/test_planning_transition_pilot.py",
+  "forbidden_runtime_entries": [],
+  "no_call_claim": "the freeze-preparation module contains no model transport or credential access path; the hashed regression source blocks the HTTP entry point during preparation. This is a scoped static/test attestation, not a claim about unrelated processes or all operating-system egress",
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ]
+}

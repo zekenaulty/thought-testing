@@ -1,0 +1,11 @@
+{
+  "schema_version": "native_planning_transition_freeze_lock_v1",
+  "hash_algorithm": "sha256",
+  "file_hash_semantics": "exact_file_bytes",
+  "files": {
+    "experiment_definition.json": "d4b9b56a72a887c6e47407f3145812eff15de9039846c7e675bea2eae929346a",
+    "manifest.json": "83f1f37cae5157445a4353784d8f6000886110e97d2dff22ac038b6fbfab743e",
+    "preregistration.json": "7a151ca950a66bc9eec10b504c8d35fce23ee0d517b38d3e870a16867692d127",
+    "validation_report.json": "143a18496c73adb8fce5c0654d747e3ead80693f69d4e74558777078205b12fd"
+  }
+}

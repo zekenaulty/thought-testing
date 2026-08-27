@@ -18,7 +18,15 @@
   "seed_semantics": "best_effort_reproducibility",
   "max_output_tokens": 8192,
   "id_scheme": "ID_ plus 26 type-neutral Crockford-base32 characters",
-  "checkpoints": ["S0", "S1", "S2", "S3", "S4", "S5", "S6"],
+  "checkpoints": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+  ],
   "fields": [
     "candidate_registry",
     "utility_ranking",
