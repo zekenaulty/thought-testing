@@ -112,4 +112,6 @@ The first excluded true-fork pilot is documented in
 `thoughtlab/stateTransitions/README.md`. It stops at two S5 descendants and does
 not begin the later supersession/deactivation or confirmatory trial program.
 The current evidence review and approval recommendation are in
-`thoughtlab/stateTransitions/PILOT_REVIEW.md`.
+`thoughtlab/stateTransitions/PILOT_REVIEW.md`. The review-ready mutable
+planning-state follow-up is in
+`thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md`.

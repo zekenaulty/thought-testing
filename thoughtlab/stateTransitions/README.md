@@ -7,7 +7,21 @@ ancestry, and whether the latest response's thought-step bundle behaves
 differently from the cumulative thought-step bundle.
 
 The pilot deliberately stops at the fork. It does not test supersession,
-deactivation, or the proposed 30-40-turn confirmatory regime.
+deactivation, the proposed mutable planning-state sequence, or the later
+30-eligible-trial/40-attempt-capped confirmatory regime.
+
+## Completed result
+
+Pilot 05 is the final v3 replacement under the frozen stopping rule. It produced
+14/14 eligible generation checkpoints and 84/84 evaluable probes. Latest,
+cumulative, and donor carriers exactly recovered candidate registry, selected
+plan, and utility rank in both branches, while explicit rejected status and
+remote ancestry remained unavailable. Both control arms were uniformly
+`unknown + []`.
+
+See [`PILOT_REVIEW.md`](PILOT_REVIEW.md) for the audited comparison and
+[`PLANNING_SLICE_TEST_PLAN.md`](PLANNING_SLICE_TEST_PLAN.md) for the proposed
+next experiment. The complete-fork confirmatory program remains deferred.
 
 ## Frozen design
 
