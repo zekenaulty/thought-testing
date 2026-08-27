@@ -20,17 +20,16 @@ remote ancestry remained unavailable. Both control arms were uniformly
 `unknown + []`.
 
 See [`PILOT_REVIEW.md`](PILOT_REVIEW.md) for the audited comparison and
-[`PLANNING_SLICE_TEST_PLAN.md`](PLANNING_SLICE_TEST_PLAN.md) for the proposed
-next experiment. The complete-fork confirmatory program remains deferred.
+[`PLANNING_SLICE_TEST_PLAN.md`](PLANNING_SLICE_TEST_PLAN.md) for the historical
+specification that led to Review 02. It is no longer the proposed next
+experiment. The complete-fork confirmatory program remains deferred.
 
-The next experiment intentionally measures a native-to-task,
-ordinary-instruction baseline before introducing the proposed
-metacognitive/hermeneutic retention procedure. This remains a prescribed
-synthetic task, not spontaneous or unprompted cognition. A later contemporaneous
-three-arm study may compare native, neutral-procedure, and retention-scaffold
-recoverability, but it is a separate phase with separate claims and
-authorization. A two-arm native-versus-retention fallback could estimate only a
-package effect, not a retention-specific mechanism.
+Review 02 intentionally measured a native-to-task, ordinary-instruction baseline
+before introducing the proposed metacognitive/hermeneutic retention procedure.
+It remained a prescribed synthetic task, not spontaneous or unprompted
+cognition. Any later comparison of native, minimal-plan, neutral-procedure, and
+retention-scaffold recoverability is a separate phase with separate claims and
+authorization.
 
 ## Native S0-S6 freeze history
 
@@ -89,6 +88,15 @@ findings and the
 [`execution_ledger.json`](../../results/planning_transition/executions/b98a93fd8ba23718196a5113afa7dbdc81bd704db8810c66def9f7347edb13bf/execution_ledger.json)
 for the canonical one-shot record. This freeze is consumed and must not be run
 again.
+
+The later
+[`NATIVE_S0_S6_CONSTRUCT_VALIDITY_ADDENDUM.md`](NATIVE_S0_S6_CONSTRUCT_VALIDITY_ADDENDUM.md)
+reclassifies the result as a valid exact-ledger projection boundary rather than
+a general test of reasoning or executable-plan persistence. It introduces no
+new data and leaves the freeze and canonical result tree untouched. The current
+next formal study is a small ecological executable-plan feasibility test at the
+first genuine tool call, with detached predictions checked against prospective
+counterfactual continuations.
 
 ### Review 01: consumed historical execution
 

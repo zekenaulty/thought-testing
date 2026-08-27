@@ -1,5 +1,13 @@
 # Native S0-S6 review 02: final findings
 
+> **Post-hoc construct-validity note (2026-08-27):** All execution facts and
+> scores below remain unchanged. Subsequent review determined that this protocol
+> validly measured exact projection into the prescribed planning ledger, not
+> general reasoning or executable-plan semantics. See
+> [`NATIVE_S0_S6_CONSTRUCT_VALIDITY_ADDENDUM.md`](NATIVE_S0_S6_CONSTRUCT_VALIDITY_ADDENDUM.md).
+> The `Recommended next experiment` section is preserved as contemporaneous
+> guidance but has been superseded by the addendum.
+
 ## Decision status
 
 The repaired `1.1_canonical_ack_json` execution is complete and scientifically
@@ -198,6 +206,10 @@ promoted into an assertion that a distinction was absent from the originating
 process.
 
 ## Recommended next experiment
+
+> **Superseded post hoc:** This recommendation is retained for provenance. The
+> current next formal study is executable-plan feasibility at a first genuine
+> tool-call boundary, as specified in the construct-validity addendum.
 
 Do not advance yet to the retention scaffold or the later 30-eligible-trial,
 40-attempt-capped confirmatory program. The next excluded experiment should

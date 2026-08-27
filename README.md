@@ -11,18 +11,20 @@ semantics and transition behavior of an opaque provider continuation state**:
   thought-step carrier under controlled probes;
 - whether those distinctions follow the source artifact rather than the probe
   context;
-- whether they update with candidate addition/removal, rank reversal, viability,
-  and selection; and
+- whether detached readouts predict the originating state's prospective actions,
+  conditional branches, revisions, and stopping behavior across a real tool
+  interruption; and
 - eventually, whether an assigned metacognitive/hermeneutic scaffold package
   changes which preregistered distinctions neutral probes can recover.
 
 The current program separates baseline from intervention:
 
 ```text
-native planning-slice evidence
-        -> mutable native-to-task planning dynamics (R_native)
-        -> excluded replication and adversarial attack
-        -> contemporaneous native/neutral/retention scaffold experiment
+Review 02 exact-ledger boundary
+        -> ecological first-real-tool feasibility
+        -> native executable-plan characterization
+        -> minimal private-plan condition
+        -> neutral/retention scaffold experiments
         -> claim-specific confirmation
         -> only then downstream application decisions
 ```
@@ -125,6 +127,12 @@ The five arms are:
 The original BookForge prompt is **withheld from Gemini** and retained locally
 only as ground truth.
 
+The completed 2026-08-27 blunt three-source diagnostic is reported in
+[`thoughtlab/historicalTests/BOOKFORGE_BLUNT_ONE_OFF_2026-08-27.md`](thoughtlab/historicalTests/BOOKFORGE_BLUNT_ONE_OFF_2026-08-27.md).
+Its modified signature-only arms recovered extensive source-specific context,
+but the mutation is off-protocol and does not establish faithful historical
+reasoning replay. Raw outputs remain local and ignored.
+
 Some legacy history shapes may be rejected because the request begins with a
 `model` role. If that happens, rerun with a content-free structural stub:
 
@@ -172,6 +180,15 @@ The first excluded true-fork pilot is documented in
 native-to-task follow-up is reported in
 `thoughtlab/stateTransitions/NATIVE_S0_S6_REVIEW_02.md`: full histories and
 controls calibrated perfectly, while detached thought carriers produced sparse,
-registry-only recovery and no changed-transition localization. The governing
-design and interpretation decision tree remain in
-`thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md`.
+registry-only recovery and no changed-transition localization. Subsequent
+construct review established that this is an exact-ledger projection boundary,
+not a general reasoning-persistence result; see
+`thoughtlab/stateTransitions/NATIVE_S0_S6_CONSTRUCT_VALIDITY_ADDENDUM.md`.
+The earlier `thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md` is a
+consumed historical specification, not the governing next design.
+
+The current design awaiting review is
+[`thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md`](thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md).
+It uses exact, unmodified Interactions thought steps at a first genuine tool
+call and scores detached predictions against prospective counterfactual tool
+behavior, with an explicit task-recovery/re-solving control.
