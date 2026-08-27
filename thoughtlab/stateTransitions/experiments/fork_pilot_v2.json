@@ -1,0 +1,48 @@
+{
+  "schema_version": "fork_pilot_definition_v2",
+  "experiment_id": "checkpoint_fork_plan_state_v1",
+  "protocol_revision": "1.1_cap8192_after_s0_feasibility",
+  "status": "excluded_exploratory_pilot",
+  "model": "gemini-3.7-flash",
+  "api_surface": "interactions_v1beta",
+  "api_schema_epoch": "post_2026_06_08_steps_response_format",
+  "api_revision_header": null,
+  "store": false,
+  "thinking_level": "high",
+  "thinking_summaries": "none",
+  "sampling_parameters": "omitted_for_gemini_3_7_flash",
+  "seed_semantics": "best_effort_reproducibility",
+  "generation_max_output_tokens": 8192,
+  "probe_max_output_tokens": 8192,
+  "visible_response": {"ack": true},
+  "id_scheme": "ID_ plus 26 type-neutral Crockford-base32 characters",
+  "checkpoints": ["S0", "S1", "S2", "S3", "S4", "S5A", "S5B"],
+  "fork_parent": "S4",
+  "branch_rules": {
+    "S5A": "select maximum utility and reject all other candidates",
+    "S5B": "select minimum utility and reject all other candidates"
+  },
+  "probe_ids": [
+    "active_ancestry",
+    "active_objective",
+    "active_constraint",
+    "candidate_plans",
+    "selected_plan",
+    "rejected_plans",
+    "utility_ranking"
+  ],
+  "arms": [
+    "full_prefix",
+    "latest_thought",
+    "cumulative_thought",
+    "visible_only",
+    "probe_only",
+    "wrong_trial"
+  ],
+  "notes": [
+    "full_prefix is a documented-valid adherence upper bound, not signature-causal evidence",
+    "latest_thought and cumulative_thought are detached accepted-or-rejected experimental views",
+    "wrong_trial uses the same branch checkpoint from an independently generated donor trial",
+    "each probe-arm pair is a fresh stateless request"
+  ]
+}

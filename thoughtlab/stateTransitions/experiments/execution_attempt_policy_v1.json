@@ -1,0 +1,27 @@
+{
+  "schema_version": "fork_pilot_execution_attempt_policy_v1",
+  "frozen_at": "2026-08-27T04:06:31.1129302Z",
+  "governing_experiment_id": "checkpoint_fork_plan_state_v1",
+  "governing_protocol_revision": "1.2_fixed_transport_retries_after_pilot03",
+  "governing_definition_sha256": "07125c9ba50b1dc3de79b9942a798f2fae7ab21d38c8166bf1683eae1dc7b1f8",
+  "master_seed": 3185947291046687,
+  "trigger": {
+    "run": "pilot_04_v3_3185947291046687",
+    "generation_eligible": false,
+    "probe_attempts_completed": 0,
+    "failure": "donor S5A exhausted three retryable transport attempts"
+  },
+  "additional_run_limit": 2,
+  "planned_run_names": [
+    "pilot_05_v3_3185947291046687",
+    "pilot_06_v3_3185947291046687"
+  ],
+  "stopping_rule": [
+    "Run attempts sequentially under the unchanged governing protocol.",
+    "A run that fails generation eligibility before tomography may be replaced by the next planned run.",
+    "The first run to pass all 14 generation checkpoints is the final analyzed v3 run, regardless of probe transport completeness or semantic scores.",
+    "Do not launch the remaining run after any run begins tomography.",
+    "If both additional runs fail before tomography, stop and report the infrastructure block."
+  ],
+  "analysis_rule": "Report each execution separately; do not pool v1, v2, or v3 runs naively."
+}

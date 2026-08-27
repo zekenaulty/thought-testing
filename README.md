@@ -95,3 +95,21 @@ alternative.
 
 Add `--controls` to run text-only and probe-only controls for every semantic
 slice. That costs three API calls per slice, so use it intentionally.
+
+## Synthetic opaque identifiers
+
+Controlled experiments must use type-neutral identifiers from
+`thoughtlab.opaque_ids.generate_opaque_id`. The canonical form is `ID_` followed
+by 26 uppercase Crockford-base32 characters (130 bits). Semantic role belongs in
+the withheld ground-truth record, never in the identifier: do not use prefixes
+such as `FACT_`, `PLAN_`, or `CONSTRAINT_`.
+
+New controlled experiments use `gemini-3.7-flash`. Historical scripts and saved
+results retain their original model identifiers; runs should always record the
+explicit requested and returned model IDs rather than silently relabeling them.
+
+The first excluded true-fork pilot is documented in
+`thoughtlab/stateTransitions/README.md`. It stops at two S5 descendants and does
+not begin the later supersession/deactivation or confirmatory trial program.
+The current evidence review and approval recommendation are in
+`thoughtlab/stateTransitions/PILOT_REVIEW.md`.
