@@ -23,6 +23,57 @@ See [`PILOT_REVIEW.md`](PILOT_REVIEW.md) for the audited comparison and
 [`PLANNING_SLICE_TEST_PLAN.md`](PLANNING_SLICE_TEST_PLAN.md) for the proposed
 next experiment. The complete-fork confirmatory program remains deferred.
 
+The next experiment intentionally measures a native-to-task,
+ordinary-instruction baseline before introducing the proposed
+metacognitive/hermeneutic retention procedure. This remains a prescribed
+synthetic task, not spontaneous or unprompted cognition. A later contemporaneous
+three-arm study may compare native, neutral-procedure, and retention-scaffold
+recoverability, but it is a separate phase with separate claims and
+authorization. A two-arm native-versus-retention fallback could estimate only a
+package effect, not a retention-specific mechanism.
+
+## Native S0-S6 review freeze (no-call)
+
+The implemented native-to-task S0-S6 protocol is frozen for review at
+[`freezes/native_s0_s6_review_01`](freezes/native_s0_s6_review_01). It has not
+been executed.
+
+- model: `gemini-3.7-flash`
+- master seed: `3201385410977130018`
+- freeze ID: `262a6c487a42c3aed9c1d17c42e5d7d4428c2c89c667b993293df890639328a3`
+- local verification: `84 passed, 23 subtests passed`
+- frozen calls: `210` logical requests for one complete run; `224` logical and
+  `672` physical attempts at the two-run stopping ceiling
+- review payload: exactly five allowlisted files; no credentials, requests,
+  responses, call index, or execution output
+
+It was prepared without a model transport path using:
+
+```powershell
+python -m thoughtlab.stateTransitions.planning_transition_freeze prepare `
+  --seed 3201385410977130018 `
+  --out thoughtlab/stateTransitions/freezes/native_s0_s6_review_01
+```
+
+Reviewers can verify the exact bytes and current source binding with:
+
+```powershell
+python -m thoughtlab.stateTransitions.planning_transition_freeze verify `
+  --freeze-dir thoughtlab/stateTransitions/freezes/native_s0_s6_review_01 `
+  --freeze-id 262a6c487a42c3aed9c1d17c42e5d7d4428c2c89c667b993293df890639328a3
+```
+
+External execution remains separately gated and unapproved. If it is later
+authorized, the executor must consume this exact freeze ID and its canonical
+output path; it accepts no alternate `--out` path:
+
+```powershell
+python -m thoughtlab.stateTransitions.planning_transition_pilot `
+  execute-reviewed-freeze `
+  --freeze-dir thoughtlab/stateTransitions/freezes/native_s0_s6_review_01 `
+  --freeze-id 262a6c487a42c3aed9c1d17c42e5d7d4428c2c89c667b993293df890639328a3
+```
+
 ## Frozen design
 
 The synthetic sequence is:

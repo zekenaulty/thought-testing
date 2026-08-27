@@ -1,0 +1,186 @@
+{
+  "schema_version": "native_planning_transition_preregistration_v1",
+  "experiment_id": "native_mutable_planning_state_s0_s6_v1",
+  "protocol_revision": "1.0_native_s0_s6_review_freeze",
+  "manifest": {
+    "canonical_json_sha256": "e32ec747445ccb0592e60ae3b16bd95ea31201cfd30b046c1e38a3cf15eb837e",
+    "file_bytes_sha256": "958d2bdbf58490732f422400fb1bdfdb9b89cd4aa8b0256e391075299ffa911e"
+  },
+  "experiment_definition": {
+    "canonical_json_sha256": "f82d739e63582f03e369c15294b9c39d21f70716ccf11b9c4a92f16ee3b9c9c2",
+    "file_bytes_sha256": "6b0649f62b5775296ecffa2973e5bd1cd40ca413041eb733143cf4bf9eec1daf"
+  },
+  "probe_definitions_canonical_json_sha256": "a31a539599a715116dde9e4afb90d074df5d3051002961550a42e2cc820d22e5",
+  "policy_bundle": {
+    "transport_policy": {
+      "timeout_seconds_per_attempt": 120,
+      "inter_logical_request_delay_seconds": 1.0,
+      "max_attempts_per_logical_request": 3,
+      "retry_backoff_seconds": [
+        2.0,
+        5.0
+      ],
+      "retryable": [
+        "transport_error",
+        "http_408",
+        "http_429",
+        "http_500_502_503_504"
+      ],
+      "nonretryable": [
+        "http_400_protocol_rejection",
+        "http_other",
+        "all_2xx_including_incomplete_malformed_or_unfavorable"
+      ],
+      "selection_rule": "first_observed_nonretryable_response_or_final_attempt",
+      "retry_body": "byte_identical_canonical_json",
+      "retry_after_header": "recorded_but_ignored",
+      "estimand": "outcome_under_frozen_bounded_retry_policy"
+    },
+    "stopping_policy": {
+      "planned_run_attempts": 2,
+      "replacement_condition": "run_02_permitted_only_if_run_01_fails_generation_eligibility_before_any_tomography_request",
+      "semantic_reruns": "forbidden",
+      "first_run_entering_tomography": "final_regardless_of_missingness_or_outcome",
+      "pool_across_protocol_or_retry_revisions": false,
+      "complete_run_logical_requests": 210,
+      "complete_run_max_physical_attempts": 630,
+      "two_run_logical_ceiling": 224,
+      "two_run_max_physical_attempts": 672
+    },
+    "generation_eligibility_contract": {
+      "http": "selected bounded-retry result is 2xx",
+      "interaction_status": "completed",
+      "returned_model": "gemini-3.7-flash",
+      "request_store": false,
+      "previous_interaction_id": "absent",
+      "response_step_types": [
+        "thought",
+        "model_output"
+      ],
+      "thought_steps": "one_or_more; every step has a nonempty signature and empty summary",
+      "model_output_steps": "exactly_one step with exactly_one text block",
+      "visible_text": "{\"ack\":true}",
+      "visible_text_rule": "exact_after_output_text_outer_whitespace_trim_only",
+      "visible_state_leakage": "forbidden_in_the_complete_model_output_step",
+      "artifact_distinctness": "all_14_selected_response_step_hashes_and_all_14_latest_thought_bundle_hashes_are_pairwise_distinct"
+    },
+    "carrier_contract": {
+      "target_full_prefix": "target stateless generation input through the checkpoint plus every selected provider response step at that checkpoint",
+      "target_latest_thought": "all thought steps from the target checkpoint response",
+      "target_cumulative_thought": "all target thought steps from S0 through the checkpoint in provider order",
+      "target_visible_only": "the target checkpoint model_output step only",
+      "probe_only": "no carrier steps",
+      "wrong_trial_latest": "all donor thought steps from the same checkpoint",
+      "donor_full_prefix": "donor stateless generation input through the same checkpoint plus every selected provider response step at that checkpoint",
+      "probe_append_rule": "append exactly one fresh probe user_input step"
+    },
+    "scoring_policy": {
+      "state_matrix": {
+        "keys": "exactly_196_unique_checkpoint_field_arm_keys",
+        "failed_or_invalid_outcomes": "retained_at_intended_key_and_scored_nonexact",
+        "known_empty_is_distinct_from_unknown_empty": true
+      },
+      "common_validity_gate": {
+        "generation": "14_of_14_eligible_with_exact_lineages_and_distinct_artifacts",
+        "target_full_prefix": "28_of_28_exact",
+        "donor_full_prefix": "28_of_28_exact",
+        "controls": "56_of_56_schema_valid_unknown_exact_empty_shape_zero_id_leakage",
+        "identifier_anomalies": "zero_duplicate_noncanonical_foreign_cross_trial_or_condition_ids"
+      },
+      "latest_bundle_components": {
+        "replication_under_history": "11_of_11",
+        "registry_trajectory": "7_of_7",
+        "ranking_trajectory": "7_of_7",
+        "viability_extension": "7_of_7",
+        "preselection_known_empty": "6_of_6",
+        "joint_state": "28_of_28",
+        "history_dependent_s2_s6": "20_of_20",
+        "prompt_sufficient_s0_s1": "8_cells_reported_separately"
+      },
+      "delta_policy": {
+        "matrix": "exactly_120_unique_transition_field_arm_keys",
+        "endpoint_rule": "both_schema_valid_and_source_exact_before_delta_can_be_exact",
+        "per_arm": "24_of_24_total_12_of_12_changed_12_of_12_stable",
+        "arms": [
+          "target_latest_thought",
+          "target_cumulative_thought",
+          "target_full_prefix",
+          "wrong_trial_latest",
+          "donor_full_prefix"
+        ]
+      },
+      "causal_specificity": {
+        "wrong_trial_donor": "28_of_28_exact",
+        "wrong_trial_distinguishing": "19_of_19_donor_exact_target_inexact",
+        "directional_adjacent_changed_pairs": "12_of_12",
+        "future_exact_hits": 0,
+        "premature_ids": 0,
+        "cross_trial_condition_or_unexplained_ids": 0,
+        "full_prefix_requirements_included": true
+      },
+      "timeline_definitions": {
+        "future_exact": "current_inexact_and_exact_for_a_later_differing_source_truth",
+        "stale_exact": "current_inexact_and_exact_for_an_earlier_differing_source_truth_diagnostic_only",
+        "premature_id": "any_source_trial_id_returned_before_its_frozen_introduction_checkpoint_regardless_of_schema_validity",
+        "partial_future_alignment": "diagnostic_only"
+      },
+      "latest_vs_cumulative": {
+        "report_per_field_agreement_and_exactness": true,
+        "exclude_s0_from_inference": true
+      },
+      "independence_boundary": "cells_and_deltas_are_correlated_completeness_checks_not_independent_replications"
+    }
+  },
+  "policy_bundle_canonical_json_sha256": "3a7fa13c84dfe21a321af55f55c346f782551c095046065c6ec6b85a0ecf158b",
+  "source_file_bytes_sha256": {
+    ".gitignore": "ee7631e0c2b51bc1c3895139f38821ee9689141279fb449b5b2af099b226d1f1",
+    "thoughtlab/__init__.py": "734c7311dc903083d4e50b2b1fad9555eaa2d0227d70f28494d9fe98e514dee4",
+    "thoughtlab/gemini_interactions.py": "5f2b0a287cb905bb21a5ce9e0cca340893303b0f88a5e84b4c18dcbb65e3a2ee",
+    "thoughtlab/opaque_ids.py": "9c0c4480e92db428022e5ac7cc83046dc3996b15dc6fcf386914bfd14fa08619",
+    "thoughtlab/stateTransitions/__init__.py": "9ea6a60bf0379f382ab6e1b537f76e857bc9fd8f1bece55649711a48a61ef3cb",
+    "thoughtlab/stateTransitions/fork_pilot.py": "24a17d18c34d1384f7b1ffaec544f819cdc6a05bbe1b7211ef1dded84fd74441",
+    "thoughtlab/stateTransitions/probes.py": "6950b8b64b5d2cd2c070e8588c88a47f5fa302abbf4f412e2f70a850324361cd",
+    "thoughtlab/stateTransitions/score_ground_truth.py": "bba314ef0ad07fb4c2a39609a43272c8f9ed1f6cef32b458c681c166e291157f",
+    "thoughtlab/stateTransitions/planning_transition_probes.py": "095220be1c5080d6a9f7f29e76aa2d8354377a4e9e5db070bf78e78080096689",
+    "thoughtlab/stateTransitions/planning_transition_score.py": "054215c8e79b56185060d135f66312b48fec1b962dc7e3c14e2825c39ccfabe4",
+    "thoughtlab/stateTransitions/planning_transition_protocol.py": "4fa5c6911e7aedcc8bffccdf093ba0fa7011b2be2404bac8dd22a2dd268a14c0",
+    "thoughtlab/stateTransitions/planning_transition_freeze.py": "58cc7222499297d501a8c2f5e0d43bafbc0b2b5a1de2e29d36af564f7b1bbc61",
+    "thoughtlab/stateTransitions/planning_transition_pilot.py": "4ce75caf142cd101a1154412f75b4090c08a737939bb4098a2dec99f8310e462",
+    "thoughtlab/stateTransitions/experiments/planning_transition_pilot_v1.json": "662e1dfa969c91dc6dd1de24a2d1c9ffb25cb1c1950c7dc5e1a949c594cf1de7",
+    "thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md": "606cc2ff27c509ba0d2cbc51ef2c8900ab32f228aa96f7a99cc73dc24ee3b49a",
+    "tests/test_planning_transition_pilot.py": "716aff3e96185221a481dba07369325facbc33caf31b6ac8fe514fe2e1e1e894"
+  },
+  "source_binding": {
+    "commit": "a0dfceb99dec45b81960508330e6e7cf9425a336",
+    "relevant_tree_clean": false,
+    "relevant_status": [
+      " M thoughtlab/gemini_interactions.py",
+      " M thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md",
+      " M thoughtlab/stateTransitions/fork_pilot.py",
+      "?? tests/test_planning_transition_pilot.py",
+      "?? thoughtlab/stateTransitions/experiments/planning_transition_pilot_v1.json",
+      "?? thoughtlab/stateTransitions/planning_transition_freeze.py",
+      "?? thoughtlab/stateTransitions/planning_transition_pilot.py",
+      "?? thoughtlab/stateTransitions/planning_transition_probes.py",
+      "?? thoughtlab/stateTransitions/planning_transition_protocol.py",
+      "?? thoughtlab/stateTransitions/planning_transition_score.py"
+    ],
+    "binding_rule": "source_file_byte_hashes_are_authoritative"
+  },
+  "planned_calls": {
+    "per_complete_run": {
+      "generation": 14,
+      "tomography": 196,
+      "logical_total": 210,
+      "max_physical_attempts": 630
+    },
+    "two_run_stopping_ceiling": {
+      "logical_total": 224,
+      "max_physical_attempts": 672
+    }
+  },
+  "both_replacement_runs_frozen_before_execution": true,
+  "tomography_requires_complete_generation_eligibility": true,
+  "raw_provider_artifacts_private": true,
+  "execution_must_consume_this_exact_freeze": true
+}

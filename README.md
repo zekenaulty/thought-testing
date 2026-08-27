@@ -2,6 +2,64 @@
 
 Controlled experiments around provider-native LLM reasoning state.
 
+## Research program
+
+The empirical object is not hidden chain-of-thought. It is the **observable
+semantics and transition behavior of an opaque provider continuation state**:
+
+- which task-relevant distinctions can be recovered through an exact signed
+  thought-step carrier under controlled probes;
+- whether those distinctions follow the source artifact rather than the probe
+  context;
+- whether they update with candidate addition/removal, rank reversal, viability,
+  and selection; and
+- eventually, whether an assigned metacognitive/hermeneutic scaffold package
+  changes which preregistered distinctions neutral probes can recover.
+
+The current program separates baseline from intervention:
+
+```text
+native planning-slice evidence
+        -> mutable native-to-task planning dynamics (R_native)
+        -> excluded replication and adversarial attack
+        -> contemporaneous native/neutral/retention scaffold experiment
+        -> claim-specific confirmation
+        -> only then downstream application decisions
+```
+
+This is a black-box behavioral science of provider-native continuation artifacts,
+not an attempt to decrypt signatures, serialize complete cognition, or claim
+access to original internal reasoning.
+
+If a future preregistered scaffold contrast is positive, it would define a practical
+form of **reasoning-state engineering**: changing the originating deliberative
+procedure to change preregistered, model-mediated recoverability—not editing or
+decoding the opaque artifact itself.
+
+## Relation to Raistlin Bridge
+
+Raistlin Bridge is a downstream motivation, not an experimental dependency or
+success criterion. If the research holds, an ordinary live turn could retain a
+sensitive original-turn receipt—input, exact approved context/prompt, visible
+output, model/configuration provenance, and the whole provider response/signed
+thought-step artifact—without a second interpretive model invocation. This is
+contemporaneous generation evidence, not identity truth or a readable self-
+record. Capture, secure storage, validation, transport, and governance still
+have real cost.
+
+Expensive identity interpretation belongs on an asynchronous cold path. Its
+counterfactual forks and merge remain one evidence lineage derived from the same
+root turn, not multiple independent witnesses or new primary experiences. Their
+records require root/parent links and a `derived_reflection` label; any later
+promotion into live context remains derived. A permissible self-authorship
+scaffold supplies an epistemic method—preserve alternatives, uncertainty, and
+reversal conditions—without supplying identity content or a required conclusion.
+
+No experimental result here automatically justifies adding elaborate
+deliberation to every live interaction. Any Bridge-facing cognitive-contract
+change requires a separate matched experiment plus instrumented segment-level
+p50/p95 latency, quality, cost, concurrency, storage, and security measurements.
+
 ## Layout
 
 ```text

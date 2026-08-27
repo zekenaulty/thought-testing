@@ -1,0 +1,4828 @@
+{
+  "schema_version": "native_planning_transition_manifest_v1",
+  "experiment_id": "native_mutable_planning_state_s0_s6_v1",
+  "protocol_revision": "1.0_native_s0_s6_review_freeze",
+  "status": "excluded_exploratory_native_to_task_pilot",
+  "estimand": "R_native_checkpoint_by_field_by_carrier_outcomes_controls_and_deltas",
+  "master_seed": 3201385410977130018,
+  "model": "gemini-3.7-flash",
+  "api": {
+    "surface": "interactions",
+    "version": "v1beta",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "api_revision_header": null,
+    "schema_epoch": "post_2026_06_08_steps_response_format",
+    "store": false,
+    "stream": false,
+    "background": false,
+    "previous_interaction_id": null
+  },
+  "request_templates": {
+    "generation_config": {
+      "thinking_level": "high",
+      "thinking_summaries": "none",
+      "seed": "per_call_int32_best_effort",
+      "max_output_tokens": 8192
+    },
+    "probe_generation_config": {
+      "thinking_level": "high",
+      "thinking_summaries": "none",
+      "seed": "per_field_int32_best_effort_matched_across_checkpoints_and_arms",
+      "max_output_tokens": 8192
+    },
+    "ack_response_format": {
+      "type": "text",
+      "mime_type": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ack": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ack"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "probe_response_formats": {
+      "candidate_registry": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "utility_ranking": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids_high_to_low": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids_high_to_low"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "viability_partition": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "viable_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nonviable_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "viable_ids",
+            "nonviable_ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "selected_candidate": {
+        "type": "text",
+        "mime_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "knowledge": {
+              "type": "string",
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "knowledge",
+            "ids"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "checkpoints": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+  ],
+  "fields": [
+    "candidate_registry",
+    "utility_ranking",
+    "viability_partition",
+    "selected_candidate"
+  ],
+  "arms": [
+    "target_full_prefix",
+    "target_latest_thought",
+    "target_cumulative_thought",
+    "target_visible_only",
+    "probe_only",
+    "wrong_trial_latest",
+    "donor_full_prefix"
+  ],
+  "source_arms": {
+    "target_full_prefix": "target",
+    "target_latest_thought": "target",
+    "target_cumulative_thought": "target",
+    "target_visible_only": "target",
+    "probe_only": null,
+    "wrong_trial_latest": "donor",
+    "donor_full_prefix": "donor"
+  },
+  "delta_arms": [
+    "target_latest_thought",
+    "target_cumulative_thought",
+    "target_full_prefix",
+    "wrong_trial_latest",
+    "donor_full_prefix"
+  ],
+  "control_arms": [
+    "target_visible_only",
+    "probe_only"
+  ],
+  "expected_changed_fields": {
+    "S0->S1": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S1->S2": [
+      "utility_ranking"
+    ],
+    "S2->S3": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S3->S4": [
+      "candidate_registry",
+      "utility_ranking",
+      "viability_partition"
+    ],
+    "S4->S5": [
+      "viability_partition"
+    ],
+    "S5->S6": [
+      "selected_candidate"
+    ]
+  },
+  "prompt_firewall_terms": [
+    "hermeneutic",
+    "metacognitive",
+    "counterfactual register",
+    "reversal condition",
+    "unresolved uncertainty",
+    "staged reasoning",
+    "checkpoint tool",
+    "adversarial alternative"
+  ],
+  "generation_eligibility_contract": {
+    "http": "selected bounded-retry result is 2xx",
+    "interaction_status": "completed",
+    "returned_model": "gemini-3.7-flash",
+    "request_store": false,
+    "previous_interaction_id": "absent",
+    "response_step_types": [
+      "thought",
+      "model_output"
+    ],
+    "thought_steps": "one_or_more; every step has a nonempty signature and empty summary",
+    "model_output_steps": "exactly_one step with exactly_one text block",
+    "visible_text": "{\"ack\":true}",
+    "visible_text_rule": "exact_after_output_text_outer_whitespace_trim_only",
+    "visible_state_leakage": "forbidden_in_the_complete_model_output_step",
+    "artifact_distinctness": "all_14_selected_response_step_hashes_and_all_14_latest_thought_bundle_hashes_are_pairwise_distinct"
+  },
+  "carrier_contract": {
+    "target_full_prefix": "target stateless generation input through the checkpoint plus every selected provider response step at that checkpoint",
+    "target_latest_thought": "all thought steps from the target checkpoint response",
+    "target_cumulative_thought": "all target thought steps from S0 through the checkpoint in provider order",
+    "target_visible_only": "the target checkpoint model_output step only",
+    "probe_only": "no carrier steps",
+    "wrong_trial_latest": "all donor thought steps from the same checkpoint",
+    "donor_full_prefix": "donor stateless generation input through the same checkpoint plus every selected provider response step at that checkpoint",
+    "probe_append_rule": "append exactly one fresh probe user_input step"
+  },
+  "scoring_policy": {
+    "state_matrix": {
+      "keys": "exactly_196_unique_checkpoint_field_arm_keys",
+      "failed_or_invalid_outcomes": "retained_at_intended_key_and_scored_nonexact",
+      "known_empty_is_distinct_from_unknown_empty": true
+    },
+    "common_validity_gate": {
+      "generation": "14_of_14_eligible_with_exact_lineages_and_distinct_artifacts",
+      "target_full_prefix": "28_of_28_exact",
+      "donor_full_prefix": "28_of_28_exact",
+      "controls": "56_of_56_schema_valid_unknown_exact_empty_shape_zero_id_leakage",
+      "identifier_anomalies": "zero_duplicate_noncanonical_foreign_cross_trial_or_condition_ids"
+    },
+    "latest_bundle_components": {
+      "replication_under_history": "11_of_11",
+      "registry_trajectory": "7_of_7",
+      "ranking_trajectory": "7_of_7",
+      "viability_extension": "7_of_7",
+      "preselection_known_empty": "6_of_6",
+      "joint_state": "28_of_28",
+      "history_dependent_s2_s6": "20_of_20",
+      "prompt_sufficient_s0_s1": "8_cells_reported_separately"
+    },
+    "delta_policy": {
+      "matrix": "exactly_120_unique_transition_field_arm_keys",
+      "endpoint_rule": "both_schema_valid_and_source_exact_before_delta_can_be_exact",
+      "per_arm": "24_of_24_total_12_of_12_changed_12_of_12_stable",
+      "arms": [
+        "target_latest_thought",
+        "target_cumulative_thought",
+        "target_full_prefix",
+        "wrong_trial_latest",
+        "donor_full_prefix"
+      ]
+    },
+    "causal_specificity": {
+      "wrong_trial_donor": "28_of_28_exact",
+      "wrong_trial_distinguishing": "19_of_19_donor_exact_target_inexact",
+      "directional_adjacent_changed_pairs": "12_of_12",
+      "future_exact_hits": 0,
+      "premature_ids": 0,
+      "cross_trial_condition_or_unexplained_ids": 0,
+      "full_prefix_requirements_included": true
+    },
+    "timeline_definitions": {
+      "future_exact": "current_inexact_and_exact_for_a_later_differing_source_truth",
+      "stale_exact": "current_inexact_and_exact_for_an_earlier_differing_source_truth_diagnostic_only",
+      "premature_id": "any_source_trial_id_returned_before_its_frozen_introduction_checkpoint_regardless_of_schema_validity",
+      "partial_future_alignment": "diagnostic_only"
+    },
+    "latest_vs_cumulative": {
+      "report_per_field_agreement_and_exactness": true,
+      "exclude_s0_from_inference": true
+    },
+    "independence_boundary": "cells_and_deltas_are_correlated_completeness_checks_not_independent_replications"
+  },
+  "transport_policy": {
+    "timeout_seconds_per_attempt": 120,
+    "inter_logical_request_delay_seconds": 1.0,
+    "max_attempts_per_logical_request": 3,
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "retryable": [
+      "transport_error",
+      "http_408",
+      "http_429",
+      "http_500_502_503_504"
+    ],
+    "nonretryable": [
+      "http_400_protocol_rejection",
+      "http_other",
+      "all_2xx_including_incomplete_malformed_or_unfavorable"
+    ],
+    "selection_rule": "first_observed_nonretryable_response_or_final_attempt",
+    "retry_body": "byte_identical_canonical_json",
+    "retry_after_header": "recorded_but_ignored",
+    "estimand": "outcome_under_frozen_bounded_retry_policy"
+  },
+  "stopping_policy": {
+    "planned_run_attempts": 2,
+    "replacement_condition": "run_02_permitted_only_if_run_01_fails_generation_eligibility_before_any_tomography_request",
+    "semantic_reruns": "forbidden",
+    "first_run_entering_tomography": "final_regardless_of_missingness_or_outcome",
+    "pool_across_protocol_or_retry_revisions": false,
+    "complete_run_logical_requests": 210,
+    "complete_run_max_physical_attempts": 630,
+    "two_run_logical_ceiling": 224,
+    "two_run_max_physical_attempts": 672
+  },
+  "id_scheme": "ID_ plus 26 type-neutral Crockford-base32 characters",
+  "planned_run_attempts": [
+    {
+      "run_id": "run_01",
+      "run_master_seed": 7184620991042691057,
+      "generation_trial_order": [
+        "donor",
+        "target"
+      ],
+      "generation_tasks": [
+        {
+          "request_order": 1,
+          "trial": "donor",
+          "checkpoint": "S0",
+          "logical_label": "run_01_generate_donor_S0"
+        },
+        {
+          "request_order": 2,
+          "trial": "donor",
+          "checkpoint": "S1",
+          "logical_label": "run_01_generate_donor_S1"
+        },
+        {
+          "request_order": 3,
+          "trial": "donor",
+          "checkpoint": "S2",
+          "logical_label": "run_01_generate_donor_S2"
+        },
+        {
+          "request_order": 4,
+          "trial": "donor",
+          "checkpoint": "S3",
+          "logical_label": "run_01_generate_donor_S3"
+        },
+        {
+          "request_order": 5,
+          "trial": "donor",
+          "checkpoint": "S4",
+          "logical_label": "run_01_generate_donor_S4"
+        },
+        {
+          "request_order": 6,
+          "trial": "donor",
+          "checkpoint": "S5",
+          "logical_label": "run_01_generate_donor_S5"
+        },
+        {
+          "request_order": 7,
+          "trial": "donor",
+          "checkpoint": "S6",
+          "logical_label": "run_01_generate_donor_S6"
+        },
+        {
+          "request_order": 8,
+          "trial": "target",
+          "checkpoint": "S0",
+          "logical_label": "run_01_generate_target_S0"
+        },
+        {
+          "request_order": 9,
+          "trial": "target",
+          "checkpoint": "S1",
+          "logical_label": "run_01_generate_target_S1"
+        },
+        {
+          "request_order": 10,
+          "trial": "target",
+          "checkpoint": "S2",
+          "logical_label": "run_01_generate_target_S2"
+        },
+        {
+          "request_order": 11,
+          "trial": "target",
+          "checkpoint": "S3",
+          "logical_label": "run_01_generate_target_S3"
+        },
+        {
+          "request_order": 12,
+          "trial": "target",
+          "checkpoint": "S4",
+          "logical_label": "run_01_generate_target_S4"
+        },
+        {
+          "request_order": 13,
+          "trial": "target",
+          "checkpoint": "S5",
+          "logical_label": "run_01_generate_target_S5"
+        },
+        {
+          "request_order": 14,
+          "trial": "target",
+          "checkpoint": "S6",
+          "logical_label": "run_01_generate_target_S6"
+        }
+      ],
+      "trials": {
+        "target": {
+          "trial_id": "target",
+          "report_aliases": {
+            "A": "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+            "B": "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+            "C": "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+            "D": "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+            "K": "ID_RRDG5H19FVM3T77PKTVVPMC20S"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 971328,
+            "A_S1": 966737,
+            "B_S1": 596946,
+            "C_S1": 384073,
+            "D_S4": 111312
+          },
+          "s1_presentation_order": [
+            "C",
+            "B",
+            "A"
+          ],
+          "generation_seeds": {
+            "S0": 16512566,
+            "S1": 1580955802,
+            "S2": 1332090185,
+            "S3": 1329315097,
+            "S4": 1025900313,
+            "S5": 126452675,
+            "S6": 18013173
+          },
+          "candidate_universe": [
+            "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+            "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+            "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+            "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+          ],
+          "condition_id": "ID_RRDG5H19FVM3T77PKTVVPMC20S",
+          "id_universe": [
+            "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+            "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+            "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+            "ID_RRDG5H19FVM3T77PKTVVPMC20S",
+            "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+          ],
+          "introduction_checkpoint": {
+            "ID_YF8S85D6MNHNM3HVV8G744GMMG": "S1",
+            "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD": "S1",
+            "ID_43TT04FNCF5YXJ5DESBCXFBK1J": "S1",
+            "ID_DX44ZFHBZEN11RYS1JB1E0AR5T": "S4",
+            "ID_RRDG5H19FVM3T77PKTVVPMC20S": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_43TT04FNCF5YXJ5DESBCXFBK1J",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG",
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DX44ZFHBZEN11RYS1JB1E0AR5T",
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ],
+                "nonviable_ids": [
+                  "ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_YF8S85D6MNHNM3HVV8G744GMMG"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_43TT04FNCF5YXJ5DESBCXFBK1J\nrole: candidate\nviability: viable\nutility: 384073\nselection: not_selected\n\nidentifier: ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD\nrole: candidate\nviability: viable\nutility: 596946\nselection: not_selected\n\nidentifier: ID_YF8S85D6MNHNM3HVV8G744GMMG\nrole: candidate\nviability: viable\nutility: 966737\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_M1Y3CDRWA5SCDPBVTW0XFGTJQD\nnew_utility: 971328\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_43TT04FNCF5YXJ5DESBCXFBK1J\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_DX44ZFHBZEN11RYS1JB1E0AR5T\nrole: candidate\nviability: viable\nutility: 111312\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_RRDG5H19FVM3T77PKTVVPMC20S\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_M1Y3CDRWA5SCDPBVTW0XFGTJQD\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n"
+          }
+        },
+        "donor": {
+          "trial_id": "donor",
+          "report_aliases": {
+            "A": "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+            "B": "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+            "C": "ID_QD6CN5SX6AZVK8J51NCH06W949",
+            "D": "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+            "K": "ID_7TGQ70DJ580Q9QJNAWTPXAE1E6"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 994841,
+            "A_S1": 509618,
+            "B_S1": 377172,
+            "C_S1": 303488,
+            "D_S4": 171885
+          },
+          "s1_presentation_order": [
+            "B",
+            "C",
+            "A"
+          ],
+          "generation_seeds": {
+            "S0": 1165701052,
+            "S1": 1888664630,
+            "S2": 1403171983,
+            "S3": 1234544500,
+            "S4": 1959634717,
+            "S5": 620700527,
+            "S6": 249353160
+          },
+          "candidate_universe": [
+            "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+            "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+            "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+            "ID_QD6CN5SX6AZVK8J51NCH06W949"
+          ],
+          "condition_id": "ID_7TGQ70DJ580Q9QJNAWTPXAE1E6",
+          "id_universe": [
+            "ID_7TGQ70DJ580Q9QJNAWTPXAE1E6",
+            "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+            "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+            "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+            "ID_QD6CN5SX6AZVK8J51NCH06W949"
+          ],
+          "introduction_checkpoint": {
+            "ID_BZB481HH7BYBKBYXHHVXGZWAD9": "S1",
+            "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A": "S1",
+            "ID_QD6CN5SX6AZVK8J51NCH06W949": "S1",
+            "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0": "S4",
+            "ID_7TGQ70DJ580Q9QJNAWTPXAE1E6": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_QD6CN5SX6AZVK8J51NCH06W949"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9"
+                ],
+                "nonviable_ids": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9",
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_9PD8RPD2RXAZMWP3XE0YTTY8W0",
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9"
+                ],
+                "nonviable_ids": [
+                  "ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_BZB481HH7BYBKBYXHHVXGZWAD9"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A\nrole: candidate\nviability: viable\nutility: 377172\nselection: not_selected\n\nidentifier: ID_QD6CN5SX6AZVK8J51NCH06W949\nrole: candidate\nviability: viable\nutility: 303488\nselection: not_selected\n\nidentifier: ID_BZB481HH7BYBKBYXHHVXGZWAD9\nrole: candidate\nviability: viable\nutility: 509618\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_DGN8QZZWSE3J8ME03ZZJWQXQ9A\nnew_utility: 994841\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_QD6CN5SX6AZVK8J51NCH06W949\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_9PD8RPD2RXAZMWP3XE0YTTY8W0\nrole: candidate\nviability: viable\nutility: 171885\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_7TGQ70DJ580Q9QJNAWTPXAE1E6\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_DGN8QZZWSE3J8ME03ZZJWQXQ9A\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n"
+          }
+        }
+      },
+      "probe_seeds": {
+        "candidate_registry": 1373314052,
+        "utility_ranking": 879292777,
+        "viability_partition": 965527368,
+        "selected_candidate": 1863158438
+      },
+      "probe_tasks": [
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 1,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_001_S2_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 2,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_002_S3_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 3,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_003_S5_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 4,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_004_S3_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 5,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_005_S3_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 6,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_006_S6_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 7,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_007_S0_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 8,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_008_S2_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 9,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_009_S6_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 10,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_010_S1_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 11,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_011_S3_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 12,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_012_S6_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 13,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_013_S1_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 14,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_014_S1_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 15,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_015_S4_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 16,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_016_S5_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 17,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_017_S3_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 18,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_018_S1_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 19,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_019_S1_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 20,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_020_S5_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 21,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_021_S4_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 22,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_022_S6_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 23,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_023_S2_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 24,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_024_S1_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 25,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_025_S6_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 26,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_026_S4_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 27,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_027_S0_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 28,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_028_S6_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 29,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_029_S5_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 30,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_030_S3_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 31,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_031_S6_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 32,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_032_S5_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 33,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_033_S5_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 34,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_034_S3_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 35,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_035_S1_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 36,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_036_S3_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 37,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_037_S1_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 38,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_038_S5_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 39,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_039_S2_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 40,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_040_S4_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 41,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_041_S2_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 42,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_042_S1_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 43,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_043_S0_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 44,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_044_S3_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 45,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_045_S6_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 46,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_046_S3_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 47,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_047_S6_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 48,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_048_S2_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 49,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_049_S6_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 50,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_050_S4_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 51,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_051_S1_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 52,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_052_S1_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 53,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_053_S3_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 54,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_054_S0_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 55,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_055_S5_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 56,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_056_S3_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 57,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_057_S3_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 58,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_058_S2_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 59,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_059_S2_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 60,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_060_S3_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 61,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_061_S0_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 62,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_062_S0_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 63,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_063_S4_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 64,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_064_S5_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 65,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_065_S2_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 66,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_066_S4_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 67,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_067_S2_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 68,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_068_S1_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 69,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_069_S3_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 70,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_070_S2_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 71,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_071_S0_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 72,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_072_S3_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 73,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_073_S5_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 74,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_074_S6_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 75,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_075_S4_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 76,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_076_S0_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 77,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_077_S2_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 78,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_078_S1_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 79,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_079_S6_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 80,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_080_S3_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 81,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_081_S4_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 82,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_082_S4_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 83,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_083_S2_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 84,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_084_S4_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 85,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_085_S3_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 86,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_086_S1_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 87,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_087_S6_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 88,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_088_S0_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 89,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_089_S4_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 90,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_090_S4_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 91,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_091_S6_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 92,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_092_S0_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 93,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_093_S1_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 94,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_094_S4_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 95,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_095_S5_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 96,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_096_S6_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 97,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_097_S6_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 98,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_098_S5_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 99,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_099_S3_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 100,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_100_S2_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 101,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_101_S4_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 102,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_102_S1_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 103,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_103_S3_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 104,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_104_S6_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 105,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_105_S2_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 106,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_106_S6_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 107,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_107_S0_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 108,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_108_S1_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 109,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_109_S0_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 110,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_110_S1_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 111,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_111_S4_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 112,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_112_S0_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 113,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_113_S6_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 114,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_114_S6_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 115,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_115_S5_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 116,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_116_S3_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 117,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_117_S3_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 118,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_118_S2_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 119,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_119_S2_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 120,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_120_S2_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 121,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_121_S5_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 122,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_122_S5_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 123,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_123_S3_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 124,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_124_S2_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 125,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_125_S0_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 126,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_126_S5_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 127,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_127_S5_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 128,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_128_S4_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 129,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_129_S5_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 130,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_130_S5_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 131,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_131_S1_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 132,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_132_S4_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 133,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_133_S6_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 134,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_134_S5_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 135,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_135_S4_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 136,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_136_S3_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 137,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_137_S1_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 138,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_138_S0_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 139,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_139_S4_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 140,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_140_S6_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 141,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_141_S3_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 142,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_142_S2_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 143,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_143_S0_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 144,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_144_S5_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 145,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_145_S4_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 146,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_146_S0_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 147,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_147_S0_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 148,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_148_S2_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 149,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_149_S5_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 150,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_150_S3_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 151,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_151_S4_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 152,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_152_S6_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 153,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_153_S2_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 154,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_154_S0_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 155,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_155_S0_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 156,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_156_S6_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 157,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_157_S4_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 158,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_158_S2_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 159,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_159_S1_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 160,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_160_S0_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 161,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_161_S1_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 162,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_162_S0_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 163,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_163_S5_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 164,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_164_S2_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 165,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_165_S5_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 166,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_166_S6_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 167,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_167_S0_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 168,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_168_S0_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 169,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_169_S6_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 170,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_170_S4_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 171,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_171_S3_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 172,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_172_S0_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 173,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_173_S4_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 174,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_174_S5_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 175,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_175_S1_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 176,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_176_S6_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 177,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_177_S2_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 178,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_178_S0_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 179,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_179_S0_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 180,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_180_S5_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 181,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_181_S4_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 182,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_182_S1_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 183,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_183_S4_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 184,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_184_S5_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 185,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_185_S1_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 186,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_186_S5_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 187,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_187_S4_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 188,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_188_S6_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 189,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_189_S1_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 190,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_190_S2_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 191,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_191_S2_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 192,
+          "seed": 879292777,
+          "logical_label": "run_01_probe_192_S3_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 193,
+          "seed": 1863158438,
+          "logical_label": "run_01_probe_193_S1_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 194,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_194_S2_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 195,
+          "seed": 965527368,
+          "logical_label": "run_01_probe_195_S0_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 196,
+          "seed": 1373314052,
+          "logical_label": "run_01_probe_196_S1_candidate_registry_donor_full_prefix"
+        }
+      ]
+    },
+    {
+      "run_id": "run_02",
+      "run_master_seed": 8863726038254134841,
+      "generation_trial_order": [
+        "target",
+        "donor"
+      ],
+      "generation_tasks": [
+        {
+          "request_order": 1,
+          "trial": "target",
+          "checkpoint": "S0",
+          "logical_label": "run_02_generate_target_S0"
+        },
+        {
+          "request_order": 2,
+          "trial": "target",
+          "checkpoint": "S1",
+          "logical_label": "run_02_generate_target_S1"
+        },
+        {
+          "request_order": 3,
+          "trial": "target",
+          "checkpoint": "S2",
+          "logical_label": "run_02_generate_target_S2"
+        },
+        {
+          "request_order": 4,
+          "trial": "target",
+          "checkpoint": "S3",
+          "logical_label": "run_02_generate_target_S3"
+        },
+        {
+          "request_order": 5,
+          "trial": "target",
+          "checkpoint": "S4",
+          "logical_label": "run_02_generate_target_S4"
+        },
+        {
+          "request_order": 6,
+          "trial": "target",
+          "checkpoint": "S5",
+          "logical_label": "run_02_generate_target_S5"
+        },
+        {
+          "request_order": 7,
+          "trial": "target",
+          "checkpoint": "S6",
+          "logical_label": "run_02_generate_target_S6"
+        },
+        {
+          "request_order": 8,
+          "trial": "donor",
+          "checkpoint": "S0",
+          "logical_label": "run_02_generate_donor_S0"
+        },
+        {
+          "request_order": 9,
+          "trial": "donor",
+          "checkpoint": "S1",
+          "logical_label": "run_02_generate_donor_S1"
+        },
+        {
+          "request_order": 10,
+          "trial": "donor",
+          "checkpoint": "S2",
+          "logical_label": "run_02_generate_donor_S2"
+        },
+        {
+          "request_order": 11,
+          "trial": "donor",
+          "checkpoint": "S3",
+          "logical_label": "run_02_generate_donor_S3"
+        },
+        {
+          "request_order": 12,
+          "trial": "donor",
+          "checkpoint": "S4",
+          "logical_label": "run_02_generate_donor_S4"
+        },
+        {
+          "request_order": 13,
+          "trial": "donor",
+          "checkpoint": "S5",
+          "logical_label": "run_02_generate_donor_S5"
+        },
+        {
+          "request_order": 14,
+          "trial": "donor",
+          "checkpoint": "S6",
+          "logical_label": "run_02_generate_donor_S6"
+        }
+      ],
+      "trials": {
+        "target": {
+          "trial_id": "target",
+          "report_aliases": {
+            "A": "ID_FW33TZX11REM0SVMM31W2A3BK1",
+            "B": "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+            "C": "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX",
+            "D": "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR",
+            "K": "ID_DGQVF8Z8GC4BDVED14YRT3SEBF"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 577886,
+            "A_S1": 420352,
+            "B_S1": 330539,
+            "C_S1": 319863,
+            "D_S4": 130017
+          },
+          "s1_presentation_order": [
+            "C",
+            "B",
+            "A"
+          ],
+          "generation_seeds": {
+            "S0": 300379307,
+            "S1": 2066493756,
+            "S2": 1935130339,
+            "S3": 1863941822,
+            "S4": 788675139,
+            "S5": 853722749,
+            "S6": 1125295275
+          },
+          "candidate_universe": [
+            "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+            "ID_FW33TZX11REM0SVMM31W2A3BK1",
+            "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX",
+            "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+          ],
+          "condition_id": "ID_DGQVF8Z8GC4BDVED14YRT3SEBF",
+          "id_universe": [
+            "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+            "ID_DGQVF8Z8GC4BDVED14YRT3SEBF",
+            "ID_FW33TZX11REM0SVMM31W2A3BK1",
+            "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX",
+            "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+          ],
+          "introduction_checkpoint": {
+            "ID_FW33TZX11REM0SVMM31W2A3BK1": "S1",
+            "ID_710EVSJG574J5KW69Q1BNMJF1Z": "S1",
+            "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX": "S1",
+            "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR": "S4",
+            "ID_DGQVF8Z8GC4BDVED14YRT3SEBF": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ],
+                "nonviable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z",
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1",
+                  "ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR"
+                ],
+                "nonviable_ids": [
+                  "ID_710EVSJG574J5KW69Q1BNMJF1Z"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_FW33TZX11REM0SVMM31W2A3BK1"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_PRVEH6FPHQG9DQ4YP1P6X9QDFX\nrole: candidate\nviability: viable\nutility: 319863\nselection: not_selected\n\nidentifier: ID_710EVSJG574J5KW69Q1BNMJF1Z\nrole: candidate\nviability: viable\nutility: 330539\nselection: not_selected\n\nidentifier: ID_FW33TZX11REM0SVMM31W2A3BK1\nrole: candidate\nviability: viable\nutility: 420352\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_710EVSJG574J5KW69Q1BNMJF1Z\nnew_utility: 577886\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_PRVEH6FPHQG9DQ4YP1P6X9QDFX\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_YK1VYEJG6NQB3S2KDBJ1MGK8ZR\nrole: candidate\nviability: viable\nutility: 130017\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_DGQVF8Z8GC4BDVED14YRT3SEBF\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_710EVSJG574J5KW69Q1BNMJF1Z\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n"
+          }
+        },
+        "donor": {
+          "trial_id": "donor",
+          "report_aliases": {
+            "A": "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+            "B": "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+            "C": "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+            "D": "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+            "K": "ID_QNWD9SQB2XN0R3XVS46SAFAS20"
+          },
+          "roles": {
+            "A": "candidate",
+            "B": "candidate",
+            "C": "candidate",
+            "D": "candidate",
+            "K": "condition"
+          },
+          "utilities": {
+            "B_S2": 774417,
+            "A_S1": 555433,
+            "B_S1": 397309,
+            "C_S1": 322846,
+            "D_S4": 292284
+          },
+          "s1_presentation_order": [
+            "B",
+            "A",
+            "C"
+          ],
+          "generation_seeds": {
+            "S0": 440564701,
+            "S1": 393131485,
+            "S2": 1026226993,
+            "S3": 362782701,
+            "S4": 733567306,
+            "S5": 870578916,
+            "S6": 480038026
+          },
+          "candidate_universe": [
+            "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+            "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+            "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+            "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+          ],
+          "condition_id": "ID_QNWD9SQB2XN0R3XVS46SAFAS20",
+          "id_universe": [
+            "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+            "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+            "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+            "ID_QNWD9SQB2XN0R3XVS46SAFAS20",
+            "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+          ],
+          "introduction_checkpoint": {
+            "ID_FJS0HE813FPZY8RSAKS6YBT76D": "S1",
+            "ID_Y2CVMPHVY551GP608SPYJBQ2HZ": "S1",
+            "ID_B22Y6SF6MD9A4VAGZMXNMRCV73": "S1",
+            "ID_DEQSYSRJPGG1WZTTNFGPS29NYE": "S4",
+            "ID_QNWD9SQB2XN0R3XVS46SAFAS20": "S5"
+          },
+          "truth": {
+            "S0": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": []
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": []
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S1": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S2": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_B22Y6SF6MD9A4VAGZMXNMRCV73",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S3": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S4": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ],
+                "nonviable_ids": []
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S5": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D"
+                ],
+                "nonviable_ids": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": []
+              }
+            },
+            "S6": {
+              "candidate_registry": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "utility_ranking": {
+                "knowledge": "known",
+                "ids_high_to_low": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D",
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE"
+                ]
+              },
+              "viability_partition": {
+                "knowledge": "known",
+                "viable_ids": [
+                  "ID_DEQSYSRJPGG1WZTTNFGPS29NYE",
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D"
+                ],
+                "nonviable_ids": [
+                  "ID_Y2CVMPHVY551GP608SPYJBQ2HZ"
+                ]
+              },
+              "selected_candidate": {
+                "knowledge": "known",
+                "ids": [
+                  "ID_FJS0HE813FPZY8RSAKS6YBT76D"
+                ]
+              }
+            }
+          },
+          "prompts": {
+            "S0": "You are participating in a controlled planning-state experiment.\n\nPrivately maintain the exact local planning state supplied by this sequence.\nTreat only explicit updates in this sequence as authoritative. Preserve existing\nstate unless a later update explicitly changes it. Do not invent state.\n\nInitialize the candidate registry as empty, the utility ranking as empty, both\nviability partitions as empty, and the selected-candidate collection as empty.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S1": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister these three candidate records:\n\nidentifier: ID_Y2CVMPHVY551GP608SPYJBQ2HZ\nrole: candidate\nviability: viable\nutility: 397309\nselection: not_selected\n\nidentifier: ID_FJS0HE813FPZY8RSAKS6YBT76D\nrole: candidate\nviability: viable\nutility: 555433\nselection: not_selected\n\nidentifier: ID_B22Y6SF6MD9A4VAGZMXNMRCV73\nrole: candidate\nviability: viable\nutility: 322846\nselection: not_selected\n\nUtilities are distinct and a larger integer means higher utility. Maintain the\ncomplete relative ranking. No candidate is selected.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S2": "Apply exactly one utility update to the private planning state.\n\nidentifier: ID_Y2CVMPHVY551GP608SPYJBQ2HZ\nnew_utility: 774417\n\nChange only this utility. Derive the current ranking from the stored utilities;\nthe resulting order is not stated here.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S3": "Apply exactly one candidate-removal update to the private planning state.\n\nRemove this entire candidate record from the planning state:\nID_B22Y6SF6MD9A4VAGZMXNMRCV73\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S4": "Apply exactly one candidate-registration update to the private planning state.\n\nRegister this candidate record:\nidentifier: ID_DEQSYSRJPGG1WZTTNFGPS29NYE\nrole: candidate\nviability: viable\nutility: 292284\nselection: not_selected\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S5": "Apply exactly one viability update to the private planning state.\n\nActivate this local condition:\nidentifier: ID_QNWD9SQB2XN0R3XVS46SAFAS20\nrole: condition\n\nThe condition makes this registered candidate nonviable:\nID_Y2CVMPHVY551GP608SPYJBQ2HZ\n\nKeep that candidate registered and keep its utility unchanged.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n",
+            "S6": "Apply exactly one selection update to the private planning state.\n\nSelect the unique currently viable registered candidate with the highest stored\nutility. Do not change registry membership, utilities, ranking, or viability.\n\nPreserve every other part of the current planning state unchanged. Do not invent\nstate.\n\nNever reveal, quote, transform, encode, or summarize any identifier, utility,\nrole, viability, selection, or relation in visible output. Return no markdown or\nexplanation.\n\nYour entire visible response must be exactly:\n{\"ack\":true}\n"
+          }
+        }
+      },
+      "probe_seeds": {
+        "candidate_registry": 1037839854,
+        "utility_ranking": 686102983,
+        "viability_partition": 302458691,
+        "selected_candidate": 2094951389
+      },
+      "probe_tasks": [
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 1,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_001_S0_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 2,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_002_S1_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 3,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_003_S2_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 4,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_004_S3_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 5,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_005_S1_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 6,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_006_S5_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 7,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_007_S0_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 8,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_008_S3_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 9,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_009_S4_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 10,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_010_S5_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 11,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_011_S5_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 12,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_012_S1_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 13,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_013_S0_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 14,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_014_S6_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 15,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_015_S3_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 16,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_016_S0_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 17,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_017_S3_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 18,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_018_S1_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 19,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_019_S0_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 20,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_020_S6_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 21,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_021_S2_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 22,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_022_S0_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 23,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_023_S3_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 24,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_024_S2_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 25,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_025_S1_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 26,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_026_S3_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 27,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_027_S4_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 28,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_028_S3_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 29,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_029_S4_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 30,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_030_S1_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 31,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_031_S0_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 32,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_032_S3_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 33,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_033_S1_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 34,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_034_S1_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 35,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_035_S0_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 36,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_036_S2_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 37,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_037_S2_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 38,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_038_S4_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 39,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_039_S0_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 40,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_040_S6_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 41,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_041_S5_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 42,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_042_S4_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 43,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_043_S4_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 44,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_044_S5_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 45,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_045_S4_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 46,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_046_S5_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 47,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_047_S2_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 48,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_048_S2_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 49,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_049_S4_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 50,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_050_S6_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 51,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_051_S0_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 52,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_052_S1_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 53,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_053_S1_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 54,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_054_S2_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 55,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_055_S0_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 56,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_056_S3_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 57,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_057_S6_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 58,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_058_S5_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 59,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_059_S3_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 60,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_060_S5_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 61,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_061_S2_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 62,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_062_S5_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 63,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_063_S6_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 64,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_064_S3_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 65,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_065_S2_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 66,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_066_S0_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 67,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_067_S6_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 68,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_068_S5_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 69,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_069_S0_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 70,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_070_S3_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 71,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_071_S4_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 72,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_072_S4_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 73,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_073_S0_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 74,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_074_S6_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 75,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_075_S4_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 76,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_076_S4_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 77,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_077_S1_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 78,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_078_S1_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 79,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_079_S0_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 80,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_080_S1_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 81,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_081_S3_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 82,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_082_S3_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 83,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_083_S6_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 84,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_084_S2_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 85,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_085_S3_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 86,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_086_S6_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 87,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_087_S0_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 88,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_088_S2_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 89,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_089_S4_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 90,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_090_S1_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 91,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_091_S6_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 92,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_092_S6_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 93,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_093_S1_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 94,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_094_S5_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 95,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_095_S2_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 96,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_096_S0_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 97,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_097_S6_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 98,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_098_S2_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 99,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_099_S5_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 100,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_100_S1_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 101,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_101_S2_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 102,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_102_S6_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 103,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_103_S0_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 104,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_104_S2_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 105,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_105_S3_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 106,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_106_S3_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 107,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_107_S4_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 108,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_108_S4_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 109,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_109_S4_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 110,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_110_S6_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 111,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_111_S1_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 112,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_112_S0_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 113,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_113_S1_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 114,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_114_S4_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 115,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_115_S6_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 116,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_116_S2_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 117,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_117_S5_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 118,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_118_S6_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 119,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_119_S5_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 120,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_120_S6_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 121,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_121_S1_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 122,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_122_S5_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 123,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_123_S5_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 124,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_124_S3_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 125,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_125_S6_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 126,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_126_S0_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 127,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_127_S2_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 128,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_128_S1_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 129,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_129_S4_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 130,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_130_S5_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 131,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_131_S5_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 132,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_132_S3_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "target_cumulative_thought",
+          "request_order": 133,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_133_S2_candidate_registry_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "wrong_trial_latest",
+          "request_order": 134,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_134_S6_candidate_registry_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 135,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_135_S3_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "donor_full_prefix",
+          "request_order": 136,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_136_S5_selected_candidate_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "donor_full_prefix",
+          "request_order": 137,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_137_S2_viability_partition_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 138,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_138_S5_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 139,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_139_S2_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 140,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_140_S2_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 141,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_141_S0_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 142,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_142_S5_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 143,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_143_S4_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 144,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_144_S4_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "target_full_prefix",
+          "request_order": 145,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_145_S6_utility_ranking_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 146,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_146_S0_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 147,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_147_S4_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 148,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_148_S4_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_cumulative_thought",
+          "request_order": 149,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_149_S5_utility_ranking_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 150,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_150_S3_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 151,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_151_S5_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 152,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_152_S0_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_latest_thought",
+          "request_order": 153,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_153_S6_candidate_registry_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 154,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_154_S2_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "selected_candidate",
+          "arm": "probe_only",
+          "request_order": 155,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_155_S4_selected_candidate_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 156,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_156_S0_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 157,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_157_S6_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 158,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_158_S3_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "target_latest_thought",
+          "request_order": 159,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_159_S1_selected_candidate_target_latest_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "probe_only",
+          "request_order": 160,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_160_S1_viability_partition_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 161,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_161_S1_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 162,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_162_S1_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 163,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_163_S5_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_cumulative_thought",
+          "request_order": 164,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_164_S5_selected_candidate_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 165,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_165_S4_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 166,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_166_S2_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 167,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_167_S3_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "target_visible_only",
+          "request_order": 168,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_168_S6_viability_partition_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 169,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_169_S4_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "candidate_registry",
+          "arm": "target_full_prefix",
+          "request_order": 170,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_170_S6_candidate_registry_target_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 171,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_171_S0_candidate_registry_probe_only"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 172,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_172_S2_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "candidate_registry",
+          "arm": "target_visible_only",
+          "request_order": 173,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_173_S4_candidate_registry_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 174,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_174_S6_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 175,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_175_S0_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "selected_candidate",
+          "arm": "wrong_trial_latest",
+          "request_order": 176,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_176_S6_selected_candidate_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 177,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_177_S1_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "wrong_trial_latest",
+          "request_order": 178,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_178_S2_utility_ranking_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "selected_candidate",
+          "arm": "target_full_prefix",
+          "request_order": 179,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_179_S0_selected_candidate_target_full_prefix"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "selected_candidate",
+          "arm": "target_visible_only",
+          "request_order": 180,
+          "seed": 2094951389,
+          "logical_label": "run_02_probe_180_S5_selected_candidate_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_full_prefix",
+          "request_order": 181,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_181_S3_viability_partition_target_full_prefix"
+        },
+        {
+          "checkpoint": "S6",
+          "field": "viability_partition",
+          "arm": "wrong_trial_latest",
+          "request_order": 182,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_182_S6_viability_partition_wrong_trial_latest"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 183,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_183_S2_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 184,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_184_S4_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 185,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_185_S3_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S2",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 186,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_186_S2_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "viability_partition",
+          "arm": "target_cumulative_thought",
+          "request_order": 187,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_187_S3_viability_partition_target_cumulative_thought"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "donor_full_prefix",
+          "request_order": 188,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_188_S1_candidate_registry_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 189,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_189_S3_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 190,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_190_S1_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "viability_partition",
+          "arm": "target_latest_thought",
+          "request_order": 191,
+          "seed": 302458691,
+          "logical_label": "run_02_probe_191_S5_viability_partition_target_latest_thought"
+        },
+        {
+          "checkpoint": "S5",
+          "field": "utility_ranking",
+          "arm": "target_latest_thought",
+          "request_order": 192,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_192_S5_utility_ranking_target_latest_thought"
+        },
+        {
+          "checkpoint": "S3",
+          "field": "utility_ranking",
+          "arm": "donor_full_prefix",
+          "request_order": 193,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_193_S3_utility_ranking_donor_full_prefix"
+        },
+        {
+          "checkpoint": "S4",
+          "field": "utility_ranking",
+          "arm": "probe_only",
+          "request_order": 194,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_194_S4_utility_ranking_probe_only"
+        },
+        {
+          "checkpoint": "S0",
+          "field": "utility_ranking",
+          "arm": "target_visible_only",
+          "request_order": 195,
+          "seed": 686102983,
+          "logical_label": "run_02_probe_195_S0_utility_ranking_target_visible_only"
+        },
+        {
+          "checkpoint": "S1",
+          "field": "candidate_registry",
+          "arm": "probe_only",
+          "request_order": 196,
+          "seed": 1037839854,
+          "logical_label": "run_02_probe_196_S1_candidate_registry_probe_only"
+        }
+      ]
+    }
+  ],
+  "planned_calls": {
+    "per_complete_run": {
+      "generation": 14,
+      "tomography": 196,
+      "logical_total": 210,
+      "max_physical_attempts": 630
+    },
+    "two_run_stopping_ceiling": {
+      "logical_total": 224,
+      "max_physical_attempts": 672
+    }
+  }
+}

@@ -84,10 +84,21 @@ def _atomic_write(path: Path, data: bytes) -> None:
             handle.write(data)
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temporary, path)
+        replace_delays = (0.01, 0.05, 0.1, 0.25, 0.5)
+        for retry_index in range(len(replace_delays) + 1):
+            try:
+                os.replace(temporary, path)
+                break
+            except PermissionError:
+                if retry_index == len(replace_delays):
+                    raise
+                time.sleep(replace_delays[retry_index])
     finally:
         if temporary.exists():
-            temporary.unlink()
+            try:
+                temporary.unlink()
+            except OSError:
+                pass
 
 
 def write_json(path: Path, value: Any) -> None:
@@ -103,6 +114,15 @@ def write_text(path: Path, value: str) -> None:
 
 def write_bytes(path: Path, value: bytes) -> None:
     _atomic_write(path, value)
+
+
+def _bounded_storage_label(label: str, *, max_chars: int = 56) -> str:
+    safe = re.sub(r"[^A-Za-z0-9_.-]+", "-", label).strip("-") or "call"
+    if len(safe) <= max_chars:
+        return safe
+    digest = sha256_text(label)[:16]
+    prefix_chars = max_chars - len(digest) - 1
+    return f"{safe[:prefix_chars]}-{digest}"
 
 
 def strict_json_loads(text: str) -> Any:
@@ -743,7 +763,7 @@ class CallStore:
             "first_attempt_transport_error": attempts[0]["transport_error"],
             "attempts": attempts,
         }
-        safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "-", label).strip("-")
+        safe_label = _bounded_storage_label(label)
         write_json(self.raw_dir / f"logical_{safe_label}.metadata.json", logical_record)
         if self.delay_seconds > 0:
             self.sleeper(self.delay_seconds)
@@ -756,7 +776,7 @@ class CallStore:
         body: dict[str, Any],
     ) -> tuple[InteractionHttpResult, dict[str, Any]]:
         call_number = len(self.records) + 1
-        safe_label = re.sub(r"[^A-Za-z0-9_.-]+", "-", label).strip("-")
+        safe_label = _bounded_storage_label(label)
         stem = f"{call_number:04d}_{safe_label}"
         request_path = self.raw_dir / f"{stem}.request.json"
         response_path = self.raw_dir / f"{stem}.response.bin"
@@ -766,39 +786,66 @@ class CallStore:
         write_bytes(request_path, encoded_body)
         started_at = utc_now()
         transport = self.transport or post_interaction
-        result = transport(
-            api_key=self.api_key,
-            body=body,
-            timeout=self.timeout,
-            encoded_body=encoded_body,
-        )
-        response_bytes = result.raw_body_bytes or result.raw_body.encode(
-            "utf-8", errors="replace"
-        )
-        write_bytes(response_path, response_bytes)
         record = {
             "call_number": call_number,
             "label": label,
             "started_at": started_at,
-            "completed_at": utc_now(),
-            "http_status": result.http_status,
-            "elapsed_ms": result.elapsed_ms,
+            "completed_at": None,
+            "attempt_state": "request_persisted_transport_outcome_unknown",
+            "http_status": None,
+            "elapsed_ms": None,
             "request_wire_sha256": sha256_bytes(encoded_body),
             "request_wire_bytes": len(encoded_body),
-            "response_wire_sha256": sha256_bytes(response_bytes)
-            if response_bytes
-            else None,
-            "response_wire_bytes": len(response_bytes),
-            "response_decoded_chars": len(result.raw_body),
-            "transport_error": result.transport_error,
-            "response_parse_error": result.response_parse_error,
-            "response_headers": result.response_headers or {},
+            "response_wire_sha256": None,
+            "response_wire_bytes": None,
+            "response_decoded_chars": None,
+            "transport_error": None,
+            "response_parse_error": None,
+            "response_headers": {},
             "raw_request_path": str(request_path.relative_to(self.run_dir)),
             "raw_response_path": str(response_path.relative_to(self.run_dir)),
         }
-        write_json(metadata_path, record)
         self.records.append(record)
-        write_json(self.run_dir / "call_index.json", self.records)
+        write_json(metadata_path, record)
+        write_json(self.raw_dir / "call_index.json", self.records)
+        try:
+            result = transport(
+                api_key=self.api_key,
+                body=body,
+                timeout=self.timeout,
+                encoded_body=encoded_body,
+            )
+            response_bytes = result.raw_body_bytes or result.raw_body.encode(
+                "utf-8", errors="replace"
+            )
+            write_bytes(response_path, response_bytes)
+        except BaseException:
+            record["completed_at"] = utc_now()
+            record["attempt_state"] = "transport_interrupted_outcome_unknown"
+            try:
+                write_json(metadata_path, record)
+                write_json(self.raw_dir / "call_index.json", self.records)
+            except OSError:
+                pass
+            raise
+        record.update(
+            {
+                "completed_at": utc_now(),
+                "attempt_state": "transport_result_persisted",
+                "http_status": result.http_status,
+                "elapsed_ms": result.elapsed_ms,
+                "response_wire_sha256": sha256_bytes(response_bytes)
+                if response_bytes
+                else None,
+                "response_wire_bytes": len(response_bytes),
+                "response_decoded_chars": len(result.raw_body),
+                "transport_error": result.transport_error,
+                "response_parse_error": result.response_parse_error,
+                "response_headers": result.response_headers or {},
+            }
+        )
+        write_json(metadata_path, record)
+        write_json(self.raw_dir / "call_index.json", self.records)
         print(
             f"[{call_number:03d}] {label} -> "
             f"{result.http_status if result.http_status is not None else 'transport-error'}",

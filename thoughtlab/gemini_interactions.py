@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import http.client
 import json
 import time
 import urllib.error
@@ -89,11 +90,38 @@ def build_interaction_body(
 def _decode_payload(raw_body: str) -> tuple[dict[str, Any] | None, str]:
     try:
         value = json.loads(raw_body)
-    except json.JSONDecodeError as exc:
-        return None, str(exc)
+    except (ValueError, RecursionError) as exc:
+        return None, f"{type(exc).__name__}: {exc}"
     if not isinstance(value, dict):
         return None, "response JSON was not an object"
     return value, ""
+
+
+def _incomplete_read_result(
+    *,
+    exc: http.client.IncompleteRead,
+    http_status: int,
+    headers: Any,
+    started: float,
+) -> InteractionHttpResult:
+    partial = exc.partial
+    raw_body_bytes = (
+        partial
+        if isinstance(partial, bytes)
+        else bytes(partial)
+        if isinstance(partial, bytearray)
+        else b""
+    )
+    return InteractionHttpResult(
+        http_status=http_status,
+        payload=None,
+        raw_body=raw_body_bytes.decode("utf-8", errors="replace"),
+        transport_error="IncompleteRead: partial response body",
+        response_parse_error="",
+        elapsed_ms=round((time.perf_counter() - started) * 1000),
+        raw_body_bytes=raw_body_bytes,
+        response_headers=_audit_headers(headers),
+    )
 
 
 def post_interaction(
@@ -121,7 +149,15 @@ def post_interaction(
     started = time.perf_counter()
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            raw_body_bytes = response.read()
+            try:
+                raw_body_bytes = response.read()
+            except http.client.IncompleteRead as exc:
+                return _incomplete_read_result(
+                    exc=exc,
+                    http_status=int(response.status),
+                    headers=response.headers,
+                    started=started,
+                )
             raw_body = raw_body_bytes.decode("utf-8", errors="replace")
             payload, parse_error = _decode_payload(raw_body)
             return InteractionHttpResult(
@@ -135,7 +171,15 @@ def post_interaction(
                 response_headers=_audit_headers(response.headers),
             )
     except urllib.error.HTTPError as exc:
-        raw_body_bytes = exc.read()
+        try:
+            raw_body_bytes = exc.read()
+        except http.client.IncompleteRead as incomplete:
+            return _incomplete_read_result(
+                exc=incomplete,
+                http_status=int(exc.code),
+                headers=exc.headers,
+                started=started,
+            )
         raw_body = raw_body_bytes.decode("utf-8", errors="replace")
         payload, parse_error = _decode_payload(raw_body)
         return InteractionHttpResult(

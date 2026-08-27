@@ -206,9 +206,26 @@ rank, viability partition, and selected candidate. Add a same-checkpoint donor
 carrier for source specificity, then cross-score adjacent checkpoint outputs
 for temporal localization without issuing duplicate requests.
 
+Keep this S0-S6 experiment as the native-to-task, ordinary-instruction baseline.
+It remains a prescribed synthetic task, but deliberately excludes the proposed
+hermeneutic/metacognitive retention intervention. Its `R_native` is the full
+preregistered recoverability matrix, not a scalar or direct latent-state readout.
+After those dynamics replicate and survive adversarial checks, run a separate
+contemporaneous three-arm study with the same problem and acknowledgement:
+`R_native`, an effort-/structure-/placement-/length-matched neutral procedural
+condition `R_neutral`, and a private retention scaffold `R_retention` that keeps
+alternatives, reversal conditions, and unresolved uncertainty continuation-
+relevant. Preregister the total package contrast (`R_retention` versus
+`R_native`), the retention-specific contrast (`R_retention` versus `R_neutral`),
+and the generic procedure/effort diagnostic (`R_neutral` versus `R_native`).
+These are cellwise contrasts between recoverability matrices, not scalar latent-
+state measurements. A separately preregistered two-arm fallback could support
+only a package-effect claim. This separation prevents baseline, intervention,
+generic added procedure, and model/API drift from being collapsed.
+
 The review-ready proposal is in
 [`PLANNING_SLICE_TEST_PLAN.md`](PLANNING_SLICE_TEST_PLAN.md). The original
 30-eligible-trial, maximum-40-attempt confirmatory regime remains a later phase,
-not the immediate next run. It should be redesigned around planning-state
-transition gates only after the excluded transition pilot demonstrates which
-state distinctions are stable.
+not the immediate next run. Its exact outcome should be chosen only after native
+replication and the separately preregistered scaffold design establish which
+claim is actually being confirmed.

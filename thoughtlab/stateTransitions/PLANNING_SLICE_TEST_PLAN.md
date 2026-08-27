@@ -1,4 +1,4 @@
-# Mutable planning-state transition experiment: review draft
+# Native-to-task mutable planning-state transition experiment: frozen specification
 
 ## Purpose and decision point
 
@@ -9,9 +9,66 @@ those replicated components directly. Viability partition and the explicit
 pre-selection `known + []` timeline are preregistered exploratory extensions,
 not findings already established by pilot 05.
 
-This document proposes one excluded, surgical planning-transition pilot. It is
-ready for scientific review but is not yet a frozen preregistration, executable
-implementation, or authorization for external API calls.
+This document specifies one excluded, surgical planning-transition pilot. The
+protocol builder, missing-safe scorer, reviewed-freeze verifier, and separately
+gated executor are implemented and locally tested. The no-call review package
+is prepared at `thoughtlab/stateTransitions/freezes/native_s0_s6_review_01` only
+after the source and tests in this specification are final. Neither this
+implementation nor that package authorizes an external API call.
+
+## Place in the research program
+
+This pilot is deliberately the **native-to-task, ordinary-instruction baseline**.
+It is already a tightly prescribed synthetic planning task; `native` does not
+mean unprompted, naturalistic, spontaneous, or human-like cognition. It means
+unaugmented by the proposed retention intervention.
+
+Its generation and probe prompts must exclude hermeneutic part/whole language,
+metacognitive stages, adversarial alternative preservation, counterfactual-
+register instructions, visible staged reasoning, and checkpoint-tool requests.
+Adding any of those creates a new protocol and estimand.
+
+Call the recoverability object measured here `R_native`: the preregistered matrix
+of checkpoint x field x carrier-arm outcomes, controls, and transition deltas—not
+one scalar and not a direct representation of internal state. We need to map and
+attack that matrix before trying to enrich it. If a retention scaffold were
+added now, recovered alternatives, reversal conditions, or uncertainty would be
+confounded with the intervention, and we would no longer know what the frozen
+ordinary-instruction process supported on its own.
+
+The intended sequence is:
+
+```text
+pilot 05 planning slice
+        -> mutable native-to-task S0-S6 pilot
+        -> excluded replication/adversarial attack of native dynamics
+        -> freeze the native recoverability model and claim boundary
+        -> contemporaneous native/neutral/retention scaffold experiment
+        -> only then evaluate any downstream system use
+```
+
+The later matched experiment compares three contemporaneous recoverability
+matrices: `R_native` for the frozen ordinary-instruction condition, `R_neutral`
+for an effort-, structure-, placement-, and length-matched neutral procedure,
+and `R_retention` for the private hermeneutic/metacognitive retention scaffold.
+It preregisters three cellwise, matrix-level behavioral contrasts:
+
+- total package contrast, `Delta R_total`: `R_retention` versus `R_native`;
+- retention-specific contrast, `Delta R_retention`: `R_retention` versus
+  `R_neutral`; and
+- generic procedure/effort diagnostic, `Delta R_procedure`: `R_neutral` versus
+  `R_native`.
+
+These are contrasts between observed outcome matrices, not scalar measurements
+of a latent state. A two-arm native-versus-retention fallback would be a
+separately preregistered package-only study: it could estimate the total package
+contrast but could not isolate the retention-specific mechanism. None of these
+later experiments is authorized by approval of this plan.
+
+The native model must not be frozen from one sequence. The intervening
+replication/attack phase uses independently generated master seeds, opaque-ID
+universes, utilities, and task instances under one frozen protocol, with any
+request/retry revision reported separately rather than silently pooled.
 
 Terminology matters: the earlier confirmatory proposal was **30 eligible
 trials, capped at 40 attempted trials**, not one 30-40-turn conversation. That
@@ -67,7 +124,7 @@ the candidate registry but becomes nonviable; this intentionally distinguishes
 removal from nonviability. It also makes S6 depend on the S5 update: without the
 viability change B would win, while the correct highest viable choice is A.
 
-The motivating sketch made A nonviable and then selected B. This draft instead
+The motivating sketch made A nonviable and then selected B. This protocol instead
 makes the current leader B nonviable so the selection transition tests whether
 viability affects action, not merely whether two independent labels can be
 recovered.
@@ -182,6 +239,12 @@ exact. A missing, unknown, invalid, or source-inexact endpoint makes the pair
 nonexact, even if two wrong states would otherwise cancel into the expected
 delta. Report all 24 pairs, the 12 changed pairs, and the 12 stable pairs
 separately.
+
+The same mechanical delta function is applied to five frozen source arms, so
+the complete derived delta matrix has exactly 120 unique
+`(transition, field, arm)` rows. Missing, duplicate, extra, or nonmechanically
+altered delta rows make that matrix incomplete; row-supplied flags are never
+trusted in place of recomputation from the frozen endpoint observations.
 
 ## Preregistered gates
 
@@ -327,6 +390,124 @@ requests and at most 672 physical attempts.
 Pilot artifacts remain excluded. Results from different frozen request or retry
 revisions are reported separately rather than naively pooled.
 
+## Downstream matched scaffold experiment
+
+Only after native-to-task planning dynamics replicate should a separate,
+contemporaneous matched experiment test whether the pattern of model-mediated
+recoverability can be deliberately changed. A future scaffold run must not use
+this historical pilot as its sole control because model/API drift would be
+confounded with condition.
+
+The intervention arm would privately require a hybrid metacognitive-hermeneutic
+procedure before the unchanged acknowledgement:
+
+1. orient to the whole problem without committing;
+2. maintain several genuinely viable paths;
+3. evaluate each path's evidence, weaknesses, consequences, and uncertainty;
+4. revisit the whole in light of the parts and the parts in light of the revised
+   whole;
+5. make a provisional choice while retaining the strongest alternatives;
+6. make the strongest case against the primary and for the best alternative;
+7. retain reversal conditions and unresolved discriminating evidence as a
+   counterfactual register;
+8. commit to the primary continuation without deleting that register.
+
+The strongest design is a contemporaneous three-arm study:
+
+1. a fresh execution of the frozen native-to-task condition;
+2. a length-, structure-, placement-, and effort-matched neutral procedural
+   scaffold that does not require retaining alternatives or reversal conditions;
+3. the metacognitive-hermeneutic retention scaffold.
+
+This separates the total scaffold-package effect from a more specific effect of
+the retention procedure. If only two arms are feasible, preregister that as a
+separate fallback; its result estimates the assigned package as a whole, not a
+uniquely hermeneutic mechanism.
+
+Randomize at the complete target/donor-sequence level and interleave matched
+conditions. Each condition needs its own same-condition donor. Hold constant the
+underlying problem graph, utilities/evidence, state transitions, final choice
+rule, visible output `{"ack":true}`, model/API envelope, best-effort seeds,
+probe schemas and text, carrier arms, task-order policy, transport/stopping
+rules, and scorer. Use separate opaque-ID universes linked only by a frozen
+offline bijection.
+
+Apply the treatment during state generation and keep all tomography probes
+neutral and identical. Scaffolding only the probe changes the readout estimand;
+scaffolding both formation and readout is a third factorial condition. A visible
+staged-output version is also a separate experiment because emitted stages join
+the autoregressive prefix and may not be represented in the preceding thought
+artifact.
+
+Existing history-dependent planning fields and carrier-specific donor/control
+behavior should remain the primary contrast, preventing the treatment from
+winning merely because it explicitly introduced new vocabulary. New
+continuation-relevant fields—current primary path, strongest live alternatives,
+viability, reversal conditions, unresolved uncertainty, and discriminating
+evidence—are secondary until their opaque, mechanically scoreable truths are
+frozen for every arm.
+
+The legitimate positive claim would be behavioral:
+
+> Under this configuration, the assigned scaffold package changed which
+> preregistered semantic distinctions model-mediated probes recovered through
+> whole signed thought-step carriers.
+
+That is the operational meaning of `reasoning-state engineering` in this
+program: alter the originating procedure, then measure a controlled difference
+in recoverability. It does not mean mutating or decoding signature bytes.
+
+It would **not** show that the scaffolded alternatives arose spontaneously. We
+caused the procedure to keep them live. It would not prove that the prescribed
+stages occurred internally, reveal pre-existing authentic beliefs or identity,
+establish direct access to a contemporaneous self-record, expose hidden chain-
+of-thought, or serialize complete latent state.
+
+A later refinement may insert a checkpoint with **no prescribed semantic state
+change** immediately before commitment and compare its carrier with the post-
+commitment carrier. The identical checkpoint operation must appear in every
+matched condition, and the report must acknowledge that requesting a checkpoint
+can itself alter reasoning state. That study could test whether recoverable
+counterfactual structure contracts across commitment, but it must not be folded
+into the native S0-S6 baseline.
+
+## Raistlin Bridge relevance and boundary
+
+Raistlin Bridge is a downstream application context, not part of this pilot's
+ground truth or success gate. The research can inform it in two distinct ways:
+
+- **Original-turn receipts on the live path.** An ordinary interaction can
+  retain input, the exact approved context/prompt receipt, visible output,
+  model/configuration provenance, and the whole provider response/signed
+  thought-step artifact without another interpretive model invocation. These are
+  sensitive contemporaneous generation records, not identity truth or a readable
+  self-record; capture, validation, secure storage, and transport still cost
+  time and resources.
+- **Derived reflection on the cold path.** Expensive hermeneutic/metacognitive
+  forks, counterfactual analysis, and merge/adjudication can run asynchronously
+  over canonical evidence after the live response is committed.
+
+All cold-path forks descend from one root turn. They increase analytical
+resolution but remain one evidence lineage, not multiple independent witnesses.
+Their outputs must be labeled `derived_reflection` and retain root-turn ID,
+parent links, scaffold version, and evidence-lineage ID. If a governed process
+later promotes a derived conclusion into live context, record that promotion
+explicitly and never recount it as new primary evidence.
+
+For self-authorship, the permissible intervention is an epistemic method—keep
+competing interpretations live, preserve what would reverse a provisional
+judgment, and track uncertainty—not identity content or a prescribed conclusion.
+The scaffold shapes the microscope; it does not decide what the system must see.
+
+No result in this repository automatically justifies putting an eight-stage
+deliberation on every live turn. The hot path should preserve the original
+receipt, perform only required cheap validation, and deliver; optional identity
+work belongs after commitment. Any live cognitive-contract change must first
+show a controlled recovery/quality benefit and instrumented segment-level p50/p95
+latency, cost, concurrency, storage, and security impact. A minimal conditional
+instruction may eventually be justified; universal high-reasoning deliberation
+is not the default architecture implied by this work.
+
 ## Interpretation decision tree
 
 ```text
@@ -334,14 +515,22 @@ registry/rank/selected identity persist under mutation
 and the viability extension succeeds
                          |
                          v
-freeze a planning-state-specific confirmatory protocol
-with 30 eligible trials, maximum 40 attempted
+replicate and adversarially attack native dynamics
+                         |
+                         v
+freeze R_native and its claim boundary
+                         |
+                         v
+run contemporaneous native/neutral/retention scaffold study
+                         |
+                         v
+choose the exact confirmatory claim and any Bridge evaluation
 
 partial replication
        |
        v
-redesign around the exact native distinctions that survive
-without promoting a joint planning-state claim
+narrow R_native to the exact distinctions that survive,
+then replicate before adding a scaffold
 
 failure with sound full-prefix and controls
        |
@@ -349,14 +538,20 @@ failure with sound full-prefix and controls
 reconsider the carrier model before broader state or BookForge work
 ```
 
-The later 30/40 confirmatory protocol should not inherit ancestry, objective,
-constraint, or explicit rejected-lifecycle gates unless a new excluded pilot
-first demonstrates those fields. Its claim and sample-size calculation should
-be based only on the mutable planning-state components that earn inclusion.
+The later 30-eligible/40-attempt confirmatory protocol is no longer the automatic
+next step after one successful mutable pilot. Its outcome variable must be
+chosen after native replication and the three-arm scaffold design—or a
+separately preregistered package-only fallback—clarifies whether the claim
+concerns native-state reliability, scaffold-induced enrichment, or both.
+It must not inherit ancestry, objective, constraint, or explicit rejected-
+lifecycle gates unless an excluded experiment first demonstrates those fields.
 
 ## Approval boundary
 
-Approval of this draft should authorize implementation, local tests, a no-call
-manifest dry run, and a frozen preregistration for review. It should not be
-treated as advance authorization for external API execution or for the later
-30/40 confirmatory program.
+Approval of this specification authorized implementation, local tests, a
+no-call manifest dry run, and a frozen preregistration for review. Review of the
+resulting freeze must not be treated as advance authorization for external API
+execution or for the later
+native replication, any scaffold experiment (three-arm or two-arm fallback),
+checkpoint-tool experiment, visible-stage experiment, Raistlin Bridge/Nyx
+cognitive-contract change, or 30/40 confirmatory program.

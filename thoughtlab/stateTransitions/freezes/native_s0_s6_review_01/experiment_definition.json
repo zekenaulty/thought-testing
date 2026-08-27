@@ -1,0 +1,62 @@
+{
+  "schema_version": "native_planning_transition_definition_v1",
+  "experiment_id": "native_mutable_planning_state_s0_s6_v1",
+  "protocol_revision": "1.0_native_s0_s6_review_freeze",
+  "status": "excluded_exploratory_native_to_task_pilot",
+  "estimand": "R_native checkpoint-by-field-by-carrier outcome, control, and delta matrix",
+  "model": "gemini-3.7-flash",
+  "api_surface": "interactions_v1beta",
+  "api_endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "api_schema_epoch": "post_2026_06_08_steps_response_format",
+  "api_revision_header": null,
+  "store": false,
+  "stream": false,
+  "background": false,
+  "thinking_level": "high",
+  "thinking_summaries": "none",
+  "sampling_parameters": "temperature_top_p_top_k_omitted",
+  "seed_semantics": "best_effort_reproducibility",
+  "max_output_tokens": 8192,
+  "id_scheme": "ID_ plus 26 type-neutral Crockford-base32 characters",
+  "checkpoints": [
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+  ],
+  "fields": [
+    "candidate_registry",
+    "utility_ranking",
+    "viability_partition",
+    "selected_candidate"
+  ],
+  "arms": [
+    "target_full_prefix",
+    "target_latest_thought",
+    "target_cumulative_thought",
+    "target_visible_only",
+    "probe_only",
+    "wrong_trial_latest",
+    "donor_full_prefix"
+  ],
+  "generation_requests_per_complete_run": 14,
+  "tomography_requests_per_complete_run": 196,
+  "logical_requests_per_complete_run": 210,
+  "max_physical_attempts_per_complete_run": 630,
+  "two_run_logical_ceiling": 224,
+  "two_run_max_physical_attempts": 672,
+  "replacement_rule": "run_02 only after run_01 generation ineligibility before tomography",
+  "finality_rule": "the first run entering tomography is final regardless of outcome",
+  "notes": [
+    "native-to-task means the prescribed task without the proposed retention intervention",
+    "generation and probe prompts exclude hermeneutic and metacognitive scaffolding",
+    "all tomography requests are fresh and stateless",
+    "target and donor full prefixes are task-adherence upper bounds",
+    "wrong-trial latest uses the donor artifact from the same checkpoint",
+    "adjacent temporal cross-scoring is derived and issues no additional request",
+    "cells are correlated completeness checks, not independent replications"
+  ]
+}
