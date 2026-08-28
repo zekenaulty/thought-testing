@@ -14,29 +14,38 @@ semantics and transition behavior of an opaque provider continuation state**:
 - whether detached readouts predict the originating state's prospective actions,
   conditional branches, revisions, and stopping behavior across a real tool
   interruption; and
-- eventually, whether an assigned metacognitive/hermeneutic scaffold package
-  changes which preregistered distinctions neutral probes can recover.
+- whether an assigned metacognitive/hermeneutic planning scaffold makes
+  decision structure observable enough to diagnose and revise locally.
 
-The current program separates baseline from intervention:
+The current experiment is aimed at the practical reasoning-engineering loop:
 
 ```text
-Review 02 exact-ledger boundary
-        -> ecological first-real-tool feasibility
-        -> native executable-plan characterization
-        -> minimal private-plan condition
-        -> neutral/retention scaffold experiments
-        -> claim-specific confirmation
-        -> only then downstream application decisions
+complex modernization dossier
+        -> private scaffolded planning state C_t
+        -> READY / continuation threshold
+        -> blank-visible isolated native carrier T_t
+        -> holistic semantic observation O_t(q)
+        -> sealed human diagnosis + local intervention prediction
+        -> adjusted continuation from the untouched READY state
+        -> re-isolation and matched baseline/adjusted executions
 ```
+
+Isolation/mutation is the primary observation instrument: it suppresses the
+ordinary task and visible answer while preserving the provider-native signed
+thought carrier. The experiment asks whether that view is useful for observing
+option structure, commitments, assumptions, unresolved tensions, and revision
+conditions—and whether a diagnostic intervention can produce a predicted,
+localized state change that survives into behavior.
 
 This is a black-box behavioral science of provider-native continuation artifacts,
 not an attempt to decrypt signatures, serialize complete cognition, or claim
 access to original internal reasoning.
 
-If a future preregistered scaffold contrast is positive, it would define a practical
-form of **reasoning-state engineering**: changing the originating deliberative
-procedure to change preregistered, model-mediated recoverability—not editing or
-decoding the opaque artifact itself.
+If the preregistered observation/intervention/execution chain is positive, it
+would establish a practical form of **reasoning-state engineering**: shaping the
+originating deliberative procedure, observing its recoverable decision state,
+and making a bounded diagnostic correction—not editing or decoding the opaque
+artifact itself.
 
 ## Relation to Raistlin Bridge
 
@@ -164,11 +173,18 @@ slice. That costs three API calls per slice, so use it intentionally.
 
 ## Synthetic opaque identifiers
 
-Controlled experiments must use type-neutral identifiers from
-`thoughtlab.opaque_ids.generate_opaque_id`. The canonical form is `ID_` followed
-by 26 uppercase Crockford-base32 characters (130 bits). Semantic role belongs in
-the withheld ground-truth record, never in the identifier: do not use prefixes
-such as `FACT_`, `PLAN_`, or `CONSTRAINT_`.
+Role-neutral synthetic tokens and experimental infrastructure use type-neutral
+identifiers from `thoughtlab.opaque_ids.generate_opaque_id`. The canonical form
+is `ID_` followed by 26 uppercase Crockford-base32 characters (130 bits). When an
+identifier is itself the experimental object, semantic role belongs in the
+withheld ground-truth record: do not use prefixes such as `FACT_`, `PLAN_`, or
+`CONSTRAINT_`.
+
+Do not use opaque identifiers to erase evidence provenance in hermeneutic tasks.
+Source type, authorship, scope, incentives, and institutional position can be
+part of the meaning the model must interpret. The modernization
+reasoning-engineering dossier therefore uses realistic fictional provenance;
+only its run, branch, and checkpoint identifiers are opaque.
 
 New controlled experiments use `gemini-3.7-flash`. Historical scripts and saved
 results retain their original model identifiers; runs should always record the
@@ -187,8 +203,10 @@ not a general reasoning-persistence result; see
 The earlier `thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md` is a
 consumed historical specification, not the governing next design.
 
-The current design awaiting review is
-[`thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md`](thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md).
-It uses exact, unmodified Interactions thought steps at a first genuine tool
-call and scores detached predictions against prospective counterfactual tool
-behavior, with an explicit task-recovery/re-solving control.
+The current freeze-ready review design is
+[`thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md`](thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md).
+It induces a complex planning state with a semantic-state scaffold, observes
+each checkpoint through a blank-visible isolated native carrier, pauses for a
+sealed human diagnostic intervention, and compares the resulting trace and
+execution deltas. Planning emits only raw `READY` or `NOT_READY`; provider
+truncation is carried forward only when an exact signed checkpoint is replayable.

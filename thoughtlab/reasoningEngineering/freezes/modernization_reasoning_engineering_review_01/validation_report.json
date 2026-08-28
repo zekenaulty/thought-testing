@@ -1,0 +1,25 @@
+{
+  "definition_errors": [],
+  "dossier_document_count": 11,
+  "function_or_tool_structure_present": false,
+  "isolation_is_primary": true,
+  "model_facing_json_readiness_envelope_present": false,
+  "neutral_continuation_exact": true,
+  "planning_status_tokens_present": true,
+  "preparation_credential_access_path_present": false,
+  "preparation_transport_path_present": false,
+  "raw_provider_artifacts_present": false,
+  "response_format_or_schema_present": false,
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ],
+  "schema_version": "modernization_reasoning_engineering_validation_v1",
+  "source_closure_sha256": "cc575cc31e96c0177e8b93a1278872bd67f23344ef2fc5937d8c45a2645fef31",
+  "source_file_count": 28,
+  "validated": true,
+  "withheld_notes_sent_to_model": false
+}

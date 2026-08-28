@@ -1,0 +1,17 @@
+# Migration-readiness and test evidence pack
+
+**Author:** North River modernization program management office  
+**Sources reproduced:** vendor test sheets, Authority rule-validation records, Eastbank acceptance evidence, and shadow-service comparisons  
+**Date:** 16 June 2026
+
+The contracted scenario register reports a 96.2 percent pass rate across 4,820 test cases for the New Case Platform and replacement rules service. The figure counts each named scenario equally. A frequency-weighted review commissioned after the incident found that the passed set covers approximately 62 percent of observed production rule-and-sequence combinations from the preceding year. Ordinary intake and single-document correction are heavily represented. Long correction chains, delayed acknowledgements, concurrent policy updates, provider recoupments, and two court-ordered manual processes are absent or sparsely tested.
+
+Of the 183 failed or blocked contracted scenarios, 119 concern known rule mappings for low-volume exceptions, 31 concern test-data quality, 18 concern payment or reversal behavior, and 15 remain under triage. The Benefits Authority believes most known mappings can be completed if six senior policy specialists are assigned. Four of those specialists currently support the legacy core and incident remediation. Tern’s seven-month readiness estimate assumes at least four specialists at half time beginning in September.
+
+A twenty-one-day shadow run received 74,600 Eastbank cases. The replacement service marked 6,420 unsupported before comparison. Among the remaining 68,180 cases, 62,998 determinations agreed with production legacy results, an agreement rate of 92.4 percent. Of the 5,182 disagreement cases, roughly two thirds mapped to known missing rules or different rule-version timing. The remainder included unexplained results, incomplete source data, and cases where reviewers could not determine which system better represented policy. The shadow run did not initiate payments and therefore did not test settlement finality, retry behavior, or reversal chains.
+
+Performance tests show the replacement service can evaluate ordinary cases above projected peak volume when case data is complete. Tests using correction chains show higher latency but remain within the intended service objective. No integrated load test has combined peak correction volume, gateway delay, legacy coexistence, and Treasury settlement. The Shared Integration Gateway team says it can host another shadow feed, but not another production reconciliation path, without staffing and capacity changes.
+
+Rollback preparation was tested by exporting New Case Platform data into the legacy intake format. Required structured fields passed at 99.1 percent, as Eastbank reports. A separate operational exercise involving 300 cases found that staff could not reliably reconstruct queue order, pending document review, or prior worker intent from the export alone. Program materials used “rollback” for both data compatibility and restoration of the old operating model, obscuring the difference.
+
+The casework platform is operating at meaningful scale, and the rules service agrees with the legacy result for most supported shadow cases. Exception coverage, temporal behavior, and payment integration remain incomplete. The program office cannot assign one readiness date without decisions about scope, specialist allocation, temporary controls, and the evidence required before a production cohort.
