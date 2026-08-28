@@ -1,0 +1,60 @@
+{
+  "schema_version": "bookforge_ready_trace_freeze_validation_v1",
+  "validated": true,
+  "definition_errors": [],
+  "manifest_errors": [],
+  "planned_calls": {
+    "source_minimum": 2,
+    "source_maximum": 6,
+    "signature_readouts": 26,
+    "controls": 5,
+    "continuations": 2,
+    "logical_minimum_when_both_sources_eligible": 35,
+    "logical_maximum_when_both_sources_eligible": 39,
+    "physical_maximum": 117
+  },
+  "evidence_kind": "static_architectural_attestation_plus_hashed_regression_source",
+  "preparation_transport_path_present": false,
+  "preparation_credential_access_path_present": false,
+  "raw_provider_artifacts_present": false,
+  "selected_capsule_copied_into_freeze": false,
+  "historical_signature_copied_into_freeze": false,
+  "forbidden_runtime_entries": [],
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ],
+  "source_file_allowlist": [
+    ".gitignore",
+    "thoughtlab/__init__.py",
+    "thoughtlab/gemini_interactions.py",
+    "thoughtlab/opaque_ids.py",
+    "thoughtlab/stateTransitions/__init__.py",
+    "thoughtlab/stateTransitions/fork_pilot.py",
+    "thoughtlab/stateTransitions/probes.py",
+    "thoughtlab/stateTransitions/score_ground_truth.py",
+    "thoughtlab/reasoningTraces/REASONING_TRACE_READY_DESIGN.md",
+    "thoughtlab/reasoningTraces/__init__.py",
+    "thoughtlab/reasoningTraces/reasoning_trace_protocol.py",
+    "thoughtlab/reasoningTraces/reasoning_trace_freeze.py",
+    "thoughtlab/reasoningTraces/reasoning_trace_pilot.py",
+    "tests/test_reasoning_trace_protocol.py",
+    "tests/test_reasoning_trace_freeze.py",
+    "tests/test_reasoning_trace_pilot.py"
+  ],
+  "external_capsule_binding": {
+    "binding_semantics": "external_exact_hashes_only_not_copied_into_freeze",
+    "relative_path": "bookforge-thought-corpus/capsules/0040_repair_scene_8e3c8b2c444a.json",
+    "capsule_file_sha256": "a93e90a190ef6ef53a918673e7edff43be636b2639ea91dc78c1aced94ad4db2",
+    "prompt_sha256": "1b8f268a9308067a2288d4ac0f4a199c09ac0cdb5759b4697d96606dfb9635e4",
+    "original_system_sha256": "24c2cf5be4f4e3e08b5853d2fd070d41da08a01e18dad3d7464ea40d81288cf6",
+    "original_user_sha256": "8bb7d739f4d940c9c5d5846998a301c12610e3d05f1175d9ae3e109de35743bd",
+    "historical_visible_sha256": "f65ea4c87464c41d37ecfccb2713a21fb1615b9067813d1efa96c438dc2430af",
+    "corpus_source_commit": "e4dd16f72a2d8a1ba077f12e1a2d6982786d9554",
+    "raw_signature_copied_into_freeze": false
+  },
+  "no_call_claim": "freeze preparation imports only the pure protocol module and contains no model transport or credential-access path; exact source and external capsule hashes are authoritative"
+}

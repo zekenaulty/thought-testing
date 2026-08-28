@@ -1,0 +1,112 @@
+{
+  "schema_version": "bookforge_ready_trace_sanitized_adjudication_v1",
+  "freeze_id": "6712b8ba50dc36071fbd8209654c90dc206f2918032b1bbf980b3faa7c4f23d2",
+  "model": "gemini-3.7-flash",
+  "status": "complete",
+  "primary_conclusion": "positive_for_limited_probe_conditioned_semantic_debugging_negative_for_exhaustive_trace_viewer",
+  "run": {
+    "logical_requests": 35,
+    "physical_attempts": 36,
+    "transport_retries": 1,
+    "eligible_sources": 2,
+    "eligible_signature_only_readouts": 26,
+    "eligible_controls": 5,
+    "eligible_continuations": 2,
+    "all_readouts_sealed_before_continuation": true,
+    "no_function_or_tool_requests": true,
+    "continuation_json_semantically_parseable": {
+      "source_A": true,
+      "source_B": true
+    }
+  },
+  "signature_only_selectivity": {
+    "source_A": {
+      "detailed": 3,
+      "unknown_or_generic": 10,
+      "total": 13
+    },
+    "source_B": {
+      "detailed": 3,
+      "unknown_or_generic": 10,
+      "total": 13
+    },
+    "detailed_probes": [
+      "conflicts_risks",
+      "revision_conditions",
+      "uncertainties"
+    ],
+    "probe_class_agreement": "13/13",
+    "exact_text_matches": "5/13"
+  },
+  "source_truth": {
+    "claims": 23,
+    "independently_exact_source_supported": 13,
+    "semantically_source_supported": 6,
+    "plausible_unverifiable": 4,
+    "contradicted": 0
+  },
+  "controls": {
+    "probe_only_task_specific": false,
+    "visible_READY_only_task_specific": false,
+    "task_only_detailed": true,
+    "full_prefix_A_detailed": true,
+    "full_prefix_B_detailed": true,
+    "successful_probe_matched_no_carrier_controls_present": false
+  },
+  "continuation_correspondence": {
+    "realized": 19,
+    "compatible_nondiscriminating": 3,
+    "contradicted": 0,
+    "not_observable": 7,
+    "material_A_B_divergence": true,
+    "core_endpoint_divergence": false
+  },
+  "debugging_diagnoses": [
+    {
+      "category": "comprehension_present",
+      "evidence": "Exact entity, callback, chapter-boundary, cast, and thread-conflict facts were recovered from detached carriers."
+    },
+    {
+      "category": "reasoning_priority_failure",
+      "source": "source_B",
+      "evidence": "The reconstructed full-prefix plan retained global thread IDs and the continuation emitted them despite the scene-card empty-array rule."
+    },
+    {
+      "category": "execution_adherence_failure_exploratory",
+      "source": "both",
+      "evidence": "Readouts recognized the biological-metaphor risk; continuations reintroduced heartbeat/heart language, and B additionally used awake/predator imagery. This was not separately atomized before reveal or rerun through the linter."
+    },
+    {
+      "category": "unsupported_state_escalation",
+      "source": "source_B",
+      "evidence": "The continuation changed the Oath anchor from strained/intact to broken, cold, and inert."
+    }
+  ],
+  "execution_contract": {
+    "source_A": "pass",
+    "source_B": "fail_open_threads_rule",
+    "source_A_open_threads": [],
+    "source_B_open_threads": [
+      "THREAD_oath_binding",
+      "THREAD_starfall_corruption"
+    ],
+    "source_A_approximate_prose_words": 1790,
+    "source_B_approximate_prose_words": 2208
+  },
+  "private_evidence_hashes": {
+    "pre_reveal_claim_inventory_sha256": "16c295680e8a95f7fbec2ecde5e2d148099015da69db4751c10719f1edec42e1",
+    "source_truth_adjudication_sha256": "0263e60062a30c929968d74e910a8d73d072106d8fc3cc5262444c32ff7e8222",
+    "control_contrast_adjudication_sha256": "f664ec9bfa35c163fa548ce159f069b0809e8a089f2bb49c1431f5df0d3362be",
+    "continuation_adjudication_sha256": "ad35ea60bdc56beb83ba23848376b0a5e5937b1ee17278dc4ab96217ec6f52bc"
+  },
+  "limitations": [
+    "successful targeted probes lack probe-matched no-carrier controls",
+    "one response per cell and two sources on one task",
+    "primary investigator not fully blinded",
+    "continuation agreement cannot exclude compatible re-reasoning",
+    "full-prefix arms combine task and carrier",
+    "raw private artifacts are not encrypted",
+    "no claim of verbatim hidden chain-of-thought or population reliability"
+  ],
+  "recommended_next_test": "matched semantic-addressability matrix with carrier, visible-only, and probe-only arms; successful probe wordings plus paraphrase repeats; unchanged continuation validation"
+}

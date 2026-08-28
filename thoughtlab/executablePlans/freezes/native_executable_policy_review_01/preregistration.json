@@ -1,0 +1,110 @@
+{
+  "schema_version": "executable_plan_preregistration_v1",
+  "experiment_id": "native_executable_policy_feasibility_v1",
+  "protocol_revision": "1.0_reviewed_repeated_policy_readouts",
+  "model": "gemini-3.7-flash",
+  "experiment_definition": {
+    "canonical_json_sha256": "cf983bbb7141ac14b2b81768ad36a4910a28c2bf5d21d83d4c11bcb5dfad3a91",
+    "file_bytes_sha256": "be59cc321492fc424ad7ed26e3e4f2002b5dc270b1299f404a4ad3deaa374194"
+  },
+  "manifest": {
+    "canonical_json_sha256": "bea08142959dae990cc46e444379df662ad1b2487aa3c6455acff26ea4246c91",
+    "file_bytes_sha256": "347fc8720f7e5aed1070c462f8a613bc70c09a227e51c856d52d10833fe953b3"
+  },
+  "source_file_bytes_sha256": {
+    ".gitignore": "ee7631e0c2b51bc1c3895139f38821ee9689141279fb449b5b2af099b226d1f1",
+    "thoughtlab/__init__.py": "734c7311dc903083d4e50b2b1fad9555eaa2d0227d70f28494d9fe98e514dee4",
+    "thoughtlab/gemini_interactions.py": "5f2b0a287cb905bb21a5ce9e0cca340893303b0f88a5e84b4c18dcbb65e3a2ee",
+    "thoughtlab/opaque_ids.py": "9c0c4480e92db428022e5ac7cc83046dc3996b15dc6fcf386914bfd14fa08619",
+    "thoughtlab/stateTransitions/__init__.py": "9ea6a60bf0379f382ab6e1b537f76e857bc9fd8f1bece55649711a48a61ef3cb",
+    "thoughtlab/stateTransitions/fork_pilot.py": "24a17d18c34d1384f7b1ffaec544f819cdc6a05bbe1b7211ef1dded84fd74441",
+    "thoughtlab/stateTransitions/probes.py": "6950b8b64b5d2cd2c070e8588c88a47f5fa302abbf4f412e2f70a850324361cd",
+    "thoughtlab/stateTransitions/score_ground_truth.py": "bba314ef0ad07fb4c2a39609a43272c8f9ed1f6cef32b458c681c166e291157f",
+    "thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md": "7e73dac357046815db1d24a8bc3acd3f1f455a751057ef8ca27459d61b57dd00",
+    "thoughtlab/executablePlans/__init__.py": "d78e6c1118eeddd505baf7d3a46ddb9ae3cb7df9cb43f3e0173a7878894d9073",
+    "thoughtlab/executablePlans/executable_plan_protocol.py": "ab12e591a541879ae73a43ce9e6536f1ba8f7e0893380e03f7d222d5861536e1",
+    "thoughtlab/executablePlans/executable_plan_freeze.py": "d097bbb023939915027676c01bc384e2e4571d0ab9e9157276140eb3219d0f10",
+    "thoughtlab/executablePlans/executable_plan_pilot.py": "32a25d58e75e657bd4b2ba079a1d349cf03cac5578e47ba993c5a98bdb60d576",
+    "tests/test_executable_plan_protocol.py": "f7496ded6993480aaf23facd1d34115924ed0840f0545f9eda0a707547d2f647",
+    "tests/test_executable_plan_freeze.py": "c0fce504b39ad3d8c4be9d9067f627314f104fa1716d6750e2a7e794a8b8508f",
+    "tests/test_executable_plan_pilot.py": "3397272fb35177312e39560e8992cb661032c179140f28b69ea4725465bb3b0e"
+  },
+  "source_binding": {
+    "commit": "b081f866954dd1c8dc3a1135013c4368278a8c9a",
+    "relevant_tree_clean": false,
+    "relevant_status": [
+      " M thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md",
+      "?? tests/test_executable_plan_freeze.py",
+      "?? tests/test_executable_plan_pilot.py",
+      "?? tests/test_executable_plan_protocol.py",
+      "?? thoughtlab/executablePlans/__init__.py",
+      "?? thoughtlab/executablePlans/executable_plan_freeze.py",
+      "?? thoughtlab/executablePlans/executable_plan_pilot.py",
+      "?? thoughtlab/executablePlans/executable_plan_protocol.py"
+    ],
+    "binding_rule": "source_file_byte_hashes_are_authoritative"
+  },
+  "system_instruction_sha256": "663ae334cd9072179324ca306e93fe301a1db22863f10ac739e05a032002d990",
+  "tool_declarations_canonical_json_sha256": "9fc26158470d2e34809218a413180b1485f7a20b3c0d4d01429faa6bb3713521",
+  "planned_calls": {
+    "components": {
+      "source_generation": 2,
+      "prospective_when_valid": 36,
+      "atomic": 12,
+      "structured": 4,
+      "open": 2,
+      "task_only": 9,
+      "visible_only": 3,
+      "probe_only": 3,
+      "full_task_semantic": 2
+    },
+    "source_ineligibility_stop": {
+      "minimum": 1,
+      "maximum": 2
+    },
+    "eligible_execution_logical_range": {
+      "minimum": 55,
+      "expected_when_all_trajectories_are_valid": 73,
+      "maximum_from_frozen_schedule_and_task_topology": 73
+    },
+    "global_arbitrary_call_ceiling": null,
+    "prospective_branch_decision_limit": 3
+  },
+  "repeat_counts": {
+    "prospective": 3,
+    "atomic": 2,
+    "structured": 2,
+    "task_only": 3,
+    "open": 1,
+    "visible_only": 1,
+    "probe_only": 1,
+    "full_task_semantic": 2
+  },
+  "schedule_canonical_json_sha256": "3edc71e195a4572e8395bda2ab7ec98183a1349d977c9f3bfd3a00a443bbf1a7",
+  "transport_policy": {
+    "timeout_seconds_per_attempt": 120,
+    "max_attempts_per_logical_request": 3,
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "retryable": [
+      "transport_error",
+      "http_408",
+      "http_429",
+      "http_500_502_503_504"
+    ],
+    "nonretryable": [
+      "http_400_protocol_rejection",
+      "http_other",
+      "all_2xx_including_malformed_or_unfavorable"
+    ],
+    "selection_rule": "first_nonretryable_response_or_final_attempt",
+    "retry_body": "byte_identical_canonical_json",
+    "semantic_retries": "forbidden"
+  },
+  "all_sources_generated_before_measurement": true,
+  "no_replacement_source_generation": true,
+  "raw_provider_artifacts_private": true,
+  "execution_must_consume_this_exact_freeze": true
+}

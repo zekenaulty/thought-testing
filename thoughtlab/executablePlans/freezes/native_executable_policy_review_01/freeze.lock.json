@@ -1,0 +1,11 @@
+{
+  "schema_version": "executable_plan_freeze_lock_v1",
+  "hash_algorithm": "sha256",
+  "file_hash_semantics": "exact_file_bytes",
+  "files": {
+    "experiment_definition.json": "be59cc321492fc424ad7ed26e3e4f2002b5dc270b1299f404a4ad3deaa374194",
+    "manifest.json": "347fc8720f7e5aed1070c462f8a613bc70c09a227e51c856d52d10833fe953b3",
+    "preregistration.json": "314f5ebb5b4da79fd1a5c7ee367f435a3aafafde44ed232ffc3ec6b3e811c752",
+    "validation_report.json": "d4c5bfbb1c7de347bf5102ee780bc54c9fd5569f664d928eb89793d5e678ec56"
+  }
+}

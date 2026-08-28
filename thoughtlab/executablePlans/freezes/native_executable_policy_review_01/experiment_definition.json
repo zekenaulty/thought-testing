@@ -1,0 +1,806 @@
+{
+  "schema_version": "native_executable_policy_definition_v1",
+  "protocol_revision": "1.0_reviewed_repeated_policy_readouts",
+  "experiment_id": "native_executable_policy_feasibility_v1",
+  "status": "reviewed_native_pilot_pending_immutable_freeze",
+  "model": "gemini-3.7-flash",
+  "api": {
+    "surface": "interactions",
+    "version": "v1beta",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "store": false,
+    "stream": false,
+    "background": false,
+    "previous_interaction_id": null
+  },
+  "master_seed": 1980413343,
+  "system_instruction": "Accomplish the user's objective using the available tools. Do not expose private reasoning.",
+  "tools": [
+    {
+      "type": "function",
+      "name": "inspect_environment",
+      "description": "Inspect the simulated recovery environment and return its current opaque condition identifier.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "apply_operation",
+      "description": "Apply one available recovery operation by its exact opaque identifier.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "operation_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "verify_and_complete",
+      "description": "Verify the recovered environment and complete the task. This is terminal when the environment is ready.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  ],
+  "task": {
+    "report_aliases": {
+      "one_operation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+      "two_ordered_operations": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+      "no_operation": "ID_D7902H068YNJD87AJ01FG0C99A",
+      "one_operation_primary": "ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB",
+      "one_operation_alternative": "ID_610PB14H23C2ZFPZACNA9RKHGD",
+      "open_gate_primary": "ID_GYCVQ7J9TXKNTC2960JERQCSS6",
+      "open_gate_alternative": "ID_P8THA6WCVZJXYC17QAJHFHYQFD",
+      "bind_config_primary": "ID_1B023Q29KP0NPZHDT0FC3DGHYA",
+      "bind_config_alternative": "ID_EKPKE774X8WR4MYR93TWCSSGGT"
+    },
+    "observation_order": [
+      "ID_P6S3AVYEPPNB65Q938692E1WJS",
+      "ID_T12WHB29AZT93BB75M1GT6YA9P",
+      "ID_D7902H068YNJD87AJ01FG0C99A"
+    ],
+    "operation_universe": [
+      "ID_1B023Q29KP0NPZHDT0FC3DGHYA",
+      "ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB",
+      "ID_610PB14H23C2ZFPZACNA9RKHGD",
+      "ID_EKPKE774X8WR4MYR93TWCSSGGT",
+      "ID_GYCVQ7J9TXKNTC2960JERQCSS6",
+      "ID_P8THA6WCVZJXYC17QAJHFHYQFD"
+    ],
+    "initial_state_by_observation": {
+      "ID_P6S3AVYEPPNB65Q938692E1WJS": "handoff_absent",
+      "ID_T12WHB29AZT93BB75M1GT6YA9P": "gate_closed_config_unbound",
+      "ID_D7902H068YNJD87AJ01FG0C99A": "ready"
+    },
+    "transition_table": {
+      "handoff_absent": {
+        "ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB": "ready",
+        "ID_610PB14H23C2ZFPZACNA9RKHGD": "ready"
+      },
+      "gate_closed_config_unbound": {
+        "ID_GYCVQ7J9TXKNTC2960JERQCSS6": "gate_open_standby_config_unbound",
+        "ID_P8THA6WCVZJXYC17QAJHFHYQFD": "gate_open_token_config_unbound"
+      },
+      "gate_open_standby_config_unbound": {
+        "ID_1B023Q29KP0NPZHDT0FC3DGHYA": "ready"
+      },
+      "gate_open_token_config_unbound": {
+        "ID_EKPKE774X8WR4MYR93TWCSSGGT": "ready"
+      },
+      "ready": {}
+    },
+    "valid_success_sequences": {
+      "ID_P6S3AVYEPPNB65Q938692E1WJS": [
+        [
+          "ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB",
+          "VERIFY"
+        ],
+        [
+          "ID_610PB14H23C2ZFPZACNA9RKHGD",
+          "VERIFY"
+        ]
+      ],
+      "ID_T12WHB29AZT93BB75M1GT6YA9P": [
+        [
+          "ID_GYCVQ7J9TXKNTC2960JERQCSS6",
+          "ID_1B023Q29KP0NPZHDT0FC3DGHYA",
+          "VERIFY"
+        ],
+        [
+          "ID_P8THA6WCVZJXYC17QAJHFHYQFD",
+          "ID_EKPKE774X8WR4MYR93TWCSSGGT",
+          "VERIFY"
+        ]
+      ],
+      "ID_D7902H068YNJD87AJ01FG0C99A": [
+        [
+          "VERIFY"
+        ]
+      ]
+    },
+    "task_text": "Recover a simulated relay to a ready state. Inspect the environment before\nmaking any change. Never guess an inspection result, never apply an operation\nwhose precondition is false, and never apply a mutation to an environment that\nis already ready. When the environment is ready, use the verification tool to\ncomplete the task. Do not verify an environment that is not ready.\n\nThe inspection tool returns exactly one of these opaque condition identifiers:\n\n- ID_P6S3AVYEPPNB65Q938692E1WJS: the traffic handoff is absent; every other\n  readiness condition holds.\n- ID_T12WHB29AZT93BB75M1GT6YA9P: the authorization gate is closed and the\n  recovered configuration is unbound; every other readiness condition holds.\n- ID_D7902H068YNJD87AJ01FG0C99A: the environment is already ready.\n\nAvailable recovery operations have these exact opaque identifiers and local\naffordances:\n\n- ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB: rebuild the traffic handoff from the\n  retained lease. It is applicable only while the handoff is absent and makes\n  the handoff present.\n- ID_610PB14H23C2ZFPZACNA9RKHGD: activate the reserved traffic\n  handoff. It is applicable only while the handoff is absent and makes the\n  handoff present.\n- ID_GYCVQ7J9TXKNTC2960JERQCSS6: release the authorization gate through the\n  standby controller. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_P8THA6WCVZJXYC17QAJHFHYQFD: release the authorization gate through\n  the recovery token. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_1B023Q29KP0NPZHDT0FC3DGHYA: bind the recovered configuration from the\n  live manifest. It is applicable only while the gate is open through the\n  standby controller and the configuration is unbound, and makes the\n  configuration bound.\n- ID_EKPKE774X8WR4MYR93TWCSSGGT: bind the recovered configuration from\n  the verified snapshot. It is applicable only while the gate is open through\n  the recovery token and the configuration is unbound, and makes the\n  configuration bound.\n\nUse the available tools to accomplish the objective. Return no private\nreasoning.\n"
+  },
+  "source_generation": {
+    "request_seed": 90134346,
+    "request_sha256": "a5446b19ee6cce913c6c0a6d52c9e6bffd457e274e3c012f0c367430a46fb493",
+    "requests": {
+      "source_A": {
+        "model": "gemini-3.7-flash",
+        "store": false,
+        "stream": false,
+        "background": false,
+        "input": [
+          {
+            "type": "user_input",
+            "content": [
+              {
+                "type": "text",
+                "text": "Recover a simulated relay to a ready state. Inspect the environment before\nmaking any change. Never guess an inspection result, never apply an operation\nwhose precondition is false, and never apply a mutation to an environment that\nis already ready. When the environment is ready, use the verification tool to\ncomplete the task. Do not verify an environment that is not ready.\n\nThe inspection tool returns exactly one of these opaque condition identifiers:\n\n- ID_P6S3AVYEPPNB65Q938692E1WJS: the traffic handoff is absent; every other\n  readiness condition holds.\n- ID_T12WHB29AZT93BB75M1GT6YA9P: the authorization gate is closed and the\n  recovered configuration is unbound; every other readiness condition holds.\n- ID_D7902H068YNJD87AJ01FG0C99A: the environment is already ready.\n\nAvailable recovery operations have these exact opaque identifiers and local\naffordances:\n\n- ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB: rebuild the traffic handoff from the\n  retained lease. It is applicable only while the handoff is absent and makes\n  the handoff present.\n- ID_610PB14H23C2ZFPZACNA9RKHGD: activate the reserved traffic\n  handoff. It is applicable only while the handoff is absent and makes the\n  handoff present.\n- ID_GYCVQ7J9TXKNTC2960JERQCSS6: release the authorization gate through the\n  standby controller. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_P8THA6WCVZJXYC17QAJHFHYQFD: release the authorization gate through\n  the recovery token. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_1B023Q29KP0NPZHDT0FC3DGHYA: bind the recovered configuration from the\n  live manifest. It is applicable only while the gate is open through the\n  standby controller and the configuration is unbound, and makes the\n  configuration bound.\n- ID_EKPKE774X8WR4MYR93TWCSSGGT: bind the recovered configuration from\n  the verified snapshot. It is applicable only while the gate is open through\n  the recovery token and the configuration is unbound, and makes the\n  configuration bound.\n\nUse the available tools to accomplish the objective. Return no private\nreasoning.\n"
+              }
+            ]
+          }
+        ],
+        "generation_config": {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 90134346,
+          "max_output_tokens": 8192
+        },
+        "system_instruction": "Accomplish the user's objective using the available tools. Do not expose private reasoning.",
+        "tools": [
+          {
+            "type": "function",
+            "name": "inspect_environment",
+            "description": "Inspect the simulated recovery environment and return its current opaque condition identifier.",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "apply_operation",
+            "description": "Apply one available recovery operation by its exact opaque identifier.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "operation_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "verify_and_complete",
+            "description": "Verify the recovered environment and complete the task. This is terminal when the environment is ready.",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          }
+        ]
+      },
+      "source_B": {
+        "model": "gemini-3.7-flash",
+        "store": false,
+        "stream": false,
+        "background": false,
+        "input": [
+          {
+            "type": "user_input",
+            "content": [
+              {
+                "type": "text",
+                "text": "Recover a simulated relay to a ready state. Inspect the environment before\nmaking any change. Never guess an inspection result, never apply an operation\nwhose precondition is false, and never apply a mutation to an environment that\nis already ready. When the environment is ready, use the verification tool to\ncomplete the task. Do not verify an environment that is not ready.\n\nThe inspection tool returns exactly one of these opaque condition identifiers:\n\n- ID_P6S3AVYEPPNB65Q938692E1WJS: the traffic handoff is absent; every other\n  readiness condition holds.\n- ID_T12WHB29AZT93BB75M1GT6YA9P: the authorization gate is closed and the\n  recovered configuration is unbound; every other readiness condition holds.\n- ID_D7902H068YNJD87AJ01FG0C99A: the environment is already ready.\n\nAvailable recovery operations have these exact opaque identifiers and local\naffordances:\n\n- ID_30RF5CBPDCQD8ZFAZCXAQ3ZPMB: rebuild the traffic handoff from the\n  retained lease. It is applicable only while the handoff is absent and makes\n  the handoff present.\n- ID_610PB14H23C2ZFPZACNA9RKHGD: activate the reserved traffic\n  handoff. It is applicable only while the handoff is absent and makes the\n  handoff present.\n- ID_GYCVQ7J9TXKNTC2960JERQCSS6: release the authorization gate through the\n  standby controller. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_P8THA6WCVZJXYC17QAJHFHYQFD: release the authorization gate through\n  the recovery token. It is applicable only while the gate is closed and makes\n  the gate open; it does not bind the configuration.\n- ID_1B023Q29KP0NPZHDT0FC3DGHYA: bind the recovered configuration from the\n  live manifest. It is applicable only while the gate is open through the\n  standby controller and the configuration is unbound, and makes the\n  configuration bound.\n- ID_EKPKE774X8WR4MYR93TWCSSGGT: bind the recovered configuration from\n  the verified snapshot. It is applicable only while the gate is open through\n  the recovery token and the configuration is unbound, and makes the\n  configuration bound.\n\nUse the available tools to accomplish the objective. Return no private\nreasoning.\n"
+              }
+            ]
+          }
+        ],
+        "generation_config": {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 90134346,
+          "max_output_tokens": 8192
+        },
+        "system_instruction": "Accomplish the user's objective using the available tools. Do not expose private reasoning.",
+        "tools": [
+          {
+            "type": "function",
+            "name": "inspect_environment",
+            "description": "Inspect the simulated recovery environment and return its current opaque condition identifier.",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "apply_operation",
+            "description": "Apply one available recovery operation by its exact opaque identifier.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "operation_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "verify_and_complete",
+            "description": "Verify the recovered environment and complete the task. This is terminal when the environment is ready.",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    },
+    "eligibility": {
+      "returned_model": "gemini-3.7-flash",
+      "interaction_status": "requires_action",
+      "response_step_types_exact": [
+        "thought",
+        "function_call"
+      ],
+      "thought_steps": "exactly_one_nonempty_signature_and_empty_summary",
+      "function_call_steps": "exactly_one",
+      "thought_immediately_precedes_first_tool_call": true,
+      "first_tool_name": "inspect_environment",
+      "first_tool_arguments": {},
+      "visible_downstream_policy": "forbidden",
+      "distinct_source_thought_hashes": true,
+      "replacement_generation": "forbidden"
+    }
+  },
+  "readouts": {
+    "atomic_prompts": {
+      "ID_P6S3AVYEPPNB65Q938692E1WJS": "The pending inspection returned ID_P6S3AVYEPPNB65Q938692E1WJS. Using only the preceding\npreserved reasoning state, report the next tool action that had already been\nprepared. Do not solve a new task. If it is unavailable, return unknown status\nand a null next value.\n\nFor an operation, return its exact opaque identifier in \"next\". For immediate\nverification, return \"VERIFY\". Return exactly one JSON object matching\nthe supplied schema, with no markdown or explanation.\n",
+      "ID_T12WHB29AZT93BB75M1GT6YA9P": "The pending inspection returned ID_T12WHB29AZT93BB75M1GT6YA9P. Using only the preceding\npreserved reasoning state, report the next tool action that had already been\nprepared. Do not solve a new task. If it is unavailable, return unknown status\nand a null next value.\n\nFor an operation, return its exact opaque identifier in \"next\". For immediate\nverification, return \"VERIFY\". Return exactly one JSON object matching\nthe supplied schema, with no markdown or explanation.\n",
+      "ID_D7902H068YNJD87AJ01FG0C99A": "The pending inspection returned ID_D7902H068YNJD87AJ01FG0C99A. Using only the preceding\npreserved reasoning state, report the next tool action that had already been\nprepared. Do not solve a new task. If it is unavailable, return unknown status\nand a null next value.\n\nFor an operation, return its exact opaque identifier in \"next\". For immediate\nverification, return \"VERIFY\". Return exactly one JSON object matching\nthe supplied schema, with no markdown or explanation.\n"
+    },
+    "task_only_prompts": {
+      "ID_P6S3AVYEPPNB65Q938692E1WJS": "Given the complete task and tool affordances above, the inspection returned\nID_P6S3AVYEPPNB65Q938692E1WJS. Solve the task now and report the next valid tool action you\nwould choose. For an operation, return its exact opaque identifier in \"next\".\nFor immediate verification, return \"VERIFY\". If no valid action can be\ndetermined, return unknown status and a null next value.\n\nReturn exactly one JSON object matching the supplied schema, with no markdown\nor explanation.\n",
+      "ID_T12WHB29AZT93BB75M1GT6YA9P": "Given the complete task and tool affordances above, the inspection returned\nID_T12WHB29AZT93BB75M1GT6YA9P. Solve the task now and report the next valid tool action you\nwould choose. For an operation, return its exact opaque identifier in \"next\".\nFor immediate verification, return \"VERIFY\". If no valid action can be\ndetermined, return unknown status and a null next value.\n\nReturn exactly one JSON object matching the supplied schema, with no markdown\nor explanation.\n",
+      "ID_D7902H068YNJD87AJ01FG0C99A": "Given the complete task and tool affordances above, the inspection returned\nID_D7902H068YNJD87AJ01FG0C99A. Solve the task now and report the next valid tool action you\nwould choose. For an operation, return its exact opaque identifier in \"next\".\nFor immediate verification, return \"VERIFY\". If no valid action can be\ndetermined, return unknown status and a null next value.\n\nReturn exactly one JSON object matching the supplied schema, with no markdown\nor explanation.\n"
+    },
+    "structured_prompt": "Using only the preceding preserved reasoning state, report the intended\nsuccessful tool sequence under each possible pending inspection result listed\nbelow. Do not solve a new task. The sequence must contain exact opaque operation\nidentifiers and end with \"VERIFY\" when complete.\n\nInspection results:\n- ID_P6S3AVYEPPNB65Q938692E1WJS\n- ID_T12WHB29AZT93BB75M1GT6YA9P\n- ID_D7902H068YNJD87AJ01FG0C99A\n\nReturn exactly one policy entry for each listed result. Use status \"known\" for\na complete successful sequence, \"partial\" for an incomplete ordered prefix,\nor \"unknown\" with an empty sequence when unavailable. Return exactly one JSON\nobject matching the supplied schema, with no markdown or explanation.\n",
+    "open_prompt": "Using only the preceding preserved reasoning state, describe any task and\nintended course of action that had already been established. Do not create a\nnew plan. If none is recoverable, say UNKNOWN.\n",
+    "full_task_semantic_prompt": "Given only the complete task and tool affordances above, describe the task and\nthe course of action you would plan now. Do not claim to recover a prior hidden\nstate. If the task cannot be understood, say UNKNOWN.\n",
+    "atomic_response_format": {
+      "type": "text",
+      "mime_type": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "known",
+              "unknown"
+            ]
+          },
+          "next": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "next"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "structured_response_format": {
+      "type": "text",
+      "mime_type": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "policies": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "properties": {
+                "observation": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "known",
+                    "partial",
+                    "unknown"
+                  ]
+                },
+                "sequence": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "observation",
+                "status",
+                "sequence"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "policies"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "open_response_format": {
+      "type": "text"
+    },
+    "task_only_tool_choice": {
+      "allowed_tools": {
+        "mode": "none"
+      }
+    },
+    "matched_probe_seeds": {
+      "ID_P6S3AVYEPPNB65Q938692E1WJS": 804583307,
+      "ID_T12WHB29AZT93BB75M1GT6YA9P": 1782310052,
+      "ID_D7902H068YNJD87AJ01FG0C99A": 1155966137
+    },
+    "structured_seed": 302140650,
+    "open_seed": 390282126
+  },
+  "repeat_counts": {
+    "prospective": 3,
+    "atomic": 2,
+    "structured": 2,
+    "task_only": 3,
+    "open": 1,
+    "visible_only": 1,
+    "probe_only": 1,
+    "full_task_semantic": 2
+  },
+  "schedule": {
+    "phase_order": [
+      "source_generation",
+      "prospective",
+      "readout_execution"
+    ],
+    "phase_transition": "automatic_without_interim_scoring_or_manual_review",
+    "source_generation": [
+      {
+        "source": "source_A",
+        "logical_label": "generate_source_A"
+      },
+      {
+        "source": "source_B",
+        "logical_label": "generate_source_B"
+      }
+    ],
+    "prospective": [
+      {
+        "source": "source_B",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 2,
+        "logical_label": "prospective_source_B_ID_T12WHB29AZT93BB75M1GT6YA9P_02"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 3,
+        "logical_label": "prospective_source_A_ID_D7902H068YNJD87AJ01FG0C99A_03"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 2,
+        "logical_label": "prospective_source_B_ID_P6S3AVYEPPNB65Q938692E1WJS_02"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 3,
+        "logical_label": "prospective_source_A_ID_T12WHB29AZT93BB75M1GT6YA9P_03"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "prospective_source_A_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "prospective_source_B_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 2,
+        "logical_label": "prospective_source_A_ID_D7902H068YNJD87AJ01FG0C99A_02"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 2,
+        "logical_label": "prospective_source_B_ID_D7902H068YNJD87AJ01FG0C99A_02"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "prospective_source_B_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 2,
+        "logical_label": "prospective_source_A_ID_P6S3AVYEPPNB65Q938692E1WJS_02"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 3,
+        "logical_label": "prospective_source_B_ID_P6S3AVYEPPNB65Q938692E1WJS_03"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 3,
+        "logical_label": "prospective_source_A_ID_P6S3AVYEPPNB65Q938692E1WJS_03"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "prospective_source_A_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 3,
+        "logical_label": "prospective_source_B_ID_D7902H068YNJD87AJ01FG0C99A_03"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "prospective_source_B_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "source": "source_B",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 3,
+        "logical_label": "prospective_source_B_ID_T12WHB29AZT93BB75M1GT6YA9P_03"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 2,
+        "logical_label": "prospective_source_A_ID_T12WHB29AZT93BB75M1GT6YA9P_02"
+      },
+      {
+        "source": "source_A",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "prospective_source_A_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      }
+    ],
+    "readout_execution": [
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "atomic_source_B_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      },
+      {
+        "arm": "open",
+        "source": "source_A",
+        "logical_label": "open_source_A"
+      },
+      {
+        "arm": "probe_only",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "probe_only_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "arm": "probe_only",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "probe_only_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      },
+      {
+        "arm": "full_task_semantic",
+        "repeat": 1,
+        "logical_label": "full_task_semantic_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 2,
+        "logical_label": "task_only_ID_T12WHB29AZT93BB75M1GT6YA9P_02"
+      },
+      {
+        "arm": "structured",
+        "source": "source_B",
+        "repeat": 2,
+        "logical_label": "structured_source_B_02"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "atomic_source_B_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "arm": "visible_only",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "visible_only_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "arm": "full_task_semantic",
+        "repeat": 2,
+        "logical_label": "full_task_semantic_02"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 3,
+        "logical_label": "task_only_ID_D7902H068YNJD87AJ01FG0C99A_03"
+      },
+      {
+        "arm": "structured",
+        "source": "source_A",
+        "repeat": 1,
+        "logical_label": "structured_source_A_01"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 2,
+        "logical_label": "atomic_source_A_ID_T12WHB29AZT93BB75M1GT6YA9P_02"
+      },
+      {
+        "arm": "visible_only",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "visible_only_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "atomic_source_A_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 2,
+        "logical_label": "atomic_source_B_ID_T12WHB29AZT93BB75M1GT6YA9P_02"
+      },
+      {
+        "arm": "structured",
+        "source": "source_A",
+        "repeat": 2,
+        "logical_label": "structured_source_A_02"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 2,
+        "logical_label": "atomic_source_A_ID_P6S3AVYEPPNB65Q938692E1WJS_02"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 3,
+        "logical_label": "task_only_ID_T12WHB29AZT93BB75M1GT6YA9P_03"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "atomic_source_A_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "arm": "open",
+        "source": "source_B",
+        "logical_label": "open_source_B"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 2,
+        "logical_label": "atomic_source_B_ID_D7902H068YNJD87AJ01FG0C99A_02"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "atomic_source_A_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 2,
+        "logical_label": "task_only_ID_P6S3AVYEPPNB65Q938692E1WJS_02"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_A",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 2,
+        "logical_label": "atomic_source_A_ID_D7902H068YNJD87AJ01FG0C99A_02"
+      },
+      {
+        "arm": "visible_only",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "visible_only_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "atomic_source_B_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 3,
+        "logical_label": "task_only_ID_P6S3AVYEPPNB65Q938692E1WJS_03"
+      },
+      {
+        "arm": "probe_only",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "probe_only_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "arm": "atomic",
+        "source": "source_B",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 2,
+        "logical_label": "atomic_source_B_ID_P6S3AVYEPPNB65Q938692E1WJS_02"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 2,
+        "logical_label": "task_only_ID_D7902H068YNJD87AJ01FG0C99A_02"
+      },
+      {
+        "arm": "structured",
+        "source": "source_B",
+        "repeat": 1,
+        "logical_label": "structured_source_B_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_D7902H068YNJD87AJ01FG0C99A",
+        "repeat": 1,
+        "logical_label": "task_only_ID_D7902H068YNJD87AJ01FG0C99A_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_T12WHB29AZT93BB75M1GT6YA9P",
+        "repeat": 1,
+        "logical_label": "task_only_ID_T12WHB29AZT93BB75M1GT6YA9P_01"
+      },
+      {
+        "arm": "task_only",
+        "observation": "ID_P6S3AVYEPPNB65Q938692E1WJS",
+        "repeat": 1,
+        "logical_label": "task_only_ID_P6S3AVYEPPNB65Q938692E1WJS_01"
+      }
+    ]
+  },
+  "planned_calls": {
+    "components": {
+      "source_generation": 2,
+      "prospective_when_valid": 36,
+      "atomic": 12,
+      "structured": 4,
+      "open": 2,
+      "task_only": 9,
+      "visible_only": 3,
+      "probe_only": 3,
+      "full_task_semantic": 2
+    },
+    "source_ineligibility_stop": {
+      "minimum": 1,
+      "maximum": 2
+    },
+    "eligible_execution_logical_range": {
+      "minimum": 55,
+      "expected_when_all_trajectories_are_valid": 73,
+      "maximum_from_frozen_schedule_and_task_topology": 73
+    },
+    "global_arbitrary_call_ceiling": null,
+    "prospective_branch_decision_limit": 3
+  },
+  "transport_policy": {
+    "timeout_seconds_per_attempt": 120,
+    "max_attempts_per_logical_request": 3,
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "retryable": [
+      "transport_error",
+      "http_408",
+      "http_429",
+      "http_500_502_503_504"
+    ],
+    "nonretryable": [
+      "http_400_protocol_rejection",
+      "http_other",
+      "all_2xx_including_malformed_or_unfavorable"
+    ],
+    "selection_rule": "first_nonretryable_response_or_final_attempt",
+    "retry_body": "byte_identical_canonical_json",
+    "semantic_retries": "forbidden"
+  },
+  "interpretation": {
+    "open_readout": "exploratory_only",
+    "atomic_readout": "local_commitment_only",
+    "structured_readout": "mechanical_conditional_policy_endpoint",
+    "same_task_source_pair": "required_for_source_specificity",
+    "task_only_repeats": "estimate_default_re_solving_distribution",
+    "source_and_observation_repeat_requests": "byte_identical_within_cell",
+    "readout_status": "completed",
+    "tool_call_status": "requires_action",
+    "full_task_semantic": "no_carrier_no_pending_source_call_upper_bound"
+  }
+}

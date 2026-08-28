@@ -1,0 +1,98 @@
+{
+  "schema_version": "native_executable_policy_postrun_adjudication_v1",
+  "freeze_id": "3ffd42990f3f09c39d179c59b4695ef3b4a77662f6123a1b8cee16b7e45a23c9",
+  "model": "gemini-3.7-flash",
+  "adjudication_type": "transparent postrun semantic adjudication; exploratory where not mechanically preregistered",
+  "run_integrity": {
+    "source_generation_eligible": true,
+    "source_request_bytes_identical": true,
+    "source_signatures_distinct": true,
+    "prospective_sealed_before_readouts": true,
+    "logical_requests": 73,
+    "physical_attempts": 73,
+    "http_200": 61,
+    "http_400_interface_rejections": 12,
+    "retries": 0,
+    "postrun_source_verification_valid": true
+  },
+  "evidence_layers": {
+    "context_recovery": {
+      "carrier_open_completed": 2,
+      "carrier_open_total": 2,
+      "carrier_open_semantically_correct": 2,
+      "carrier_open_outputs_byte_identical": true,
+      "probe_only_atomic_unknown": 3,
+      "probe_only_atomic_total": 3,
+      "full_task_semantic_correct": 2,
+      "full_task_semantic_total": 2,
+      "matched_open_no_carrier": null,
+      "visible_history_without_carrier": null,
+      "interpretation": "positive exploratory semantic-context recovery; matched causal controls incomplete"
+    },
+    "local_commitment": {
+      "carrier_atomic_unknown": 12,
+      "carrier_atomic_total": 12,
+      "prospective_first_action_valid": 18,
+      "prospective_trajectory_total": 18,
+      "source_distinguishing_observations": 0,
+      "observation_total": 3,
+      "task_only_baseline": null,
+      "interpretation": "no evidence of recoverable exact precommitted next actions"
+    },
+    "conditional_policy": {
+      "structured_readouts_schema_valid": 4,
+      "structured_readouts_total": 4,
+      "structured_branch_unknown": 12,
+      "structured_branch_total": 12,
+      "task_implied_baseline": null,
+      "interpretation": "no mechanically recoverable complete conditional policy; open prose remains exploratory"
+    },
+    "executable_behavior": {
+      "ready_branch_direct_verify": 6,
+      "ready_branch_total": 6,
+      "one_operation_branch_valid_operation_then_reinspect": 6,
+      "one_operation_branch_total": 6,
+      "two_operation_branch_valid_dependent_pair_then_reinspect": 6,
+      "two_operation_branch_total": 6,
+      "valid_mutation_decisions": 18,
+      "mutation_decisions_total": 18,
+      "exact_frozen_success_sequences": 6,
+      "trajectory_total": 18,
+      "post_recovery_reinspection": 12,
+      "interpretation": "semantically valid recovery choices with conservative reinspection; exact-topology completion only on ready branch"
+    }
+  },
+  "invalid_controls": {
+    "task_only": {
+      "invalid": 9,
+      "total": 9,
+      "stage": "provider_request_validation",
+      "cause": "nested allowed_tools mode none rejected; runtime accepts only ANY or VALIDATED in that object",
+      "scientific_value": null
+    },
+    "visible_only": {
+      "invalid": 3,
+      "total": 3,
+      "stage": "provider_request_validation",
+      "cause": "history began with an orphaned function_call after the initial user turn was removed",
+      "scientific_value": null
+    }
+  },
+  "masked_generated_metrics": [
+    "visible_only_distribution",
+    "task_only_vs_own_prospective",
+    "own_minus_task_only_probability",
+    "task_only_implied_vs_own_prospective",
+    "task_only_implied_first_action",
+    "task_only_implied_operation_dependency_edges",
+    "task_only_implied_terminal_verify"
+  ],
+  "supported_claim": "Native thought signatures can act as opaque task-context capsules for rich semantic reconstruction in this pilot.",
+  "unsupported_claims": [
+    "literal historical chain-of-thought recovery",
+    "source-specific commitment-token recovery",
+    "mechanically recoverable complete executable policy",
+    "causal carrier advantage over a valid matched visible-history control"
+  ],
+  "next_gate": "review and separately approve a corrected minimal-planning follow-up before a 30-40-turn confirmatory test"
+}

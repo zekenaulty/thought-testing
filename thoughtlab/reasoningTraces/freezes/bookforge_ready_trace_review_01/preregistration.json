@@ -1,0 +1,94 @@
+{
+  "schema_version": "bookforge_ready_trace_preregistration_v1",
+  "experiment_id": "bookforge_ready_reasoning_trace_01",
+  "protocol_revision": "ready_trace_review_01",
+  "model": "gemini-3.7-flash",
+  "experiment_definition": {
+    "canonical_json_sha256": "e9b8f5ffaf20dead1447712ee8c0811b34a92b26368557e9914a5ac66330fb04",
+    "file_bytes_sha256": "70922f292d903cf2e42802a1ff616d02f26077ceeeb66a114cf8e2db4c34d87e"
+  },
+  "manifest": {
+    "canonical_json_sha256": "5d101271b5b6a8e39251253b74a3328ced5223a85c657faf19d4d5c0e2f496d0",
+    "file_bytes_sha256": "93ee245bed411f47451b79e49449d971f0f2117c47dad3c110464774e22f3981"
+  },
+  "source_file_bytes_sha256": {
+    ".gitignore": "ee7631e0c2b51bc1c3895139f38821ee9689141279fb449b5b2af099b226d1f1",
+    "thoughtlab/__init__.py": "734c7311dc903083d4e50b2b1fad9555eaa2d0227d70f28494d9fe98e514dee4",
+    "thoughtlab/gemini_interactions.py": "5f2b0a287cb905bb21a5ce9e0cca340893303b0f88a5e84b4c18dcbb65e3a2ee",
+    "thoughtlab/opaque_ids.py": "9c0c4480e92db428022e5ac7cc83046dc3996b15dc6fcf386914bfd14fa08619",
+    "thoughtlab/stateTransitions/__init__.py": "9ea6a60bf0379f382ab6e1b537f76e857bc9fd8f1bece55649711a48a61ef3cb",
+    "thoughtlab/stateTransitions/fork_pilot.py": "24a17d18c34d1384f7b1ffaec544f819cdc6a05bbe1b7211ef1dded84fd74441",
+    "thoughtlab/stateTransitions/probes.py": "6950b8b64b5d2cd2c070e8588c88a47f5fa302abbf4f412e2f70a850324361cd",
+    "thoughtlab/stateTransitions/score_ground_truth.py": "bba314ef0ad07fb4c2a39609a43272c8f9ed1f6cef32b458c681c166e291157f",
+    "thoughtlab/reasoningTraces/REASONING_TRACE_READY_DESIGN.md": "ce0554a0e122b610669f252a9ae34c7e0560b2321e4b9ad48736a23b95b63b9f",
+    "thoughtlab/reasoningTraces/__init__.py": "47c9736936c5b2437df0feb834a42020837711626649731b92122d1cf5e2b688",
+    "thoughtlab/reasoningTraces/reasoning_trace_protocol.py": "2b4980ca2be7f6ac946f4f59d9d7456cedcecd51da52e48327224e639f897da4",
+    "thoughtlab/reasoningTraces/reasoning_trace_freeze.py": "5bd1c215f0e77d2ba9f2d294ac8bbc9ac6bbecce13e4e93cb1f246577730dc24",
+    "thoughtlab/reasoningTraces/reasoning_trace_pilot.py": "3725f7fdcd7a6c5471d5b61059348c0ad9662d84cd39b3bd339a22830dab0df3",
+    "tests/test_reasoning_trace_protocol.py": "84b931deb59543edc69bc0f80f73e986e36b22493d58f54308b486e21b47bbec",
+    "tests/test_reasoning_trace_freeze.py": "6b16c8c5d4e1211603fdc112fd6bdce27989523dd47b3be6bbdce5851c65478b",
+    "tests/test_reasoning_trace_pilot.py": "22839fbc91a9fca3b73d866e936bc49cd6ca0e3fd763fd675ed6c0ec09eb4fec"
+  },
+  "source_binding": {
+    "commit": "b081f866954dd1c8dc3a1135013c4368278a8c9a",
+    "relevant_tree_clean": false,
+    "relevant_status": [
+      "?? tests/test_reasoning_trace_freeze.py",
+      "?? tests/test_reasoning_trace_pilot.py",
+      "?? tests/test_reasoning_trace_protocol.py",
+      "?? thoughtlab/reasoningTraces/REASONING_TRACE_READY_DESIGN.md",
+      "?? thoughtlab/reasoningTraces/__init__.py",
+      "?? thoughtlab/reasoningTraces/reasoning_trace_freeze.py",
+      "?? thoughtlab/reasoningTraces/reasoning_trace_pilot.py",
+      "?? thoughtlab/reasoningTraces/reasoning_trace_protocol.py"
+    ],
+    "binding_rule": "source_file_byte_hashes_are_authoritative"
+  },
+  "selected_capsule_external_binding": {
+    "binding_semantics": "external_exact_hashes_only_not_copied_into_freeze",
+    "relative_path": "bookforge-thought-corpus/capsules/0040_repair_scene_8e3c8b2c444a.json",
+    "capsule_file_sha256": "a93e90a190ef6ef53a918673e7edff43be636b2639ea91dc78c1aced94ad4db2",
+    "prompt_sha256": "1b8f268a9308067a2288d4ac0f4a199c09ac0cdb5759b4697d96606dfb9635e4",
+    "original_system_sha256": "24c2cf5be4f4e3e08b5853d2fd070d41da08a01e18dad3d7464ea40d81288cf6",
+    "original_user_sha256": "8bb7d739f4d940c9c5d5846998a301c12610e3d05f1175d9ae3e109de35743bd",
+    "historical_visible_sha256": "f65ea4c87464c41d37ecfccb2713a21fb1615b9067813d1efa96c438dc2430af",
+    "corpus_source_commit": "e4dd16f72a2d8a1ba077f12e1a2d6982786d9554",
+    "raw_signature_copied_into_freeze": false
+  },
+  "schedule_canonical_json_sha256": "89311c97894060d2b97e066a4dce0e3f210e623c25680604d8af953036ccb47e",
+  "planned_calls": {
+    "source_minimum": 2,
+    "source_maximum": 6,
+    "signature_readouts": 26,
+    "controls": 5,
+    "continuations": 2,
+    "logical_minimum_when_both_sources_eligible": 35,
+    "logical_maximum_when_both_sources_eligible": 39,
+    "physical_maximum": 117
+  },
+  "transport_policy": {
+    "timeout_seconds": 240,
+    "maximum_attempts_per_logical_request": 3,
+    "retryable": [
+      "transport_error",
+      "408",
+      "429",
+      "500",
+      "502",
+      "503",
+      "504"
+    ],
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "http_400_retained_without_retry": true,
+    "invalid_2xx_retained_without_repair": true
+  },
+  "all_readouts_sealed_before_continuation": true,
+  "no_replacement_source_generation": true,
+  "text_only_no_function_or_tool_structure": true,
+  "historical_signature_or_response_sent": false,
+  "raw_provider_artifacts_private": true,
+  "execution_must_consume_this_exact_freeze": true
+}

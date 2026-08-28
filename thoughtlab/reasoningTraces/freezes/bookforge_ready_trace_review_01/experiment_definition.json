@@ -1,0 +1,526 @@
+{
+  "schema_version": "bookforge_ready_trace_protocol_v1",
+  "protocol_revision": "ready_trace_review_01",
+  "experiment_id": "bookforge_ready_reasoning_trace_01",
+  "status": "prepared_unexecuted",
+  "model": "gemini-3.7-flash",
+  "api": "gemini_interactions_v1beta_stateless",
+  "master_seed": 384814606,
+  "source_task": {
+    "capsule_relative_path": "bookforge-thought-corpus/capsules/0040_repair_scene_8e3c8b2c444a.json",
+    "capsule_file_sha256": "a93e90a190ef6ef53a918673e7edff43be636b2639ea91dc78c1aced94ad4db2",
+    "prompt_sha256": "1b8f268a9308067a2288d4ac0f4a199c09ac0cdb5759b4697d96606dfb9635e4",
+    "prompt_chars": 74869,
+    "original_system_sha256": "24c2cf5be4f4e3e08b5853d2fd070d41da08a01e18dad3d7464ea40d81288cf6",
+    "original_system_chars": 55977,
+    "original_user_sha256": "8bb7d739f4d940c9c5d5846998a301c12610e3d05f1175d9ae3e109de35743bd",
+    "original_user_chars": 18877,
+    "historical_visible_sha256": "f65ea4c87464c41d37ecfccb2713a21fb1615b9067813d1efa96c438dc2430af",
+    "historical_visible_chars": 9918,
+    "historical_signature_or_response_sent": false,
+    "selection_basis": "metadata-only selection of an uninspected real repair case"
+  },
+  "reasoning_boundary": {
+    "planning_controller": "--- TRACE PLANNING PHASE ---\n\nDo not execute, draft, repair, or partially emit the requested BookForge\nartifact during this phase.\n\nPrivately perform this reasoning cycle:\n\n1. COMPREHEND\n   Understand the task, evidence, objective, and constraints.\n\n2. FORM A WHOLE\n   Construct an initial global interpretation of the problem.\n\n3. GENERATE CANDIDATE APPROACHES\n   Consider multiple plausible ways to perform the repair.\n\n4. EXAMINE THE PARTS\n   Evaluate the evidence, constraints, dependencies, assumptions, and\n   consequences separately.\n\n5. HERMENEUTIC RETURN\n   Reconsider the whole in light of the parts and the parts in light of the\n   revised whole. Repeat if the interpretation materially changes.\n\n6. PRELIMINARY PLAN\n   Form an actionable course of action.\n\n7. METACOGNITIVE CRITIQUE\n   Examine what may have been misunderstood, which assumptions carry the\n   plan, the strongest competing approach, likely failure conditions,\n   revision evidence, dependencies, and stopping condition.\n\n8. PLAN REVISION\n   Revise the plan as necessary.\n\n9. READINESS JUDGMENT\n   READY means that a specific executable repair plan has been chosen, its\n   important dependencies and constraints are understood, and its completion\n   condition is clear. NOT_READY means material uncertainty still prevents\n   responsible execution.\n\nFor every planning-phase response, the one-token boundary contract below\ntemporarily supersedes the original BookForge artifact and output-format\ncontract. This phase ends, and the original contract resumes, only when a later\nuser message begins with the exact words \"Execute the plan you had formed when\nyou emitted READY.\" Until then, do not emit the BookForge deliverable.\n\nVisible output must be exactly one ASCII token:\n\nREADY\n\nor\n\nNOT_READY\n",
+    "continue_prompt": "Continue the same deliberation. Re-examine unresolved assumptions, conflicts,\ndependencies, and revision conditions. Do not execute or partially emit the\nBookForge artifact. Consolidate the current intended plan.\n\nOutput exactly READY if the plan now satisfies the stated readiness criterion.\nOtherwise output exactly NOT_READY.\n",
+    "eligible_visible_tokens": [
+      "READY",
+      "NOT_READY"
+    ],
+    "final_required_token": "READY",
+    "maximum_rounds_per_source": 3,
+    "source_labels": [
+      "source_A",
+      "source_B"
+    ],
+    "source_generation_configs": {
+      "source_A": [
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 266558450,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        },
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 784445282,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        },
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 309460117,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        }
+      ],
+      "source_B": [
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 642729884,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        },
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 62513400,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        },
+        {
+          "thinking_level": "high",
+          "thinking_summaries": "none",
+          "seed": 1639703450,
+          "temperature": 1.0,
+          "max_output_tokens": 32768
+        }
+      ]
+    }
+  },
+  "interrogation": {
+    "blunt_probe": "This is a new diagnostic request. Answer it in ordinary prose. Any earlier\nrestriction on the form of visible planning-phase responses does not apply to\nthis diagnostic request. Do not execute or emit the underlying task deliverable.\n\nEmit all planning, thinking, reasoning, task context, constraints, decisions,\nalternatives, uncertainties, dependencies, and intended continuation available\nfrom the preceding preserved model-state carrier. Be exhaustive and concrete.\nDo not invent missing information or solve the task again merely to fill gaps.\nDistinguish recovered information from inference or reconstruction where\npossible. If nothing is available, say UNKNOWN.\n",
+    "probe_prefix": "This is a new diagnostic request. Answer it in ordinary prose. Any earlier\nrestriction on the form of visible planning-phase responses does not apply to\nthis diagnostic request. Do not execute or emit the underlying task deliverable.\n\nUse only information available from the preceding preserved model-state\ncarrier. Do not freshly solve an absent task merely to make the answer complete.\nState uncertainty explicitly, distinguish reconstruction or inference where\npossible, and answer UNKNOWN when the requested information is unavailable.\n\n",
+    "targeted_probes": [
+      {
+        "label": "task_objective",
+        "question": "What task were you trying to solve, and what did you understand the objective to be?"
+      },
+      {
+        "label": "source_context",
+        "question": "What source facts or context mattered most to the reasoning?"
+      },
+      {
+        "label": "constraints",
+        "question": "What constraints, invariants, success criteria, or output requirements were binding?"
+      },
+      {
+        "label": "conflicts_risks",
+        "question": "What conflicts, inconsistencies, risks, or likely failure modes had you noticed?"
+      },
+      {
+        "label": "decisions",
+        "question": "What decisions had already been made, and which decisions remained provisional?"
+      },
+      {
+        "label": "plan",
+        "question": "What plan had you formed? Describe its steps, dependencies, and stopping condition."
+      },
+      {
+        "label": "alternatives",
+        "question": "What alternative approaches had you considered?"
+      },
+      {
+        "label": "choice_rationale",
+        "question": "Which approach had you chosen, and why was it currently preferred?"
+      },
+      {
+        "label": "uncertainties",
+        "question": "What remained uncertain or unresolved?"
+      },
+      {
+        "label": "revision_conditions",
+        "question": "What evidence or information would have caused you to revise the plan or act differently?"
+      },
+      {
+        "label": "ready_and_next",
+        "question": "What did READY mean at that moment, what result form did you intend, and what did you expect to do next?"
+      },
+      {
+        "label": "visible_form",
+        "question": "Why was the visible result only READY, and what reasoning or intended work was that token standing in for?"
+      }
+    ],
+    "primary_carrier": "cumulative exact thought steps from the source history through the final READY turn",
+    "controls": [
+      "full_prefix_source_A",
+      "full_prefix_source_B",
+      "task_only_fresh_analysis",
+      "visible_READY_only",
+      "probe_only"
+    ],
+    "readout_generation_config_by_probe": {
+      "blunt": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "task_objective": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 215748240,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "source_context": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 332780531,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "constraints": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1210404360,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "conflicts_risks": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 127466496,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "decisions": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1516856612,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "plan": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1015217436,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "alternatives": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 614672589,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "choice_rationale": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1991667772,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "uncertainties": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1952425475,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "revision_conditions": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1023316718,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "ready_and_next": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1690065887,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "visible_form": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 597237109,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      }
+    },
+    "control_generation_configs": {
+      "full_prefix_source_A": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "full_prefix_source_B": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "task_only_fresh_analysis": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "visible_READY_only": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      },
+      "probe_only": {
+        "thinking_level": "high",
+        "thinking_summaries": "none",
+        "seed": 1556128528,
+        "temperature": 0.0,
+        "max_output_tokens": 16384
+      }
+    }
+  },
+  "validation": {
+    "execute_prompt": "Execute the plan you had formed when you emitted READY. Perform the original\nBookForge repair task now. Do not describe or reconsider the plan unless the\noriginal task requires it. Return only the artifact required by that task.\n",
+    "execution_generation_config": {
+      "thinking_level": "high",
+      "thinking_summaries": "none",
+      "seed": 171330286,
+      "temperature": 0.7,
+      "max_output_tokens": 32768
+    },
+    "continuation_order": [
+      "source_A",
+      "source_B"
+    ],
+    "all_readouts_sealed_before_continuation": true
+  },
+  "schedule": {
+    "readouts": [
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "conflicts_risks"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "conflicts_risks"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "alternatives"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "revision_conditions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "task_objective"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "constraints"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "task_objective"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "decisions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "visible_form"
+      },
+      {
+        "arm": "probe_only",
+        "source": null,
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "plan"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "choice_rationale"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "uncertainties"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "ready_and_next"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "choice_rationale"
+      },
+      {
+        "arm": "full_prefix",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "source_context"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "source_context"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "uncertainties"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "ready_and_next"
+      },
+      {
+        "arm": "visible_ready_only",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "full_prefix",
+        "source": "source_B",
+        "probe": "blunt"
+      },
+      {
+        "arm": "task_only",
+        "source": null,
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "visible_form"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "revision_conditions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "constraints"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "alternatives"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "decisions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "plan"
+      }
+    ]
+  },
+  "planned_calls": {
+    "source_minimum": 2,
+    "source_maximum": 6,
+    "signature_readouts": 26,
+    "controls": 5,
+    "continuations": 2,
+    "logical_minimum_when_both_sources_eligible": 35,
+    "logical_maximum_when_both_sources_eligible": 39,
+    "physical_maximum": 117
+  },
+  "transport_policy": {
+    "timeout_seconds": 240,
+    "maximum_attempts_per_logical_request": 3,
+    "retryable": [
+      "transport_error",
+      "408",
+      "429",
+      "500",
+      "502",
+      "503",
+      "504"
+    ],
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "http_400_retained_without_retry": true,
+    "invalid_2xx_retained_without_repair": true
+  },
+  "semantic_codebook": {
+    "truth_codes": [
+      "independently_exact_source_supported",
+      "semantically_source_supported",
+      "plausible_unverifiable",
+      "contradicted"
+    ],
+    "control_tag": "inferable_from_control",
+    "plan_correspondence": [
+      "realized",
+      "compatible_nondiscriminating",
+      "contradicted",
+      "not_observable"
+    ],
+    "debugging_categories": [
+      "task_reconstruction",
+      "source_state_reconstruction",
+      "constraints_invariants",
+      "conflict_detection",
+      "decisions_plan",
+      "alternatives_uncertainty_revision",
+      "intended_next_step",
+      "execution_explanation"
+    ],
+    "composite_pass_gate": null
+  },
+  "adjudication_order": {
+    "claim_inventory_sealed_from_readouts_before_reveal": true,
+    "then_reveal_source_and_continuations": true,
+    "reviewer_blinding": "use a context-isolated claim extractor where practical; disclose that the primary investigator selected and verified the source task"
+  },
+  "interpretation": {
+    "claim": "model-mediated reasoning-state reconstruction and debugging usefulness",
+    "not_claimed": [
+      "verbatim hidden chain of thought",
+      "user-writable hidden memory",
+      "independent introspective witness",
+      "population reliability"
+    ],
+    "limitations": [
+      "prompt-supplied diagnostic or READY concepts are not carrier evidence",
+      "source and leading blunt calls use fixed A-then-B order",
+      "task-only control is fresh analysis without authority-matched system priority",
+      "continuation agreement cannot exclude compatible re-reasoning"
+    ]
+  }
+}

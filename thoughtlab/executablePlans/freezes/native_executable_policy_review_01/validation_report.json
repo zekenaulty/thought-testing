@@ -1,0 +1,61 @@
+{
+  "schema_version": "executable_plan_freeze_validation_v1",
+  "validated": true,
+  "definition_errors": [],
+  "manifest_errors": [],
+  "planned_calls": {
+    "components": {
+      "source_generation": 2,
+      "prospective_when_valid": 36,
+      "atomic": 12,
+      "structured": 4,
+      "open": 2,
+      "task_only": 9,
+      "visible_only": 3,
+      "probe_only": 3,
+      "full_task_semantic": 2
+    },
+    "source_ineligibility_stop": {
+      "minimum": 1,
+      "maximum": 2
+    },
+    "eligible_execution_logical_range": {
+      "minimum": 55,
+      "expected_when_all_trajectories_are_valid": 73,
+      "maximum_from_frozen_schedule_and_task_topology": 73
+    },
+    "global_arbitrary_call_ceiling": null,
+    "prospective_branch_decision_limit": 3
+  },
+  "evidence_kind": "static_architectural_attestation_plus_hashed_regression_source",
+  "preparation_transport_path_present": false,
+  "preparation_credential_access_path_present": false,
+  "raw_provider_artifacts_present": false,
+  "forbidden_runtime_entries": [],
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ],
+  "source_file_allowlist": [
+    ".gitignore",
+    "thoughtlab/__init__.py",
+    "thoughtlab/gemini_interactions.py",
+    "thoughtlab/opaque_ids.py",
+    "thoughtlab/stateTransitions/__init__.py",
+    "thoughtlab/stateTransitions/fork_pilot.py",
+    "thoughtlab/stateTransitions/probes.py",
+    "thoughtlab/stateTransitions/score_ground_truth.py",
+    "thoughtlab/executablePlans/EXECUTABLE_PLAN_FEASIBILITY_DESIGN.md",
+    "thoughtlab/executablePlans/__init__.py",
+    "thoughtlab/executablePlans/executable_plan_protocol.py",
+    "thoughtlab/executablePlans/executable_plan_freeze.py",
+    "thoughtlab/executablePlans/executable_plan_pilot.py",
+    "tests/test_executable_plan_protocol.py",
+    "tests/test_executable_plan_freeze.py",
+    "tests/test_executable_plan_pilot.py"
+  ],
+  "no_call_claim": "freeze preparation imports only the pure protocol module and contains no model transport or credential access path; exact source-byte hashes are authoritative"
+}

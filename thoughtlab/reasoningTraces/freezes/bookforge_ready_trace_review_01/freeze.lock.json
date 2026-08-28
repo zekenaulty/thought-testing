@@ -1,0 +1,11 @@
+{
+  "schema_version": "bookforge_ready_trace_freeze_lock_v1",
+  "hash_algorithm": "sha256",
+  "file_hash_semantics": "exact_file_bytes",
+  "files": {
+    "experiment_definition.json": "70922f292d903cf2e42802a1ff616d02f26077ceeeb66a114cf8e2db4c34d87e",
+    "manifest.json": "93ee245bed411f47451b79e49449d971f0f2117c47dad3c110464774e22f3981",
+    "preregistration.json": "0c3f0fedfcc12f8491585df7a70d5b16d6d45ce5b19b2b2736c7f304bff15b8a",
+    "validation_report.json": "b69c182c20af12ca28e84f2196529c79ea9af615beb12ca3f0c1e2be6a388933"
+  }
+}

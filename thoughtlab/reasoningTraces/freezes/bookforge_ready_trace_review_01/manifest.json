@@ -1,0 +1,206 @@
+{
+  "schema_version": "bookforge_ready_trace_manifest_v1",
+  "experiment_id": "bookforge_ready_reasoning_trace_01",
+  "protocol_revision": "ready_trace_review_01",
+  "model": "gemini-3.7-flash",
+  "api": "gemini_interactions_v1beta_stateless",
+  "master_seed": 384814606,
+  "definition_sha256": "e9b8f5ffaf20dead1447712ee8c0811b34a92b26368557e9914a5ac66330fb04",
+  "selected_capsule_external_hashes": {
+    "capsule_file_sha256": "a93e90a190ef6ef53a918673e7edff43be636b2639ea91dc78c1aced94ad4db2",
+    "prompt_sha256": "1b8f268a9308067a2288d4ac0f4a199c09ac0cdb5759b4697d96606dfb9635e4",
+    "original_system_sha256": "24c2cf5be4f4e3e08b5853d2fd070d41da08a01e18dad3d7464ea40d81288cf6",
+    "original_user_sha256": "8bb7d739f4d940c9c5d5846998a301c12610e3d05f1175d9ae3e109de35743bd"
+  },
+  "reasoning_boundary_sha256": "716d236521e72db8760206d5fa93667e9d0ab883a59c1a1de9db29b460ec95c5",
+  "interrogation_sha256": "a5e1b1ee4dd84399547867014e57a42362340b3a050a2f3eda7b1958f7729be0",
+  "validation_sha256": "3509156d3ca30176a309286d7879b3b7fc8cf1ab25ff7906ebd5894d76f4849a",
+  "schedule": {
+    "readouts": [
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "conflicts_risks"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "conflicts_risks"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "alternatives"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "revision_conditions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "task_objective"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "constraints"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "task_objective"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "decisions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "visible_form"
+      },
+      {
+        "arm": "probe_only",
+        "source": null,
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "plan"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "choice_rationale"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "uncertainties"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "ready_and_next"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "choice_rationale"
+      },
+      {
+        "arm": "full_prefix",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "source_context"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "source_context"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "uncertainties"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "ready_and_next"
+      },
+      {
+        "arm": "visible_ready_only",
+        "source": "source_A",
+        "probe": "blunt"
+      },
+      {
+        "arm": "full_prefix",
+        "source": "source_B",
+        "probe": "blunt"
+      },
+      {
+        "arm": "task_only",
+        "source": null,
+        "probe": "blunt"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "visible_form"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "revision_conditions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "constraints"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "alternatives"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_B",
+        "probe": "decisions"
+      },
+      {
+        "arm": "signature_only",
+        "source": "source_A",
+        "probe": "plan"
+      }
+    ]
+  },
+  "planned_calls": {
+    "source_minimum": 2,
+    "source_maximum": 6,
+    "signature_readouts": 26,
+    "controls": 5,
+    "continuations": 2,
+    "logical_minimum_when_both_sources_eligible": 35,
+    "logical_maximum_when_both_sources_eligible": 39,
+    "physical_maximum": 117
+  },
+  "transport_policy": {
+    "timeout_seconds": 240,
+    "maximum_attempts_per_logical_request": 3,
+    "retryable": [
+      "transport_error",
+      "408",
+      "429",
+      "500",
+      "502",
+      "503",
+      "504"
+    ],
+    "retry_backoff_seconds": [
+      2.0,
+      5.0
+    ],
+    "http_400_retained_without_retry": true,
+    "invalid_2xx_retained_without_repair": true
+  }
+}
