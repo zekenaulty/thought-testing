@@ -16,11 +16,11 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-SCHEMA_VERSION = "modernization_reasoning_engineering_protocol_v1"
-PROTOCOL_REVISION = "modernization_reasoning_engineering_review_01"
-EXPERIMENT_ID = "modernization_reasoning_engineering_01"
+SCHEMA_VERSION = "modernization_reasoning_engineering_protocol_v2"
+PROTOCOL_REVISION = "modernization_reasoning_engineering_generate_content_review_01"
+EXPERIMENT_ID = "modernization_reasoning_engineering_04"
 MODEL = "gemini-3.7-flash"
-API = "gemini_interactions_v1beta_stateless"
+API = "gemini_developer_v1beta_generateContent_stateless"
 MASTER_SEED = 1649032271
 PRIMARY_INSPECTION_SEED_LABEL = "inspection:primary:matched"
 EXECUTION_SCHEDULE_SEED_LABEL = "execution:schedule"
@@ -60,7 +60,7 @@ SELF_DECLARED_NOT_READY = "SELF_DECLARED_NOT_READY"
 UNOBSERVED_TRUNCATED = "UNOBSERVED_TRUNCATED"
 INVALID_STATUS = "INVALID_STATUS"
 PLANNING_THRESHOLD_REACHED = "PLANNING_THRESHOLD_REACHED"
-OUTPUT_BUDGET_FINISH_REASONS = ("MAX_OUTPUT_TOKENS", "MAX_TOKENS")
+OUTPUT_BUDGET_FINISH_REASONS = ("MAX_TOKENS",)
 COMPLETED_FINISH_REASONS = ("STOP",)
 
 EXECUTION_TRIGGER = "EXECUTE THE ESTABLISHED RECOVERY PLAN"
@@ -179,9 +179,14 @@ FORBIDDEN_REQUEST_KEYS = frozenset(
         "functions",
         "function_call",
         "function_result",
-        "temperature",
         "top_p",
         "top_k",
+        "functionDeclarations",
+        "functionCall",
+        "functionResponse",
+        "toolConfig",
+        "responseMimeType",
+        "responseSchema",
     }
 )
 FORBIDDEN_STEP_TYPES = frozenset(
@@ -196,9 +201,10 @@ FORBIDDEN_STEP_TYPES = frozenset(
         "code_execution_result",
     }
 )
-ALLOWED_THOUGHT_STEP_KEYS = frozenset({"type", "signature", "summary"})
-ALLOWED_MODEL_OUTPUT_STEP_KEYS = frozenset({"type", "content"})
-ALLOWED_TEXT_BLOCK_KEYS = frozenset({"type", "text"})
+ALLOWED_CONTENT_KEYS = frozenset({"role", "parts"})
+ALLOWED_RESPONSE_PART_KEYS = frozenset(
+    {"text", "thought", "thoughtSignature"}
+)
 
 
 def canonical_json_bytes(value: Any) -> bytes:
@@ -259,7 +265,7 @@ def normalize_readiness_text(value: str) -> str:
 
 
 def user_step(text: str) -> dict[str, Any]:
-    return {"type": "user_input", "content": [{"type": "text", "text": text}]}
+    return {"role": "user", "parts": [{"text": text}]}
 
 
 def assert_no_function_tool_or_schema_structure(value: Any) -> None:
@@ -335,36 +341,32 @@ def generation_config(*, kind: str, seed_label: str) -> dict[str, Any]:
     else:
         raise ValueError(f"unknown generation-config kind: {kind}")
     return {
-        "thinking_level": "high",
-        "thinking_summaries": "none",
+        "temperature": 0.0,
+        "thinkingConfig": {"thinkingLevel": "high"},
         "seed": derived_seed(seed_label),
-        "max_output_tokens": maximum,
+        "maxOutputTokens": maximum,
     }
 
 
-def interaction_body(
+def generate_content_body(
     *,
-    input_steps: list[dict[str, Any]],
+    contents: list[dict[str, Any]],
     config: dict[str, Any],
     system_instruction: str | None = None,
 ) -> dict[str, Any]:
     body: dict[str, Any] = {
-        "model": MODEL,
-        "store": False,
-        "stream": False,
-        "background": False,
-        "input": copy.deepcopy(input_steps),
-        "generation_config": copy.deepcopy(config),
+        "contents": copy.deepcopy(contents),
+        "generationConfig": copy.deepcopy(config),
     }
     if system_instruction is not None:
-        body["system_instruction"] = system_instruction
+        body["systemInstruction"] = {"parts": [{"text": system_instruction}]}
     assert_no_function_tool_or_schema_structure(body)
     return body
 
 
 def initial_planning_body(*, task_text: str) -> dict[str, Any]:
-    return interaction_body(
-        input_steps=[user_step(task_text)],
+    return generate_content_body(
+        contents=[user_step(task_text)],
         system_instruction=PLANNING_SYSTEM_INSTRUCTION,
         config=generation_config(kind="planning", seed_label="baseline:turn:1"),
     )
@@ -380,8 +382,8 @@ def planning_continuation_body(
         raise ValueError("invalid planning phase")
     if turn_number < 2:
         raise ValueError("continuation turn number must be at least two")
-    return interaction_body(
-        input_steps=[
+    return generate_content_body(
+        contents=[
             *copy.deepcopy(full_history),
             user_step(CONTINUE_PLANNING_PROMPT),
         ],
@@ -405,77 +407,88 @@ def intervention_body(
     prompt = (
         f"{INTERVENTION_PREFIX}{normalized}\n\n{INTERVENTION_SUFFIX}"
     )
-    return interaction_body(
-        input_steps=[*copy.deepcopy(baseline_ready_history), user_step(prompt)],
+    return generate_content_body(
+        contents=[*copy.deepcopy(baseline_ready_history), user_step(prompt)],
         system_instruction=PLANNING_SYSTEM_INSTRUCTION,
         config=generation_config(kind="planning", seed_label="adjusted:turn:1"),
     )
 
 
-def _validate_thought_step(step: dict[str, Any], index: int) -> None:
-    unknown = set(step).difference(ALLOWED_THOUGHT_STEP_KEYS)
-    if unknown:
-        raise ValueError(
-            f"thought[{index}] has unexpected fields: {sorted(unknown)!r}"
-        )
-    signature = step.get("signature")
-    if not isinstance(signature, str) or not signature:
-        raise ValueError(f"thought[{index}] has no nonempty signature")
-    if step.get("summary") not in (None, "", []):
-        raise ValueError(f"thought[{index}] has a readable summary")
+def _signature_value(part: dict[str, Any]) -> str | None:
+    signature = part.get("thoughtSignature")
+    return signature if isinstance(signature, str) and signature else None
 
 
-def _blank_model_output(step: dict[str, Any], index: int) -> dict[str, Any]:
-    unknown = set(step).difference(ALLOWED_MODEL_OUTPUT_STEP_KEYS)
+def _validate_model_content(content: dict[str, Any], index: int) -> None:
+    unknown = set(content).difference(ALLOWED_CONTENT_KEYS)
     if unknown:
         raise ValueError(
-            f"model_output[{index}] has unexpected fields: {sorted(unknown)!r}"
+            f"model content[{index}] has unexpected fields: {sorted(unknown)!r}"
         )
-    clone = copy.deepcopy(step)
-    content = clone.get("content")
-    if not isinstance(content, list):
-        raise ValueError(f"model_output[{index}] content is not an array")
-    for block_index, block in enumerate(content):
-        if not isinstance(block, dict):
+    if content.get("role") != "model":
+        raise ValueError(f"model content[{index}] has a non-model role")
+    parts = content.get("parts")
+    if not isinstance(parts, list) or not parts:
+        raise ValueError(f"model content[{index}] has no parts")
+    for part_index, part in enumerate(parts):
+        if not isinstance(part, dict):
             raise ValueError(
-                f"model_output[{index}].content[{block_index}] is not an object"
+                f"model content[{index}].parts[{part_index}] is not an object"
             )
-        unknown = set(block).difference(ALLOWED_TEXT_BLOCK_KEYS)
+        unknown = set(part).difference(ALLOWED_RESPONSE_PART_KEYS)
         if unknown:
             raise ValueError(
-                f"model_output[{index}].content[{block_index}] has unexpected "
+                f"model content[{index}].parts[{part_index}] has unexpected "
                 f"fields: {sorted(unknown)!r}"
             )
-        if block.get("type") != "text" or not isinstance(block.get("text"), str):
+        if "text" in part and not isinstance(part.get("text"), str):
             raise ValueError(
-                f"model_output[{index}].content[{block_index}] is not text"
+                f"model content[{index}].parts[{part_index}] has invalid text"
             )
-        block["text"] = ""
-    return clone
+        if "thought" in part and not isinstance(part.get("thought"), bool):
+            raise ValueError(
+                f"model content[{index}].parts[{part_index}] has invalid thought flag"
+            )
+        if part.get("thought") is True:
+            raise ValueError(
+                f"model content[{index}].parts[{part_index}] has readable thought content"
+            )
+        if "thoughtSignature" in part and not _signature_value(part):
+            raise ValueError(
+                f"model content[{index}].parts[{part_index}] has empty signature"
+            )
+        if "text" not in part and _signature_value(part) is None:
+            raise ValueError(
+                f"model content[{index}].parts[{part_index}] has no replayable "
+                "text or signature"
+            )
 
 
 def isolate_response_steps(response_steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Build T_t while preserving native thought steps and blanking visible text."""
+    """Build T_t using the established blank-text signed-Part mutation."""
 
-    if not response_steps:
-        raise ValueError("checkpoint response has no steps")
+    if len(response_steps) != 1:
+        raise ValueError("checkpoint response must contain one model content")
     source_hash = sha256_json(response_steps)
-    detached: list[dict[str, Any]] = [user_step(NEUTRAL_CARRIER_STUB)]
-    thought_count = 0
-    for index, step in enumerate(response_steps):
-        if not isinstance(step, dict):
-            raise ValueError(f"response step {index} is not an object")
-        step_type = step.get("type")
-        if step_type == "thought":
-            _validate_thought_step(step, index)
-            detached.append(copy.deepcopy(step))
-            thought_count += 1
-        elif step_type == "model_output":
-            detached.append(_blank_model_output(step, index))
-        else:
-            raise ValueError(f"unsupported checkpoint step type: {step_type!r}")
-    if thought_count == 0:
-        raise ValueError("checkpoint response has no signed thought step")
+    source_content = response_steps[0]
+    if not isinstance(source_content, dict):
+        raise ValueError("checkpoint model content is not an object")
+    _validate_model_content(source_content, 0)
+    detached_parts: list[dict[str, Any]] = []
+    signature_count = 0
+    for part in source_content["parts"]:
+        clone = copy.deepcopy(part)
+        if "text" in clone:
+            clone["text"] = ""
+        detached_parts.append(clone)
+        if _signature_value(part):
+            signature_count += 1
+    if signature_count == 0:
+        raise ValueError("checkpoint response has no signed Part carrier")
+    detached = [
+        user_step(NEUTRAL_CARRIER_STUB),
+        {"role": "model", "parts": detached_parts},
+    ]
     if sha256_json(response_steps) != source_hash:
         raise RuntimeError("isolation mutated the source checkpoint")
     assert_no_function_tool_or_schema_structure(detached)
@@ -486,8 +499,8 @@ def inspection_body(
     *, response_steps: list[dict[str, Any]], checkpoint_id: str
 ) -> dict[str, Any]:
     carrier = isolate_response_steps(response_steps)
-    return interaction_body(
-        input_steps=[*carrier, user_step(PRIMARY_INSPECTION_PROMPT)],
+    return generate_content_body(
+        contents=[*carrier, user_step(PRIMARY_INSPECTION_PROMPT)],
         config=generation_config(
             kind="inspection", seed_label=PRIMARY_INSPECTION_SEED_LABEL
         ),
@@ -501,8 +514,8 @@ def execution_body(
         raise ValueError("invalid execution branch")
     if not 1 <= replicate <= EXECUTION_REPLICATES_PER_CHECKPOINT:
         raise ValueError("invalid execution replicate")
-    return interaction_body(
-        input_steps=[*copy.deepcopy(full_history), user_step(EXECUTION_PROMPT)],
+    return generate_content_body(
+        contents=[*copy.deepcopy(full_history), user_step(EXECUTION_PROMPT)],
         system_instruction=PLANNING_SYSTEM_INSTRUCTION,
         config=generation_config(
             kind="execution", seed_label=execution_seed_label(replicate)
@@ -556,8 +569,8 @@ def build_experiment_definition(repo_root: Path) -> dict[str, Any]:
                 "adjusted": MAX_ADJUSTED_PLANNING_TURNS,
             },
             "generation_configs": planning_configs,
-            "provider_status_precedes_visible_parse": True,
-            "completed_ready_requires_exactly_one_text_output_block": True,
+            "provider_finish_reason_precedes_visible_parse": True,
+            "completed_ready_requires_exactly_one_visible_text_part": True,
             "readiness_text_normalization": (
                 "Unicode NFC, then Python Unicode-whitespace strip, then exact token"
             ),
@@ -568,20 +581,22 @@ def build_experiment_definition(repo_root: Path) -> dict[str, Any]:
             ],
             "threshold_terminal": PLANNING_THRESHOLD_REACHED,
             "incomplete_is_not_retried_or_synthetically_repaired": True,
-            "reasonless_or_output_budget_signed_incomplete_is_replayed_exactly": True,
-            "reasonless_or_output_budget_incomplete_is_truncation": True,
-            "explicit_non_budget_incomplete_is_technical": True,
-            "completed_with_output_budget_reason_is_technical": True,
+            "max_tokens_signed_content_is_replayed_exactly": True,
+            "max_tokens_is_unobserved_truncation": True,
+            "missing_or_non_budget_finish_reason_is_technical": True,
+            "live_candidate_content_is_replayed_without_mutation": True,
         },
         "isolation": {
             "primary_observation_surface": True,
             "neutral_stub": NEUTRAL_CARRIER_STUB,
-            "source": "target checkpoint response steps only",
-            "thought_steps": (
-                "parsed field/value structure deep-copied exactly; source canonical "
-                "structure unchanged; provider response wire bytes retained separately"
+            "source": "sole target checkpoint candidate.content only",
+            "live_content_replay": "exact parsed field/value structure unchanged",
+            "detached_carrier_mutation": (
+                "deep-copy model Content; blank every allowed Part text; preserve "
+                "Part order and thoughtSignature values exactly"
             ),
-            "model_output_text": "blanked to empty strings",
+            "mutation_status": "intentional off-protocol semantic tomography",
+            "provider_response_wire_bytes_retained_separately": True,
             "task_system_and_ordinary_history_included": False,
             "query": PRIMARY_INSPECTION_PROMPT,
             "independent_sibling_branches": True,
@@ -704,6 +719,14 @@ def build_experiment_definition(repo_root: Path) -> dict[str, Any]:
             "transport_retry_physical_maximum_multiplier": 3,
         },
         "transport": {
+            "provider": "Google Gemini Developer API",
+            "method": "POST",
+            "endpoint_template": (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                "{model}:generateContent"
+            ),
+            "requested_model_is_bound_outside_request_body": True,
+            "response_modelVersion_must_match": True,
             "timeout_seconds": HTTP_TIMEOUT_SECONDS,
             "maximum_attempts_per_logical_request": MAX_ATTEMPTS_PER_LOGICAL_REQUEST,
             "retryable": [

@@ -1,0 +1,130 @@
+{
+  "experiment_id": "modernization_reasoning_engineering_02",
+  "git": {
+    "head": "dbf8569a2e7a8673e86dbb56cea16bcc7842b180",
+    "head_error": null,
+    "status_error": null,
+    "status_short": [
+      " M thoughtlab/reasoningEngineering/modernization_freeze.py",
+      " M thoughtlab/reasoningEngineering/modernization_protocol.py"
+    ]
+  },
+  "protocol_revision": "modernization_reasoning_engineering_review_01",
+  "schema_version": "modernization_reasoning_engineering_manifest_v1",
+  "source_closure_sha256": "85736fdd7987e1cf29406ce758cc79b00852bc6b11a3ffbd998f50ca112d2a19",
+  "source_file_count": 28,
+  "source_files": {
+    ".gitignore": {
+      "bytes": 387,
+      "sha256": "ee7631e0c2b51bc1c3895139f38821ee9689141279fb449b5b2af099b226d1f1"
+    },
+    "README.md": {
+      "bytes": 9413,
+      "sha256": "7fe130fe54a6a67a274e2f26f9d7e8f56b69c7536634470f0d805577a8be06a7"
+    },
+    "tests/test_modernization_dossier.py": {
+      "bytes": 2375,
+      "sha256": "3b8cadb18f0010c3ec4a5b647a78339940c7f7a568f0944f8eafd4abdb15cadb"
+    },
+    "tests/test_modernization_freeze.py": {
+      "bytes": 10863,
+      "sha256": "ed34c9f1df8fb366f0dc2f885be53119b82dcab8074d8dfb8664ebc05eb9b6a9"
+    },
+    "tests/test_modernization_pilot.py": {
+      "bytes": 94536,
+      "sha256": "d86f0f9e700cf3af492f543cd5c24a97aca1da2836b931adbe15e58bb6591234"
+    },
+    "tests/test_modernization_protocol.py": {
+      "bytes": 11249,
+      "sha256": "e66f5e73de46b9bb15da8d1f6ae60b53f5eeab5f2c88ef1599f935743d3f22e0"
+    },
+    "thoughtlab/__init__.py": {
+      "bytes": 78,
+      "sha256": "734c7311dc903083d4e50b2b1fad9555eaa2d0227d70f28494d9fe98e514dee4"
+    },
+    "thoughtlab/gemini_interactions.py": {
+      "bytes": 8481,
+      "sha256": "5f2b0a287cb905bb21a5ce9e0cca340893303b0f88a5e84b4c18dcbb65e3a2ee"
+    },
+    "thoughtlab/opaque_ids.py": {
+      "bytes": 1218,
+      "sha256": "9c0c4480e92db428022e5ac7cc83046dc3996b15dc6fcf386914bfd14fa08619"
+    },
+    "thoughtlab/reasoningEngineering/DOSSIER_CONSTRUCTION_NOTES.md": {
+      "bytes": 5643,
+      "sha256": "d99e2c2a5cc8c9cad26406fba95536486bfae433814f6a576c245e2497c3af04"
+    },
+    "thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md": {
+      "bytes": 13526,
+      "sha256": "b66864323689aa44366450fabf6ebd6221aa0279ca3e962d865b3b03117d6f06"
+    },
+    "thoughtlab/reasoningEngineering/__init__.py": {
+      "bytes": 66,
+      "sha256": "29882c4fb4977f3859c018d73075e381d46a72d48da0533fbc3ffd51a724214a"
+    },
+    "thoughtlab/reasoningEngineering/dossier/00_commission.md": {
+      "bytes": 2342,
+      "sha256": "6a38f9c62d2a10b1b90e5b7520db7990e8dda5b88a256afa1ca84cb6ba540dd5"
+    },
+    "thoughtlab/reasoningEngineering/dossier/01_current_state_architecture.md": {
+      "bytes": 4341,
+      "sha256": "82bf76e2e7be5ecbd448eeaac8dcaccabb081e9e16751612f2485fb0b26f9127"
+    },
+    "thoughtlab/reasoningEngineering/dossier/02_april_incident_review.md": {
+      "bytes": 3895,
+      "sha256": "e24f0f3e361f341f2f73ca9562c11631cfc5fd43a3aa00d584471c352f644655"
+    },
+    "thoughtlab/reasoningEngineering/dossier/03_vendor_cure_addendum.md": {
+      "bytes": 3709,
+      "sha256": "7c3b3f70a474e42fada5bdd1fa32cf16f33b5eefb6dd2d97f3bc4bb52cf8cc7d"
+    },
+    "thoughtlab/reasoningEngineering/dossier/04_treasury_reconciliation.md": {
+      "bytes": 3841,
+      "sha256": "cbe3089d9e475d8d64836dbd6679b526353493ee62c7ff9cd2f5892322359fe1"
+    },
+    "thoughtlab/reasoningEngineering/dossier/05_eastbank_pilot_outcomes.md": {
+      "bytes": 3708,
+      "sha256": "fd297d88833bfd8f4daf2444e903e711559a19e4594cc9942b07eb09791a1e4a"
+    },
+    "thoughtlab/reasoningEngineering/dossier/06_independent_assurance_review.md": {
+      "bytes": 4185,
+      "sha256": "a4b96614844ae874e2258b82ee88f7d55f800f3092c099425e9bcb2f507e63f7"
+    },
+    "thoughtlab/reasoningEngineering/dossier/07_governance_contract_data_extracts.md": {
+      "bytes": 4099,
+      "sha256": "a99d8d4f0851a8c60918b38a03cd03e57dc844be8b4db4deb0af4e2fe30555af"
+    },
+    "thoughtlab/reasoningEngineering/dossier/08_migration_readiness_evidence.md": {
+      "bytes": 3497,
+      "sha256": "ff13fd67d73c849aed25ba5b1b4c28a713b49f604d36ddc5aebe3c6f6f870413"
+    },
+    "thoughtlab/reasoningEngineering/dossier/09_resource_lifecycle_window.md": {
+      "bytes": 4080,
+      "sha256": "0584b082985257b5e69758c3e42eef579972e9a00804d4b59a7d88522b92c934"
+    },
+    "thoughtlab/reasoningEngineering/dossier/10_stakeholder_hearing.md": {
+      "bytes": 5315,
+      "sha256": "b58a61d8360d35dd6e8759578e897b5722af8e447a3086d6309a0a3decbf4f40"
+    },
+    "thoughtlab/reasoningEngineering/modernization_freeze.py": {
+      "bytes": 31217,
+      "sha256": "86fd3f3387cffc328250c043904c33667a4fd87a0183ab3e01d3c115972772cb"
+    },
+    "thoughtlab/reasoningEngineering/modernization_pilot.py": {
+      "bytes": 166089,
+      "sha256": "384cc532fe99b820a735daa2da95c7675eb7423c37f070a60df18112c8ee2daf"
+    },
+    "thoughtlab/reasoningEngineering/modernization_protocol.py": {
+      "bytes": 32516,
+      "sha256": "7853871c62e8bfe6499ff32362a5aee848150f96f5c496c473b003c7b1d68ce5"
+    },
+    "thoughtlab/stateTransitions/__init__.py": {
+      "bytes": 57,
+      "sha256": "9ea6a60bf0379f382ab6e1b537f76e857bc9fd8f1bece55649711a48a61ef3cb"
+    },
+    "thoughtlab/stateTransitions/fork_pilot.py": {
+      "bytes": 77993,
+      "sha256": "24a17d18c34d1384f7b1ffaec544f819cdc6a05bbe1b7211ef1dded84fd74441"
+    }
+  }
+}

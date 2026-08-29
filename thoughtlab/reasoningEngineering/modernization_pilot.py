@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import functools
 import json
 import os
 import re
@@ -21,21 +22,23 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from thoughtlab.gemini_interactions import (
-    InteractionHttpResult,
-    _decode_payload as decode_interaction_payload,
-    canonical_json_bytes as interaction_wire_bytes,
-    response_steps,
+from thoughtlab.gemini_generate_content import (
+    GenerateContentHttpResult,
+    canonical_json_bytes as generate_content_wire_bytes,
+    decode_generate_content_bytes,
+    generate_content_url,
+    post_generate_content,
+    response_contents,
     thought_signature_metadata,
 )
 from thoughtlab.opaque_ids import generate_opaque_id, is_opaque_id
-from thoughtlab.reasoningEngineering import modernization_protocol as protocol
-from thoughtlab.stateTransitions.fork_pilot import (
-    CallStore,
-    _bounded_storage_label,
+from thoughtlab.raw_call_store import (
+    RawCallStore as CallStore,
+    bounded_storage_label as _bounded_storage_label,
     write_json,
     write_text,
 )
+from thoughtlab.reasoningEngineering import modernization_protocol as protocol
 
 
 SCHEMA_VERSION = "modernization_reasoning_engineering_execution_v1"
@@ -184,8 +187,6 @@ class PlanningTurnEvaluation:
     carrier_replayable: bool
     reasons: list[str]
     steps: list[dict[str, Any]]
-    thought_steps: list[dict[str, Any]]
-    model_output_steps: list[dict[str, Any]]
     visible_text: str
     normalized_visible_text: str
     safe_metadata: dict[str, Any]
@@ -237,68 +238,76 @@ def _utc_timestamp(value: Any, *, label: str) -> datetime:
 
 
 def _exact_visible_text(
-    model_output_steps: list[dict[str, Any]],
+    model_contents: list[dict[str, Any]],
 ) -> tuple[str, list[str]]:
     pieces: list[str] = []
     issues: list[str] = []
-    if len(model_output_steps) != 1:
-        issues.append("response did not contain exactly one model_output step")
-    for output_index, step in enumerate(model_output_steps):
-        unknown_step_fields = set(step).difference(
-            protocol.ALLOWED_MODEL_OUTPUT_STEP_KEYS
-        )
-        if unknown_step_fields:
-            issues.append(
-                f"model_output[{output_index}] had unexpected fields: "
-                f"{sorted(unknown_step_fields)!r}"
-            )
-        content = step.get("content")
-        if not isinstance(content, list):
-            issues.append(f"model_output[{output_index}] content was not an array")
+    if len(model_contents) != 1:
+        issues.append("response did not contain exactly one model Content")
+    for content_index, content in enumerate(model_contents):
+        try:
+            protocol._validate_model_content(content, content_index)
+        except ValueError as exc:
+            issues.append(str(exc))
             continue
-        if len(content) != 1:
+        visible_parts = [
+            part
+            for part in content["parts"]
+            if part.get("thought") is not True
+            and isinstance(part.get("text"), str)
+        ]
+        if len(visible_parts) != 1:
             issues.append(
-                f"model_output[{output_index}] did not contain exactly one text block"
+                f"model content[{content_index}] did not contain exactly one "
+                "visible text Part"
             )
-        for block_index, block in enumerate(content):
-            if not isinstance(block, dict):
-                issues.append(
-                    f"model_output[{output_index}].content[{block_index}] was not an object"
-                )
-                continue
-            unknown_block_fields = set(block).difference(
-                protocol.ALLOWED_TEXT_BLOCK_KEYS
+        for part in visible_parts:
+            text = part.get("text")
+            if isinstance(text, str):
+                pieces.append(text)
+    return "".join(pieces), issues
+
+
+def _ordinary_visible_text(
+    model_contents: list[dict[str, Any]],
+) -> tuple[str, list[str]]:
+    """Collect ordered prose Parts without imposing the READY token shape."""
+
+    pieces: list[str] = []
+    issues: list[str] = []
+    if len(model_contents) != 1:
+        issues.append("response did not contain exactly one model Content")
+    for content_index, content in enumerate(model_contents):
+        try:
+            protocol._validate_model_content(content, content_index)
+        except ValueError as exc:
+            issues.append(str(exc))
+            continue
+        visible_parts = [
+            part
+            for part in content["parts"]
+            if part.get("thought") is not True
+            and isinstance(part.get("text"), str)
+        ]
+        if not visible_parts:
+            issues.append(
+                f"model content[{content_index}] contained no visible text Part"
             )
-            if unknown_block_fields:
-                issues.append(
-                    f"model_output[{output_index}].content[{block_index}] had "
-                    f"unexpected fields: {sorted(unknown_block_fields)!r}"
-                )
-            if block.get("type") != "text" or not isinstance(block.get("text"), str):
-                issues.append(
-                    f"model_output[{output_index}].content[{block_index}] was not text"
-                )
-                continue
-            pieces.append(block["text"])
+        pieces.extend(str(part["text"]) for part in visible_parts)
     return "".join(pieces), issues
 
 
 def _explicit_finish_reasons(payload: Any) -> list[str]:
-    found: list[str] = []
-
-    def walk(value: Any) -> None:
-        if isinstance(value, dict):
-            for key, child in value.items():
-                if key in {"finishReason", "finish_reason"} and isinstance(child, str):
-                    found.append(child)
-                else:
-                    walk(child)
-        elif isinstance(value, list):
-            for child in value:
-                walk(child)
-
-    walk(payload)
-    return list(dict.fromkeys(found))
+    if not isinstance(payload, dict):
+        return []
+    candidates = payload.get("candidates")
+    if not isinstance(candidates, list) or len(candidates) != 1:
+        return []
+    candidate = candidates[0]
+    if not isinstance(candidate, dict):
+        return []
+    reason = candidate.get("finishReason")
+    return [reason] if isinstance(reason, str) and reason else []
 
 
 def _normalized_finish_reason(value: str) -> str:
@@ -306,21 +315,20 @@ def _normalized_finish_reason(value: str) -> str:
 
 
 def _safe_usage(payload: dict[str, Any] | None) -> dict[str, int | None]:
-    usage = payload.get("usage") if isinstance(payload, dict) else None
+    usage = payload.get("usageMetadata") if isinstance(payload, dict) else None
     if not isinstance(usage, dict):
         usage = {}
-    keys = (
-        "total_tokens",
-        "total_input_tokens",
-        "total_cached_tokens",
-        "total_output_tokens",
-        "total_thought_tokens",
-        "total_tool_use_tokens",
-        "raw_prompt_token",
-    )
+    mapping = {
+        "total_tokens": "totalTokenCount",
+        "total_input_tokens": "promptTokenCount",
+        "total_cached_tokens": "cachedContentTokenCount",
+        "total_output_tokens": "candidatesTokenCount",
+        "total_thought_tokens": "thoughtsTokenCount",
+        "total_tool_use_tokens": "toolUsePromptTokenCount",
+    }
     return {
-        key: value if isinstance((value := usage.get(key)), int) else None
-        for key in keys
+        target: value if isinstance((value := usage.get(source)), int) else None
+        for target, source in mapping.items()
     }
 
 
@@ -328,16 +336,17 @@ def _carrier_errors(steps: list[dict[str, Any]]) -> list[str]:
     if not steps:
         return ["response has no replayable steps"]
     try:
-        # Isolation is the strict carrier-shape validator. It deep-copies and
-        # blanks known visible text, so this call neither mutates nor exposes
-        # the live response steps.
+        # Isolation is the strict carrier validator. It deep-copies the exact
+        # model Content and blanks text only in the detached sibling request.
         protocol.isolate_response_steps(steps)
     except (RuntimeError, TypeError, ValueError) as exc:
         return [f"response carrier was not safely isolatable: {exc}"]
     return []
 
 
-def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluation:
+def evaluate_planning_turn(
+    result: GenerateContentHttpResult,
+) -> PlanningTurnEvaluation:
     """Classify transport, replayability, and readiness without collapsing them."""
 
     reasons: list[str] = []
@@ -352,11 +361,7 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
         reasons.append("missing response payload")
         payload = {}
 
-    provider_status_value = payload.get("status")
-    provider_status = (
-        provider_status_value if isinstance(provider_status_value, str) else ""
-    )
-    if payload.get("model") != protocol.MODEL:
+    if payload.get("modelVersion") != protocol.MODEL:
         reasons.append("returned model did not match the frozen model")
     if "error" in payload or "errors" in payload:
         reasons.append("response contained a top-level error")
@@ -364,19 +369,11 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
     steps: list[dict[str, Any]] = []
     if isinstance(result.payload, dict):
         try:
-            steps = response_steps(result.payload)
+            steps = response_contents(result.payload)
         except ValueError as exc:
-            reasons.append(f"response steps shape was invalid: {exc}")
+            reasons.append(f"response Content shape was invalid: {exc}")
 
-    thought_steps = [
-        copy.deepcopy(step) for step in steps if step.get("type") == "thought"
-    ]
-    model_outputs = [
-        copy.deepcopy(step)
-        for step in steps
-        if step.get("type") == "model_output"
-    ]
-    visible_text, output_issues = _exact_visible_text(model_outputs)
+    visible_text, output_issues = _exact_visible_text(steps)
     visible_shape_valid = not output_issues
     normalized = protocol.normalize_readiness_text(visible_text)
     carrier_issues = _carrier_errors(steps)
@@ -389,7 +386,7 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
         and not result.transport_error
         and not result.response_parse_error
         and isinstance(result.payload, dict)
-        and result.payload.get("model") == protocol.MODEL
+        and result.payload.get("modelVersion") == protocol.MODEL
         and "error" not in result.payload
         and "errors" not in result.payload
     )
@@ -402,33 +399,23 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
     normalized_finish_reasons = {
         _normalized_finish_reason(reason) for reason in finish_reasons
     }
-    incomplete_finish_reasons_valid = (
-        not normalized_finish_reasons
-        or normalized_finish_reasons.issubset(OUTPUT_BUDGET_FINISH_REASONS)
-    )
-    completed_finish_reasons_valid = (
-        not normalized_finish_reasons
-        or normalized_finish_reasons.issubset(COMPLETED_FINISH_REASONS)
-    )
+    if normalized_finish_reasons == COMPLETED_FINISH_REASONS:
+        provider_status = "completed"
+    elif (
+        normalized_finish_reasons
+        and normalized_finish_reasons.issubset(OUTPUT_BUDGET_FINISH_REASONS)
+    ):
+        provider_status = "incomplete"
+    else:
+        provider_status = ""
+        reasons.append("missing or unsupported generateContent finishReason")
 
     readiness: str | None
     if provider_status == "incomplete":
-        # The Interactions envelope does not reliably expose a literal
-        # MAX_TOKENS reason. Provider status outranks any partial visible text.
-        if incomplete_finish_reasons_valid:
-            readiness = protocol.UNOBSERVED_TRUNCATED
-        else:
-            readiness = None
-            reasons.append(
-                "incomplete interaction had a non-output-budget finish reason"
-            )
+        # MAX_TOKENS outranks any partial visible READY/NOT_READY text.
+        readiness = protocol.UNOBSERVED_TRUNCATED
     elif provider_status == "completed":
-        if not completed_finish_reasons_valid:
-            readiness = None
-            reasons.append(
-                "completed interaction had a contradictory finish reason"
-            )
-        elif visible_shape_valid and normalized == protocol.READY:
+        if visible_shape_valid and normalized == protocol.READY:
             readiness = protocol.READY
         elif visible_shape_valid and normalized == protocol.NOT_READY:
             readiness = protocol.SELF_DECLARED_NOT_READY
@@ -449,7 +436,9 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
         action = ACTION_CONTINUE
     else:
         action = ACTION_TERMINATE_TECHNICAL
-        reasons.append(f"interaction status was {provider_status!r}")
+        reasons.append(
+            f"generateContent finish state was {provider_status!r}"
+        )
 
     reasons = list(dict.fromkeys(reasons))
     return PlanningTurnEvaluation(
@@ -460,8 +449,6 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
         carrier_replayable=carrier_replayable,
         reasons=reasons,
         steps=copy.deepcopy(steps),
-        thought_steps=thought_steps,
-        model_output_steps=model_outputs,
         visible_text=visible_text,
         normalized_visible_text=normalized,
         safe_metadata={
@@ -470,10 +457,13 @@ def evaluate_planning_turn(result: InteractionHttpResult) -> PlanningTurnEvaluat
             "explicit_finish_reasons": finish_reasons,
             "transport_error_present": bool(result.transport_error),
             "response_parse_error_present": bool(result.response_parse_error),
-            "response_step_count": len(steps),
-            "thought_step_count": len(thought_steps),
-            "model_output_step_count": len(model_outputs),
-            "signature_metadata": thought_signature_metadata(thought_steps),
+            "response_content_count": len(steps),
+            "response_part_count": sum(
+                len(content.get("parts", []))
+                for content in steps
+                if isinstance(content.get("parts"), list)
+            ),
+            "signature_metadata": thought_signature_metadata(steps),
             "visible_text_sha256": protocol.sha256_text(visible_text),
             "visible_text_chars": len(visible_text),
             "usage": _safe_usage(result.payload),
@@ -494,7 +484,7 @@ def _safe_call_summary(call: dict[str, Any]) -> dict[str, Any]:
 
 def _invoke(
     *, store: CallStore, label: str, body: dict[str, Any]
-) -> tuple[InteractionHttpResult, dict[str, Any]]:
+) -> tuple[GenerateContentHttpResult, dict[str, Any]]:
     protocol.assert_no_function_tool_or_schema_structure(body)
     result, call = store.invoke_logical(label=label, body=body)
     return result, _safe_call_summary(call)
@@ -545,7 +535,7 @@ def run_planning_phase(
     if max_turns <= 0:
         raise ValueError("planning phase must allow at least one turn")
     if expected_parent_history is not None:
-        if first_body.get("input", [])[:-1] != expected_parent_history:
+        if first_body.get("contents", [])[:-1] != expected_parent_history:
             raise ValueError("first adjusted request changed the baseline parent history")
 
     checkpoints: list[CheckpointRuntime] = []
@@ -567,7 +557,7 @@ def run_planning_phase(
                 phase=phase,
                 turn_number=turn_number,
             )
-            if body["input"][:-1] != history:
+            if body["contents"][:-1] != history:
                 raise RuntimeError("planning continuation changed exact prior history")
 
         result, call = _invoke(
@@ -584,7 +574,7 @@ def run_planning_phase(
             "controller_action": evaluated.controller_action,
             "carrier_replayable": evaluated.carrier_replayable,
             "reasons": evaluated.reasons,
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "response_steps_sha256": protocol.sha256_json(evaluated.steps),
             "call": call,
             **evaluated.safe_metadata,
@@ -611,7 +601,10 @@ def run_planning_phase(
             write_json(private_path, _phase_private_record(provisional))
             break
 
-        history = [*copy.deepcopy(body["input"]), *copy.deepcopy(evaluated.steps)]
+        history = [
+            *copy.deepcopy(body["contents"]),
+            *copy.deepcopy(evaluated.steps),
+        ]
         checkpoint = CheckpointRuntime(
             checkpoint_id=generate_opaque_id(),
             phase=phase,
@@ -678,7 +671,7 @@ def run_planning_phase(
 
 
 def _evaluate_observation_response(
-    result: InteractionHttpResult,
+    result: GenerateContentHttpResult,
     *,
     context: str = "inspection",
 ) -> tuple[bool, str, list[dict[str, Any]], dict[str, Any], list[str]]:
@@ -695,39 +688,40 @@ def _evaluate_observation_response(
         payload = {}
     if "error" in payload or "errors" in payload:
         reasons.append(f"{context} response contained a top-level error")
-    if payload.get("status") != "completed":
-        reasons.append(f"{context} interaction status was {payload.get('status')!r}")
     finish_reasons = _explicit_finish_reasons(result.payload)
     normalized_finish_reasons = {
         _normalized_finish_reason(reason) for reason in finish_reasons
     }
-    if (
-        payload.get("status") == "completed"
-        and normalized_finish_reasons
-        and not normalized_finish_reasons.issubset(COMPLETED_FINISH_REASONS)
-    ):
+    provider_status = (
+        "completed"
+        if normalized_finish_reasons == COMPLETED_FINISH_REASONS
+        else "incomplete"
+        if normalized_finish_reasons
+        and normalized_finish_reasons.issubset(OUTPUT_BUDGET_FINISH_REASONS)
+        else ""
+    )
+    if provider_status != "completed":
         reasons.append(
-            f"{context} completed interaction had a contradictory finish reason"
+            f"{context} generateContent finishReason was not STOP"
         )
-    if payload.get("model") != protocol.MODEL:
+    if payload.get("modelVersion") != protocol.MODEL:
         reasons.append(f"{context} returned a different model")
     steps: list[dict[str, Any]] = []
     if isinstance(result.payload, dict):
         try:
-            steps = response_steps(result.payload)
+            steps = response_contents(result.payload)
         except ValueError as exc:
-            reasons.append(f"{context} response steps were invalid: {exc}")
+            reasons.append(f"{context} response Content was invalid: {exc}")
     try:
         protocol.assert_no_function_tool_or_schema_structure(steps)
     except ValueError as exc:
         reasons.append(str(exc))
-    outputs = [step for step in steps if step.get("type") == "model_output"]
-    visible, output_issues = _exact_visible_text(outputs)
+    visible, output_issues = _ordinary_visible_text(steps)
     reasons.extend(output_issues)
-    if not visible:
+    if not protocol.normalize_readiness_text(visible):
         reasons.append(f"{context} visible output was empty")
     safe = {
-        "provider_status": payload.get("status"),
+        "provider_status": provider_status,
         "explicit_finish_reasons": finish_reasons,
         "response_steps_sha256": protocol.sha256_json(steps),
         "visible_text_sha256": protocol.sha256_text(visible),
@@ -755,7 +749,7 @@ def run_inspections(
         )
         if protocol.sha256_json(checkpoint.response_steps) != source_hash:
             raise RuntimeError("inspection construction mutated live checkpoint")
-        if "system_instruction" in body:
+        if "systemInstruction" in body:
             raise RuntimeError("isolated inspection included a system instruction")
         result, call = _invoke(
             store=store,
@@ -776,8 +770,8 @@ def run_inspections(
             "eligible_observation": eligible,
             "reasons": reasons,
             "observation": visible,
-            "carrier_sha256": protocol.sha256_json(body["input"][:-1]),
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "carrier_sha256": protocol.sha256_json(body["contents"][:-1]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "call": call,
             **safe,
         }
@@ -871,7 +865,7 @@ def _phase_review_markdown(
 
 
 def _execution_response(
-    result: InteractionHttpResult,
+    result: GenerateContentHttpResult,
 ) -> tuple[bool, str, dict[str, Any], list[dict[str, Any]], list[str]]:
     eligible, visible, steps, safe, reasons = _evaluate_observation_response(
         result, context="execution"
@@ -911,7 +905,7 @@ def run_executions(
             branch=branch,
             replicate=replicate,
         )
-        if body["input"][:-1] != parent.full_history:
+        if body["contents"][:-1] != parent.full_history:
             raise RuntimeError("execution request changed its exact parent history")
         if protocol.sha256_json(parent.full_history) != parent_hash:
             raise RuntimeError("execution construction mutated its parent checkpoint")
@@ -930,7 +924,7 @@ def run_executions(
             "reasons": reasons,
             "memorandum": visible,
             "parent_history_sha256": parent_hash,
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "call": call,
             **safe,
         }
@@ -1103,9 +1097,14 @@ def _raw_signatures(value: Any) -> list[str]:
 
     def walk(item: Any) -> None:
         if isinstance(item, dict):
-            signature = item.get("signature")
-            if isinstance(signature, str) and signature:
-                signatures.append(signature)
+            for key, signature in item.items():
+                if (
+                    key.lower().replace("_", "")
+                    in {"signature", "thoughtsignature"}
+                    and isinstance(signature, str)
+                    and signature
+                ):
+                    signatures.append(signature)
             for child in item.values():
                 walk(child)
         elif isinstance(item, list):
@@ -1141,6 +1140,7 @@ CALL_INDEX_RECORD_KEYS = {
     "response_headers",
     "raw_request_path",
     "raw_response_path",
+    "request_target",
 }
 LOGICAL_CALL_RECORD_KEYS = {
     "logical_request_id",
@@ -1160,6 +1160,7 @@ LOGICAL_CALL_RECORD_KEYS = {
     "request_wire_bytes",
     "first_attempt_http_status",
     "first_attempt_transport_error",
+    "request_target",
     "attempts",
 }
 LOGICAL_ATTEMPT_RECORD_KEYS = {
@@ -1170,6 +1171,15 @@ LOGICAL_ATTEMPT_RECORD_KEYS = {
     "selected_for_logical_result",
 }
 RETRY_RULE = "transport_or_http_408_429_500_502_503_504_only"
+
+
+def _canonical_request_target() -> dict[str, str]:
+    return {
+        "api": protocol.API,
+        "method": "POST",
+        "endpoint": generate_content_url(model=protocol.MODEL),
+        "model": protocol.MODEL,
+    }
 
 
 def _is_sha256(value: Any) -> bool:
@@ -1416,6 +1426,7 @@ def _validate_call_index(run_dir: Path) -> list[dict[str, Any]]:
                 for key, item in response_headers.items()
             )
             or not _is_sha256(record.get("request_wire_sha256"))
+            or record.get("request_target") != _canonical_request_target()
         ):
             raise ValueError("raw call metadata field types are invalid")
         try:
@@ -1488,14 +1499,14 @@ def _validate_call_index(run_dir: Path) -> list[dict[str, Any]]:
     return copy.deepcopy(value)
 
 
-def _bound_interaction_result(
+def _bound_generate_content_result(
     *,
     run_dir: Path,
     call_summary: Any,
     expected_label: str,
     expected_body: dict[str, Any],
     call_cursor: PhysicalCallCursor,
-) -> InteractionHttpResult:
+) -> GenerateContentHttpResult:
     if not isinstance(call_summary, dict) or set(call_summary) != {
         "logical_request_id",
         "attempt_count",
@@ -1519,7 +1530,7 @@ def _bound_interaction_result(
         raise ValueError("logical call metadata shape is invalid")
     attempts = logical.get("attempts")
     selected_number = logical.get("selected_physical_call_number")
-    expected_wire = interaction_wire_bytes(expected_body)
+    expected_wire = generate_content_wire_bytes(expected_body)
     expected_wire_hash = protocol.sha256_bytes(expected_wire)
     expected_logical_id = protocol.sha256_text(
         f"{expected_label}:{expected_wire_hash}"
@@ -1544,6 +1555,7 @@ def _bound_interaction_result(
         or logical.get("actual_backoff_seconds")
         != list(protocol.RETRY_BACKOFF_SECONDS[: len(attempts) - 1])
         or logical.get("retried") is not (len(attempts) > 1)
+        or logical.get("request_target") != _canonical_request_target()
         or call_summary != _safe_call_summary(logical)
     ):
         raise ValueError("semantic artifact is not bound to its logical call")
@@ -1632,12 +1644,14 @@ def _bound_interaction_result(
         if recorded_parse_error:
             raise ValueError("transport-error raw response state is inconsistent")
     else:
-        payload, recomputed_parse_error = decode_interaction_payload(raw_body)
-        if bool(recomputed_parse_error) != bool(recorded_parse_error):
+        raw_body, payload, recomputed_parse_error = decode_generate_content_bytes(
+            response_bytes
+        )
+        if recomputed_parse_error != str(recorded_parse_error or ""):
             raise ValueError("raw response parse state differs from call metadata")
     call_cursor.next_call_number += len(attempts)
     call_cursor.logical_paths_used.add(logical_relative)
-    return InteractionHttpResult(
+    return GenerateContentHttpResult(
         http_status=selected.get("http_status"),
         payload=payload,
         raw_body=raw_body,
@@ -1786,16 +1800,21 @@ def _store(
     *,
     run_dir: Path,
     api_key: str,
-    transport: Callable[..., InteractionHttpResult] | None = None,
+    transport: Callable[..., GenerateContentHttpResult] | None = None,
 ) -> CallStore:
+    selected_transport = transport or functools.partial(
+        post_generate_content,
+        model=protocol.MODEL,
+    )
     return CallStore(
         run_dir=run_dir,
         api_key=api_key,
         timeout=protocol.HTTP_TIMEOUT_SECONDS,
         delay_seconds=INTER_REQUEST_DELAY_SECONDS if transport is None else 0,
-        transport=transport,
+        transport=selected_transport,
         max_attempts=protocol.MAX_ATTEMPTS_PER_LOGICAL_REQUEST,
         retry_backoff_seconds=protocol.RETRY_BACKOFF_SECONDS,
+        request_target=_canonical_request_target(),
     )
 
 
@@ -1829,7 +1848,7 @@ def execute_phase_one(
     freeze_dir: Path,
     freeze_id: str,
     api_key: str,
-    transport: Callable[..., InteractionHttpResult] | None = None,
+    transport: Callable[..., GenerateContentHttpResult] | None = None,
 ) -> tuple[Path, PlanningPhaseRuntime, list[dict[str, Any]]]:
     definition = _load_verified_definition(
         freeze_dir=freeze_dir,
@@ -2120,13 +2139,13 @@ def _validate_planning_phase_artifacts(
                 turn_number=turn_number,
             )
         )
-        result = _bound_interaction_result(
+        result = _bound_generate_content_result(
             run_dir=run_dir,
-                call_summary=recorded_turn.get("call"),
-                expected_label=f"{phase}_planning_turn_{turn_number}",
-                expected_body=body,
-                call_cursor=call_cursor,
-            )
+            call_summary=recorded_turn.get("call"),
+            expected_label=f"{phase}_planning_turn_{turn_number}",
+            expected_body=body,
+            call_cursor=call_cursor,
+        )
         evaluated = evaluate_planning_turn(result)
         last_classification = evaluated.readiness_observation
         expected_turn = {
@@ -2136,7 +2155,7 @@ def _validate_planning_phase_artifacts(
             "controller_action": evaluated.controller_action,
             "carrier_replayable": evaluated.carrier_replayable,
             "reasons": evaluated.reasons,
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "response_steps_sha256": protocol.sha256_json(evaluated.steps),
             "call": copy.deepcopy(recorded_turn.get("call")),
             **evaluated.safe_metadata,
@@ -2154,7 +2173,10 @@ def _validate_planning_phase_artifacts(
             )
             break
 
-        history = [*copy.deepcopy(body["input"]), *copy.deepcopy(evaluated.steps)]
+        history = [
+            *copy.deepcopy(body["contents"]),
+            *copy.deepcopy(evaluated.steps),
+        ]
         checkpoint = checkpoints_by_turn.get(turn_number)
         if (
             checkpoint is None
@@ -2235,7 +2257,7 @@ def _validate_observation_phase_artifacts(
             response_steps=checkpoint.response_steps,
             checkpoint_id=checkpoint.checkpoint_id,
         )
-        result = _bound_interaction_result(
+        result = _bound_generate_content_result(
             run_dir=run_dir,
             call_summary=public_row.get("call"),
             expected_label=(
@@ -2258,8 +2280,8 @@ def _validate_observation_phase_artifacts(
             "eligible_observation": eligible,
             "reasons": reasons,
             "observation": visible,
-            "carrier_sha256": protocol.sha256_json(body["input"][:-1]),
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "carrier_sha256": protocol.sha256_json(body["contents"][:-1]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "call": copy.deepcopy(public_row.get("call")),
             **safe,
         }
@@ -2269,7 +2291,9 @@ def _validate_observation_phase_artifacts(
             "response_steps": response,
         }
         if public_row != expected_row or private_row != expected_private:
-            raise ValueError(f"{phase} observation differs from raw interaction")
+            raise ValueError(
+                f"{phase} observation differs from raw generateContent response"
+            )
         verified_rows.append(copy.deepcopy(expected_row))
     _assert_exact_keys(
         seal,
@@ -2354,7 +2378,7 @@ def _validate_execution_artifacts(
             branch=branch,
             replicate=replicate,
         )
-        result = _bound_interaction_result(
+        result = _bound_generate_content_result(
             run_dir=run_dir,
             call_summary=public_row.get("call"),
             expected_label=f"execution_{branch}_replicate_{replicate}",
@@ -2371,7 +2395,7 @@ def _validate_execution_artifacts(
             "reasons": reasons,
             "memorandum": visible,
             "parent_history_sha256": protocol.sha256_json(parent.full_history),
-            "request_input_sha256": protocol.sha256_json(body["input"]),
+            "request_input_sha256": protocol.sha256_json(body["contents"]),
             "call": copy.deepcopy(public_row.get("call")),
             **safe,
         }
@@ -2381,7 +2405,9 @@ def _validate_execution_artifacts(
             "response_steps": response,
         }
         if public_row != expected_row or private_row != expected_private:
-            raise ValueError("execution row differs from its raw interaction")
+            raise ValueError(
+                "execution row differs from its raw generateContent response"
+            )
         verified_rows.append(copy.deepcopy(expected_row))
     _assert_exact_keys(
         seal,
@@ -2583,7 +2609,7 @@ def _verify_phase_one_archive(
             run_dir / str(call_records[0]["raw_request_path"])
         ).read_bytes()
         first_request = json.loads(first_request_bytes.decode("utf-8"))
-        actual_task_text = first_request["input"][0]["content"][0]["text"]
+        actual_task_text = first_request["contents"][0]["parts"][0]["text"]
     except (OSError, UnicodeError, ValueError, IndexError, KeyError, TypeError) as exc:
         raise ValueError("baseline archive has no canonical task input") from exc
     if (
@@ -2622,7 +2648,7 @@ def _verify_phase_one_archive(
             )
             if request_prefix != protocol.initial_planning_body(
                 task_text=expected_initial_text
-            )["input"]:
+            )["contents"]:
                 raise ValueError("baseline archive is not bound to the frozen dossier")
         else:
             expected_prefix = [
@@ -2699,9 +2725,9 @@ def _verify_phase_one_archive(
             != checkpoint.readiness_observation
             or private_row.get("request_body") != expected_body
             or public_row.get("carrier_sha256")
-            != protocol.sha256_json(expected_body["input"][:-1])
+            != protocol.sha256_json(expected_body["contents"][:-1])
             or public_row.get("request_input_sha256")
-            != protocol.sha256_json(expected_body["input"])
+            != protocol.sha256_json(expected_body["contents"])
             or public_row.get("response_steps_sha256")
             != protocol.sha256_json(private_row.get("response_steps"))
         ):
@@ -3420,7 +3446,7 @@ def execute_phase_two(
     freeze_id: str,
     intervention_dir: Path,
     api_key: str,
-    transport: Callable[..., InteractionHttpResult] | None = None,
+    transport: Callable[..., GenerateContentHttpResult] | None = None,
 ) -> tuple[PlanningPhaseRuntime, list[dict[str, Any]], list[dict[str, Any]]]:
     definition = _load_verified_definition(
         freeze_dir=freeze_dir,

@@ -9,14 +9,10 @@ from thoughtlab.reasoningEngineering import modernization_protocol as protocol
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
-def thought(signature: str = "secret") -> dict:
-    return {"type": "thought", "signature": signature, "summary": []}
-
-
-def model_output(text: str = "READY") -> dict:
+def model_content(text: str = "READY", signature: str = "secret") -> dict:
     return {
-        "type": "model_output",
-        "content": [{"type": "text", "text": text}],
+        "role": "model",
+        "parts": [{"text": text, "thoughtSignature": signature}],
     }
 
 
@@ -41,10 +37,11 @@ def test_planning_channel_is_raw_text_without_json_schema_or_deprecated_sampling
     assert "response_format" not in body
     assert "response_schema" not in body
     assert "tools" not in body
-    assert "temperature" not in body["generation_config"]
-    assert "top_p" not in body["generation_config"]
-    assert "top_k" not in body["generation_config"]
-    assert "raw ASCII token" in body["system_instruction"]
+    assert body["generationConfig"]["temperature"] == 0.0
+    assert "topP" not in body["generationConfig"]
+    assert "topK" not in body["generationConfig"]
+    assert "raw ASCII token" in body["systemInstruction"]["parts"][0]["text"]
+    assert body["contents"][0]["role"] == "user"
     assert '{"status"' not in serialized
     protocol.assert_no_function_tool_or_schema_structure(body)
 
@@ -59,34 +56,36 @@ def test_readiness_normalization_repairs_only_transport_whitespace() -> None:
     )
 
 
-def test_isolation_preserves_thought_exactly_and_blanks_only_visible_text() -> None:
-    source = [
-        thought("opaque-signature"),
-        model_output("READY"),
-    ]
+def test_isolation_preserves_signature_and_blanks_only_detached_text() -> None:
+    source = [model_content("READY", "opaque-signature")]
     before = copy.deepcopy(source)
 
     carrier = protocol.isolate_response_steps(source)
 
     assert source == before
     assert carrier[0] == protocol.user_step(protocol.NEUTRAL_CARRIER_STUB)
-    assert carrier[1] == source[0]
+    assert carrier[1] == {
+        "role": "model",
+        "parts": [{"text": "", "thoughtSignature": "opaque-signature"}],
+    }
     assert carrier[1] is not source[0]
-    assert carrier[2]["content"][0]["text"] == ""
     assert "READY" not in str(carrier)
     assert "North River" not in str(carrier)
 
 
 def test_thought_only_truncated_checkpoint_can_be_isolated_without_synthetic_output() -> None:
-    source = [thought("truncated-signature")]
+    source = [model_content("partial", "truncated-signature")]
 
     carrier = protocol.isolate_response_steps(source)
 
     assert carrier == [
         protocol.user_step(protocol.NEUTRAL_CARRIER_STUB),
-        thought("truncated-signature"),
+        {
+            "role": "model",
+            "parts": [{"text": "", "thoughtSignature": "truncated-signature"}],
+        },
     ]
-    assert all(step.get("type") != "model_output" for step in carrier)
+    assert source[0]["parts"][0]["text"] == "partial"
 
 
 @pytest.mark.parametrize(
@@ -94,28 +93,30 @@ def test_thought_only_truncated_checkpoint_can_be_isolated_without_synthetic_out
     [
         [
             {
-                "type": "thought",
-                "signature": "secret",
-                "summary": [],
-                "content": [{"type": "text", "text": "readable thought"}],
+                "role": "model",
+                "parts": [
+                    {
+                        "text": "READY",
+                        "thoughtSignature": "secret",
+                        "readable_metadata": "bad",
+                    }
+                ],
             }
         ],
         [
-            thought(),
             {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "READY"}],
+                "role": "assistant",
+                "parts": [{"text": "READY", "thoughtSignature": "secret"}],
                 "readable_metadata": "READY",
             },
         ],
         [
-            thought(),
             {
-                "type": "model_output",
-                "content": [
+                "role": "model",
+                "parts": [
                     {
-                        "type": "text",
                         "text": "READY",
+                        "thoughtSignature": "secret",
                         "annotation": "ordinary task context",
                     }
                 ],
@@ -134,29 +135,34 @@ def test_isolation_rejects_every_unexpected_readable_field(
     assert source == before
 
 
-def test_isolation_blanks_every_allowed_visible_text_block() -> None:
+def test_isolation_validates_then_removes_every_visible_text_block() -> None:
     source = [
-        thought("opaque"),
         {
-            "type": "model_output",
-            "content": [
-                {"type": "text", "text": "REA"},
-                {"type": "text", "text": "DY"},
+            "role": "model",
+            "parts": [
+                {"text": "REA"},
+                {"text": "DY", "thoughtSignature": "opaque"},
             ],
         },
     ]
 
     carrier = protocol.isolate_response_steps(source)
 
-    assert carrier[2]["content"] == [
-        {"type": "text", "text": ""},
-        {"type": "text", "text": ""},
+    assert carrier == [
+        protocol.user_step(protocol.NEUTRAL_CARRIER_STUB),
+        {
+            "role": "model",
+            "parts": [
+                {"text": ""},
+                {"text": "", "thoughtSignature": "opaque"},
+            ],
+        },
     ]
     assert "READY" not in str(carrier)
 
 
 def test_inspection_is_detached_holistic_and_has_no_ordinary_context() -> None:
-    source = [thought(), model_output("NOT_READY")]
+    source = [model_content("NOT_READY")]
     body = protocol.inspection_body(
         response_steps=source,
         checkpoint_id="ID_0123456789ABCDEFGHJKMNPQRS",
@@ -166,23 +172,25 @@ def test_inspection_is_detached_holistic_and_has_no_ordinary_context() -> None:
         checkpoint_id="ID_11111111111111111111111111",
     )
 
-    assert "system_instruction" not in body
-    assert body["input"][-1] == protocol.user_step(
+    assert "systemInstruction" not in body
+    assert body["contents"][-1] == protocol.user_step(
         protocol.PRIMARY_INSPECTION_PROMPT
     )
     assert "integrated decision structure" in protocol.PRIMARY_INSPECTION_PROMPT
     assert "option, evidence, assumption" not in protocol.PRIMARY_INSPECTION_PROMPT
-    assert "NOT_READY" not in str(body["input"][:-1])
+    assert "NOT_READY" not in str(body["contents"][:-1])
+    assert body["contents"][1]["parts"][0]["text"] == ""
+    assert body["contents"][1]["parts"][0]["thoughtSignature"] == "secret"
     assert "North River" not in str(body)
-    assert body["generation_config"] == sibling["generation_config"]
-    assert body["generation_config"] == protocol.generation_config(
+    assert body["generationConfig"] == sibling["generationConfig"]
+    assert body["generationConfig"] == protocol.generation_config(
         kind="inspection",
         seed_label=protocol.PRIMARY_INSPECTION_SEED_LABEL,
     )
 
 
 def test_neutral_continuation_and_execution_preserve_exact_parent_history() -> None:
-    history = [protocol.user_step("task"), thought(), model_output("READY")]
+    history = [protocol.user_step("task"), model_content("READY")]
     continuation = protocol.planning_continuation_body(
         full_history=history,
         phase="baseline",
@@ -204,22 +212,22 @@ def test_neutral_continuation_and_execution_preserve_exact_parent_history() -> N
         replicate=2,
     )
 
-    assert continuation["input"][:-1] == history
-    assert continuation["input"][-1] == protocol.user_step(
+    assert continuation["contents"][:-1] == history
+    assert continuation["contents"][-1] == protocol.user_step(
         protocol.CONTINUE_PLANNING_PROMPT
     )
     assert "whatever reasoning remains necessary" in protocol.CONTINUE_PLANNING_PROMPT
     assert "what still prevents" not in protocol.CONTINUE_PLANNING_PROMPT
-    assert execution["input"][:-1] == history
-    assert execution["input"][-1] == protocol.user_step(protocol.EXECUTION_PROMPT)
-    assert execution["generation_config"] == adjusted_execution["generation_config"]
-    assert execution["generation_config"]["seed"] != second_replicate[
-        "generation_config"
+    assert execution["contents"][:-1] == history
+    assert execution["contents"][-1] == protocol.user_step(protocol.EXECUTION_PROMPT)
+    assert execution["generationConfig"] == adjusted_execution["generationConfig"]
+    assert execution["generationConfig"]["seed"] != second_replicate[
+        "generationConfig"
     ]["seed"]
 
 
 def test_intervention_is_diagnostic_branch_and_cannot_trigger_execution() -> None:
-    history = [protocol.user_step("task"), thought(), model_output("READY")]
+    history = [protocol.user_step("task"), model_content("READY")]
     body = protocol.intervention_body(
         baseline_ready_history=history,
         intervention_text=(
@@ -228,8 +236,8 @@ def test_intervention_is_diagnostic_branch_and_cannot_trigger_execution() -> Non
         ),
     )
 
-    assert body["input"][:-1] == history
-    assert "Re-examine the assumed scope" in str(body["input"][-1])
+    assert body["contents"][:-1] == history
+    assert "Re-examine the assumed scope" in str(body["contents"][-1])
     with pytest.raises(ValueError, match="execution trigger"):
         protocol.intervention_body(
             baseline_ready_history=history,

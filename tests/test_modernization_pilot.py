@@ -7,20 +7,23 @@ from pathlib import Path
 
 import pytest
 
-from thoughtlab.gemini_interactions import InteractionHttpResult
+from thoughtlab.gemini_generate_content import (
+    GenerateContentHttpResult,
+    decode_generate_content_bytes,
+)
+from thoughtlab.raw_call_store import RawCallStore as CallStore
 from thoughtlab.reasoningEngineering import modernization_pilot as pilot
 from thoughtlab.reasoningEngineering import modernization_protocol as protocol
-from thoughtlab.stateTransitions.fork_pilot import CallStore
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
-def http_result(*, payload: dict, status: int = 200) -> InteractionHttpResult:
+def http_result(*, payload: dict, status: int = 200) -> GenerateContentHttpResult:
     raw = json.dumps(payload, ensure_ascii=True, separators=(",", ":")).encode(
         "utf-8"
     )
-    return InteractionHttpResult(
+    return GenerateContentHttpResult(
         http_status=status,
         payload=payload,
         raw_body=raw.decode("utf-8"),
@@ -34,46 +37,38 @@ def http_result(*, payload: dict, status: int = 200) -> InteractionHttpResult:
 
 def planning_result(
     *,
-    provider_status: str = "completed",
     text: str | None = "READY",
     signature: str | None = "secret",
-    include_steps: bool = True,
-    finish_reason: str | None = None,
-) -> InteractionHttpResult:
+    include_candidates: bool = True,
+    finish_reason: str | None = "STOP",
+) -> GenerateContentHttpResult:
     payload: dict = {
-        "status": provider_status,
-        "model": protocol.MODEL,
-        "usage": {
-            "total_tokens": 64,
-            "total_output_tokens": len(text or ""),
-            "total_thought_tokens": 60,
+        "modelVersion": protocol.MODEL,
+        "usageMetadata": {
+            "totalTokenCount": 64,
+            "candidatesTokenCount": len(text or ""),
+            "thoughtsTokenCount": 60,
         },
     }
-    if include_steps:
-        steps: list[dict] = []
+    if include_candidates:
+        part: dict = {"text": text or ""}
         if signature is not None:
-            steps.append(
-                {"type": "thought", "signature": signature, "summary": []}
-            )
-        if text is not None:
-            steps.append(
-                {
-                    "type": "model_output",
-                    "content": [{"type": "text", "text": text}],
-                }
-            )
-        payload["steps"] = steps
-    if finish_reason is not None:
-        payload["finishReason"] = finish_reason
+            part["thoughtSignature"] = signature
+        candidate: dict = {
+            "content": {"role": "model", "parts": [part]},
+        }
+        if finish_reason is not None:
+            candidate["finishReason"] = finish_reason
+        payload["candidates"] = [candidate]
     return http_result(payload=payload)
 
 
 class ScriptedTransport:
-    def __init__(self, results: list[InteractionHttpResult]) -> None:
+    def __init__(self, results: list[GenerateContentHttpResult]) -> None:
         self.results = list(results)
         self.bodies: list[dict] = []
 
-    def __call__(self, **kwargs) -> InteractionHttpResult:
+    def __call__(self, **kwargs) -> GenerateContentHttpResult:
         self.bodies.append(copy.deepcopy(kwargs["body"]))
         if not self.results:
             raise AssertionError("scripted transport was exhausted")
@@ -89,6 +84,7 @@ def make_store(path: Path, transport: ScriptedTransport) -> CallStore:
         transport=transport,
         max_attempts=3,
         retry_backoff_seconds=protocol.RETRY_BACKOFF_SECONDS,
+        request_target=pilot._canonical_request_target(),
         sleeper=lambda _seconds: None,
     )
 
@@ -366,40 +362,31 @@ def test_completed_raw_ready_is_the_only_ready_observation(
 
 
 @pytest.mark.parametrize(
-    "steps",
+    "parts",
     [
         [
-            {"type": "thought", "signature": "secret", "summary": []},
-            {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "REA"}],
-            },
-            {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "DY"}],
-            },
+            {"text": "REA", "thoughtSignature": "secret"},
+            {"text": "DY"},
         ],
         [
-            {"type": "thought", "signature": "secret", "summary": []},
-            {
-                "type": "model_output",
-                "content": [
-                    {"type": "text", "text": "NOT_"},
-                    {"type": "text", "text": "READY"},
-                ],
-            },
+            {"text": "NOT_", "thoughtSignature": "secret"},
+            {"text": "READY"},
         ],
     ],
 )
-def test_completed_boundary_requires_exactly_one_output_and_one_text_block(
-    steps: list[dict],
+def test_completed_boundary_requires_exactly_one_visible_text_part(
+    parts: list[dict],
 ) -> None:
     evaluated = pilot.evaluate_planning_turn(
         http_result(
             payload={
-                "status": "completed",
-                "model": protocol.MODEL,
-                "steps": steps,
+                "modelVersion": protocol.MODEL,
+                "candidates": [
+                    {
+                        "content": {"role": "model", "parts": parts},
+                        "finishReason": "STOP",
+                    }
+                ],
             }
         )
     )
@@ -417,7 +404,6 @@ def test_incomplete_overrides_partial_visible_status_or_noise(
 ) -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="incomplete",
             text=partial,
             signature="truncated-secret",
             finish_reason="MAX_TOKENS",
@@ -430,25 +416,12 @@ def test_incomplete_overrides_partial_visible_status_or_noise(
     assert evaluated.explicit_finish_reasons == ["MAX_TOKENS"]
 
 
-@pytest.mark.parametrize(
-    "finish_reason",
-    [
-        None,
-        "MAX_TOKENS",
-        "MAX_OUTPUT_TOKENS",
-        "max-output-tokens",
-        "max output tokens",
-    ],
-)
-def test_reasonless_or_output_budget_incomplete_continues(
-    finish_reason: str | None,
-) -> None:
+def test_output_budget_finish_reason_continues() -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="incomplete",
             text="READY",
             signature="truncated-secret",
-            finish_reason=finish_reason,
+            finish_reason="MAX_TOKENS",
         )
     )
 
@@ -457,13 +430,27 @@ def test_reasonless_or_output_budget_incomplete_continues(
     assert evaluated.carrier_replayable is True
 
 
+def test_missing_finish_reason_terminates_technically() -> None:
+    evaluated = pilot.evaluate_planning_turn(
+        planning_result(
+            text="READY",
+            signature="signed-but-finish-unobserved",
+            finish_reason=None,
+        )
+    )
+
+    assert evaluated.readiness_observation is None
+    assert evaluated.controller_action == pilot.ACTION_TERMINATE_TECHNICAL
+    assert evaluated.carrier_replayable is True
+    assert any("missing or unsupported" in reason for reason in evaluated.reasons)
+
+
 @pytest.mark.parametrize("finish_reason", ["SAFETY", "CONTENT_FILTER"])
-def test_explicit_non_token_incomplete_terminates_technically(
+def test_explicit_non_token_finish_reason_terminates_technically(
     finish_reason: str,
 ) -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="incomplete",
             text="READY",
             signature="signed-but-not-token-truncated",
             finish_reason=finish_reason,
@@ -473,34 +460,38 @@ def test_explicit_non_token_incomplete_terminates_technically(
     assert evaluated.readiness_observation is None
     assert evaluated.controller_action == pilot.ACTION_TERMINATE_TECHNICAL
     assert evaluated.carrier_replayable is True
-    assert any("non-output-budget" in reason for reason in evaluated.reasons)
+    assert any("missing or unsupported" in reason for reason in evaluated.reasons)
 
 
 @pytest.mark.parametrize(
-    "finish_reason", ["MAX_TOKENS", "SAFETY", "CONTENT_FILTER"]
+    ("finish_reason", "expected_observation", "expected_action"),
+    [
+        ("MAX_TOKENS", protocol.UNOBSERVED_TRUNCATED, pilot.ACTION_CONTINUE),
+        ("SAFETY", None, pilot.ACTION_TERMINATE_TECHNICAL),
+        ("CONTENT_FILTER", None, pilot.ACTION_TERMINATE_TECHNICAL),
+    ],
 )
-def test_completed_non_stop_finish_reason_is_contradictory_and_never_ready(
+def test_non_stop_finish_reason_never_promotes_visible_ready(
     finish_reason: str,
+    expected_observation: str | None,
+    expected_action: str,
 ) -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="completed",
             text="READY",
-            signature="contradictory",
+            signature="non-stop-signed-carrier",
             finish_reason=finish_reason,
         )
     )
 
-    assert evaluated.readiness_observation is None
-    assert evaluated.controller_action == pilot.ACTION_TERMINATE_TECHNICAL
+    assert evaluated.readiness_observation == expected_observation
+    assert evaluated.controller_action == expected_action
     assert evaluated.carrier_replayable is True
-    assert any("contradictory" in reason for reason in evaluated.reasons)
 
 
 def test_completed_stop_with_exact_ready_remains_ready() -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="completed",
             text="READY",
             signature="ordinary-stop",
             finish_reason="STOP",
@@ -512,44 +503,38 @@ def test_completed_stop_with_exact_ready_remains_ready() -> None:
 
 
 @pytest.mark.parametrize(
-    "steps",
+    "parts",
     [
         [
             {
-                "type": "thought",
-                "signature": "secret",
-                "summary": [],
-                "content": [{"type": "text", "text": "readable"}],
+                "text": "readable thought summary",
+                "thought": True,
+                "thoughtSignature": "secret",
             },
-            {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "READY"}],
-            },
+            {"text": "READY"},
         ],
         [
-            {"type": "thought", "signature": "secret", "summary": []},
             {
-                "type": "model_output",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "READY",
-                        "readable_metadata": "ordinary task context",
-                    }
-                ],
+                "text": "READY",
+                "thoughtSignature": "secret",
+                "readable_metadata": "ordinary task context",
             },
         ],
     ],
 )
 def test_unexpected_readable_carrier_fields_terminate_technically(
-    steps: list[dict],
+    parts: list[dict],
 ) -> None:
     evaluated = pilot.evaluate_planning_turn(
         http_result(
             payload={
-                "status": "completed",
-                "model": protocol.MODEL,
-                "steps": steps,
+                "modelVersion": protocol.MODEL,
+                "candidates": [
+                    {
+                        "content": {"role": "model", "parts": parts},
+                        "finishReason": "STOP",
+                    }
+                ],
             }
         )
     )
@@ -559,29 +544,28 @@ def test_unexpected_readable_carrier_fields_terminate_technically(
     assert any("safely isolatable" in reason for reason in evaluated.reasons)
 
 
-def test_incomplete_without_replayable_signed_thought_terminates_technically() -> None:
+def test_max_tokens_without_replayable_signed_content_terminates_technically() -> None:
     evaluated = pilot.evaluate_planning_turn(
         planning_result(
-            provider_status="incomplete",
-            text=None,
+            text="partial",
             signature=None,
-            include_steps=False,
+            finish_reason="MAX_TOKENS",
         )
     )
 
     assert evaluated.readiness_observation == protocol.UNOBSERVED_TRUNCATED
     assert evaluated.carrier_replayable is False
     assert evaluated.controller_action == pilot.ACTION_TERMINATE_TECHNICAL
-    assert any("no replayable steps" in reason for reason in evaluated.reasons)
+    assert any("no signed Part carrier" in reason for reason in evaluated.reasons)
 
 
 def test_truncated_then_ready_replays_exact_signed_checkpoint_and_promotes_later() -> None:
     transport = ScriptedTransport(
         [
             planning_result(
-                provider_status="incomplete",
                 text="Here",
                 signature="PRIVATE_TRUNCATED_SIGNATURE",
+                finish_reason="MAX_TOKENS",
             ),
             planning_result(text="READY", signature="PRIVATE_READY_SIGNATURE"),
         ]
@@ -602,15 +586,16 @@ def test_truncated_then_ready_replays_exact_signed_checkpoint_and_promotes_later
             protocol.UNOBSERVED_TRUNCATED
         )
         assert runtime.checkpoints[1].readiness_observation == protocol.READY
-        assert transport.bodies[1]["input"][:-1] == (
+        assert transport.bodies[1]["contents"][:-1] == (
             runtime.checkpoints[0].full_history
         )
-        assert transport.bodies[1]["input"][-1] == protocol.user_step(
+        assert transport.bodies[1]["contents"][-1] == protocol.user_step(
             protocol.CONTINUE_PLANNING_PROMPT
         )
         assert any(
-            step.get("signature") == "PRIVATE_TRUNCATED_SIGNATURE"
-            for step in transport.bodies[1]["input"]
+            part.get("thoughtSignature") == "PRIVATE_TRUNCATED_SIGNATURE"
+            for content in transport.bodies[1]["contents"]
+            for part in content.get("parts", [])
         )
         public = (run_dir / "baseline_planning_summary.json").read_text(
             encoding="utf-8"
@@ -628,9 +613,9 @@ def test_truncated_then_ready_replays_exact_signed_checkpoint_and_promotes_later
         ),
         (
             planning_result(
-                provider_status="incomplete",
                 text="READY",
                 signature="truncated",
+                finish_reason="MAX_TOKENS",
             ),
             protocol.UNOBSERVED_TRUNCATED,
         ),
@@ -641,7 +626,7 @@ def test_truncated_then_ready_replays_exact_signed_checkpoint_and_promotes_later
     ],
 )
 def test_threshold_reached_preserves_last_turn_classification(
-    result: InteractionHttpResult, classification: str
+    result: GenerateContentHttpResult, classification: str
 ) -> None:
     transport = ScriptedTransport([result])
     with tempfile.TemporaryDirectory() as temporary:
@@ -663,9 +648,9 @@ def test_2xx_incomplete_is_not_retried_or_synthetically_repaired() -> None:
     transport = ScriptedTransport(
         [
             planning_result(
-                provider_status="incomplete",
                 text="Here",
                 signature="incomplete-once",
+                finish_reason="MAX_TOKENS",
             )
         ]
     )
@@ -676,7 +661,7 @@ def test_2xx_incomplete_is_not_retried_or_synthetically_repaired() -> None:
             body=protocol.initial_planning_body(task_text="TASK"),
         )
 
-    assert result.payload["status"] == "incomplete"
+    assert result.payload["candidates"][0]["finishReason"] == "MAX_TOKENS"
     assert record["attempt_count"] == 1
     assert len(transport.bodies) == 1
 
@@ -701,7 +686,7 @@ def test_raw_binder_reconstructs_retry_span_and_selected_response() -> None:
             next_call_number=1,
             logical_paths_used=set(),
         )
-        rebound = pilot._bound_interaction_result(
+        rebound = pilot._bound_generate_content_result(
             run_dir=run_dir,
             call_summary=pilot._safe_call_summary(logical),
             expected_label="baseline_planning_turn_1",
@@ -709,7 +694,10 @@ def test_raw_binder_reconstructs_retry_span_and_selected_response() -> None:
             call_cursor=cursor,
         )
 
-        assert rebound.payload["steps"][-1]["content"][0]["text"] == "READY"
+        assert (
+            rebound.payload["candidates"][0]["content"]["parts"][0]["text"]
+            == "READY"
+        )
         assert cursor.next_call_number == 3
         assert logical["selection_reason"] == "first_nonretryable_after_retry"
 
@@ -718,7 +706,7 @@ def test_raw_binder_reconstructs_retry_span_and_selected_response() -> None:
         tampered["selected_response_wire_sha256"] = "f" * 64
         pilot.write_json(logical_path, tampered)
         with pytest.raises(ValueError, match="selection or timing"):
-            pilot._bound_interaction_result(
+            pilot._bound_generate_content_result(
                 run_dir=run_dir,
                 call_summary=pilot._safe_call_summary(tampered),
                 expected_label="baseline_planning_turn_1",
@@ -738,8 +726,8 @@ def test_raw_binder_reconstructs_retry_span_and_selected_response() -> None:
 def test_raw_binder_reconstructs_exhausted_transport_errors(
     http_status: int | None, partial_bytes: bytes
 ) -> None:
-    def transport_error_result() -> InteractionHttpResult:
-        return InteractionHttpResult(
+    def transport_error_result() -> GenerateContentHttpResult:
+        return GenerateContentHttpResult(
             http_status=http_status,
             payload=None,
             raw_body=partial_bytes.decode("utf-8"),
@@ -765,7 +753,7 @@ def test_raw_binder_reconstructs_exhausted_transport_errors(
             next_call_number=1,
             logical_paths_used=set(),
         )
-        rebound = pilot._bound_interaction_result(
+        rebound = pilot._bound_generate_content_result(
             run_dir=run_dir,
             call_summary=pilot._safe_call_summary(logical),
             expected_label="baseline_planning_turn_1",
@@ -788,17 +776,19 @@ def test_truncated_checkpoint_is_inspection_eligible_but_not_execution_parent() 
         provider_status="incomplete",
         full_history=[
             protocol.user_step("TASK"),
-            {"type": "thought", "signature": "SECRET", "summary": []},
             {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "Here"}],
+                "role": "model",
+                "parts": [
+                    {"text": "Here", "thoughtSignature": "SECRET"}
+                ],
             },
         ],
         response_steps=[
-            {"type": "thought", "signature": "SECRET", "summary": []},
             {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "Here"}],
+                "role": "model",
+                "parts": [
+                    {"text": "Here", "thoughtSignature": "SECRET"}
+                ],
             },
         ],
         summary={},
@@ -825,8 +815,16 @@ def test_truncated_checkpoint_is_inspection_eligible_but_not_execution_parent() 
         assert rows[0]["eligible_observation"] is True
         inspection_body = transport.bodies[0]
         assert "TASK" not in str(inspection_body)
-        assert "Here" not in str(inspection_body["input"][:-1])
-        assert inspection_body["input"][2]["content"][0]["text"] == ""
+        carrier = inspection_body["contents"][:-1]
+        assert "Here" not in str(carrier)
+        assert [content["role"] for content in carrier] == ["user", "model"]
+        assert carrier[1]["parts"] == [
+            {"text": "", "thoughtSignature": "SECRET"}
+        ]
+        assert carrier[0]["parts"][0]["text"] == protocol.NEUTRAL_CARRIER_STUB
+        assert inspection_body["contents"][-1]["parts"][0]["text"] == (
+            protocol.PRIMARY_INSPECTION_PROMPT
+        )
         assert checkpoint.full_history[0] == protocol.user_step("TASK")
 
         with pytest.raises(ValueError, match="not a completed READY"):
@@ -879,13 +877,13 @@ def test_execution_uses_frozen_interleaved_schedule_and_paired_seeds() -> None:
     def ready_checkpoint(*, phase: str, checkpoint_id: str) -> pilot.CheckpointRuntime:
         response = [
             {
-                "type": "thought",
-                "signature": f"{phase.upper()}_PRIVATE_SIGNATURE",
-                "summary": [],
-            },
-            {
-                "type": "model_output",
-                "content": [{"type": "text", "text": "READY"}],
+                "role": "model",
+                "parts": [
+                    {
+                        "text": "READY",
+                        "thoughtSignature": f"{phase.upper()}_PRIVATE_SIGNATURE",
+                    }
+                ],
             },
         ]
         return pilot.CheckpointRuntime(
@@ -930,7 +928,7 @@ def test_execution_uses_frozen_interleaved_schedule_and_paired_seeds() -> None:
     ] == schedule
     for replicate in range(1, protocol.EXECUTION_REPLICATES_PER_CHECKPOINT + 1):
         pair = [
-            body["generation_config"]
+            body["generationConfig"]
             for body, row in zip(transport.bodies, rows, strict=True)
             if row["replicate"] == replicate
         ]
@@ -952,7 +950,6 @@ def test_observation_top_level_errors_are_ineligible_but_partial_text_is_retaine
     error_value: object,
 ) -> None:
     result = planning_result(
-        provider_status="completed",
         text="Partial diagnostic text worth retaining",
         signature="inspection-signature",
     )
@@ -973,7 +970,6 @@ def test_completed_observation_with_non_stop_finish_reason_is_ineligible(
     finish_reason: str,
 ) -> None:
     result = planning_result(
-        provider_status="completed",
         text="Partial diagnostic text retained for audit",
         signature="inspection-signature",
         finish_reason=finish_reason,
@@ -986,7 +982,46 @@ def test_completed_observation_with_non_stop_finish_reason_is_ineligible(
     assert eligible is False
     assert visible == "Partial diagnostic text retained for audit"
     assert safe["explicit_finish_reasons"] == [finish_reason]
-    assert any("contradictory finish reason" in reason for reason in reasons)
+    assert any("finishReason was not STOP" in reason for reason in reasons)
+
+
+def test_semantic_output_accepts_multiple_ordered_visible_text_parts() -> None:
+    result = planning_result(text="unused", signature="inspection-signature")
+    assert result.payload is not None
+    result.payload["candidates"][0]["content"]["parts"] = [
+        {"text": "Integrated "},
+        {"text": "decision structure", "thoughtSignature": "signed-readout"},
+    ]
+
+    eligible, visible, _steps, _safe, reasons = (
+        pilot._evaluate_observation_response(result)
+    )
+
+    assert eligible is True
+    assert visible == "Integrated decision structure"
+    assert reasons == []
+
+
+def test_semantic_output_rejects_whitespace_only_text() -> None:
+    result = planning_result(text=" \r\n\t", signature="inspection-signature")
+
+    eligible, visible, _steps, _safe, reasons = (
+        pilot._evaluate_observation_response(result)
+    )
+
+    assert eligible is False
+    assert visible == " \r\n\t"
+    assert "inspection visible output was empty" in reasons
+
+
+def test_generate_content_bytes_reject_invalid_utf8_without_replay_payload() -> None:
+    raw_body, payload, parse_error = decode_generate_content_bytes(
+        b'{"candidates":[{"content":{"parts":[{"thoughtSignature":"\xff"}]}}]}'
+    )
+
+    assert "\ufffd" in raw_body
+    assert payload is None
+    assert parse_error.startswith("UnicodeDecodeError:")
 
 
 def test_execution_response_uses_execution_context_for_transport_failures() -> None:
@@ -1042,7 +1077,7 @@ def test_phase_review_labels_eligibility_reasons_and_ineligible_partial_text() -
             "eligible_observation": False,
             "reasons": [
                 "inspection response contained a top-level error",
-                "inspection interaction status was 'incomplete'",
+                "inspection generateContent finishReason was not STOP",
             ],
             "observation": "Partial ineligible text retained for audit",
         },
@@ -1057,7 +1092,7 @@ def test_phase_review_labels_eligibility_reasons_and_ineligible_partial_text() -
     assert "Observation eligibility: `INELIGIBLE`" in review
     assert "Observation eligibility reasons:\n\n- NONE" in review
     assert "- inspection response contained a top-level error" in review
-    assert "- inspection interaction status was 'incomplete'" in review
+    assert "- inspection generateContent finishReason was not STOP" in review
     assert "Observation text (retained even when ineligible):" in review
     assert "Partial ineligible text retained for audit" in review
 
@@ -1470,10 +1505,9 @@ def test_first_turn_technical_termination_seals_empty_observation_set() -> None:
     transport = ScriptedTransport(
         [
             planning_result(
-                provider_status="completed",
                 text=None,
                 signature=None,
-                include_steps=False,
+                include_candidates=False,
             )
         ]
     )
@@ -1510,10 +1544,9 @@ def test_zero_checkpoint_phase_one_archive_is_still_bound_to_frozen_task(
     transport = ScriptedTransport(
         [
             planning_result(
-                provider_status="completed",
                 text=None,
                 signature=None,
-                include_steps=False,
+                include_candidates=False,
             )
         ]
     )
@@ -1663,7 +1696,6 @@ def test_signed_safety_termination_is_not_checkpointed_or_continued() -> None:
     transport = ScriptedTransport(
         [
             planning_result(
-                provider_status="incomplete",
                 text="READY",
                 signature="SIGNED_SAFETY_CARRIER",
                 finish_reason="SAFETY",
@@ -1951,7 +1983,7 @@ def test_adjusted_threshold_performs_no_execution_calls_and_consumes_once(
         assert executions == []
         assert len(transport.bodies) == protocol.MAX_ADJUSTED_PLANNING_TURNS * 2
         assert all(
-            body["input"][-1] != protocol.user_step(protocol.EXECUTION_PROMPT)
+            body["contents"][-1] != protocol.user_step(protocol.EXECUTION_PROMPT)
             for body in transport.bodies
         )
         claim = json.loads(
@@ -2039,7 +2071,6 @@ def test_max_tokens_threshold_archive_is_verifiable_but_not_authorized(
     freeze_id = "9" * 64
     results = [
         planning_result(
-            provider_status="incomplete",
             text=f"partial {turn}",
             signature=f"TRUNCATED_{turn}",
             finish_reason="MAX_TOKENS",
@@ -2400,7 +2431,7 @@ def test_completed_phase_two_is_integrity_closed_and_verifiable(
 
 
 @pytest.mark.parametrize("finish_reason", ["MAX_TOKENS", "SAFETY"])
-def test_contradictory_execution_finish_reason_prevents_complete_evidence_chain(
+def test_non_stop_execution_finish_reason_prevents_complete_evidence_chain(
     monkeypatch,
     finish_reason: str,
 ) -> None:
@@ -2420,7 +2451,7 @@ def test_contradictory_execution_finish_reason_prevents_complete_evidence_chain(
         )
         assert rows[0]["eligible"] is False
         assert rows[0]["explicit_finish_reasons"] == [finish_reason]
-        assert any("contradictory finish reason" in item for item in rows[0]["reasons"])
+        assert any("finishReason was not STOP" in item for item in rows[0]["reasons"])
         assert summary["evidence_chain_complete"] is False
         assert summary["phase_two_terminal"] == "EXECUTION_MEASUREMENT_INCOMPLETE"
         verified = pilot.verify_phase_two_archive(

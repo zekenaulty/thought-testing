@@ -17,11 +17,14 @@ obey a structured-output schema. The model-facing readiness channel is raw text:
 
 Let:
 
-- `C_t` be an exact live planning checkpoint: system instruction, task/history,
-  provider-native signed steps, and visible model output.
+- `C_t` be an exact live planning checkpoint: system instruction, ordered
+  user/model `Content` history, and the sole provider candidate's native model
+  `Content`, including every signed `Part` and its visible text.
 - `T_t = isolate(C_t)` be a side-branch carrier derived from only the target
-  provider response: a neutral structural user stub, unchanged thought steps,
-  model-output text blanked to `""`, and no ordinary task or history.
+  provider response: a neutral structural user `Content`, a deep copy of the
+  native model `Content` with every allowed `Part.text` blanked to `""` while
+  `Part` order and every `thoughtSignature` remain unchanged, and no ordinary
+  task or history.
 - `O_t(q)` be a query-conditioned semantic observation produced by appending an
   inspection query `q` to `T_t`.
 - `I` be a human-authored diagnostic intervention applied to the untouched live
@@ -72,8 +75,9 @@ conditions. It is also asked to preserve source disagreement until sufficiently
 resolved and to avoid performative checklist construction.
 
 The model is instructed to emit exactly `READY` or `NOT_READY`. The controller
-requires one model-output step containing one text block, then applies Unicode
-NFC normalization and strips surrounding Unicode whitespace before exact token
+requires exactly one `generateContent` candidate whose native model `Content`
+contains exactly one visible, non-thought text `Part`, then applies Unicode NFC
+normalization and strips surrounding Unicode whitespace before exact token
 comparison. A first-turn `READY` is accepted. Multiple planning turns are
 accepted. No minimum choreography or reasoning length is imposed.
 
@@ -82,36 +86,38 @@ accepted. No minimum choreography or reasoning length is imposed.
 Provider completion, model judgment, carrier replayability, and controller action
 are separate fields.
 
-| Provider and visible result | Readiness observation | Controller action |
+| Sole candidate and visible result | Readiness observation | Controller action |
 | --- | --- | --- |
-| `completed` plus raw normalized `READY` and replayable signed carrier | `READY` | freeze checkpoint |
-| `completed` plus raw normalized `NOT_READY` and replayable signed carrier | `SELF_DECLARED_NOT_READY` | continue exact history |
-| provider `incomplete`, regardless of partial text, with no explicit reason or an output-budget reason and a replayable signed carrier | `UNOBSERVED_TRUNCATED` | continue exact history |
-| provider `incomplete` with an explicit safety or other non-budget termination reason | no readiness judgment | technical termination |
-| provider `completed` with any explicit finish reason other than `STOP` | no readiness judgment | technical termination |
-| `completed` plus malformed/empty status with replayable signed carrier | `INVALID_STATUS` | continue exact history |
+| `finishReason: STOP` plus raw normalized `READY` and replayable signed native `Content` | `READY` | freeze checkpoint |
+| `finishReason: STOP` plus raw normalized `NOT_READY` and replayable signed native `Content` | `SELF_DECLARED_NOT_READY` | continue exact history |
+| `finishReason: MAX_TOKENS`, regardless of partial text, with replayable signed native `Content` | `UNOBSERVED_TRUNCATED` | continue exact history |
+| `finishReason: STOP` plus malformed/empty visible token with replayable signed native `Content` | `INVALID_STATUS` | continue exact history |
+| missing or unsupported `finishReason`, including safety or other non-budget termination | no readiness judgment | technical termination |
+| response without exactly one candidate | no readiness judgment | technical termination |
 | any response without a replayable signed carrier | no usable continuation state | technical termination |
 | continuation-eligible state at the turn cap | retain last classification | `PLANNING_THRESHOLD_REACHED` |
 
-The Interactions API currently exposes top-level `status: incomplete`, described
-by the provider as incomplete results such as hitting the maximum token limit.
-It does not always provide a literal `MAX_TOKENS` reason. The raw provider status,
-usage counts, and any explicit finish reason are preserved separately from the
-operational truncation classification.
+The locked transport is the Google Gemini Developer API v1beta
+`models/{model}:generateContent` method. It returns completion state on the sole
+candidate's `finishReason`; there is no separate top-level planning-status field.
+The controller derives `completed` only from `STOP` and derives `incomplete` only
+from the frozen output-budget reason `MAX_TOKENS`.
+Candidate count, raw `finishReason`, `modelVersion`, usage counts, and exact
+response bytes are preserved separately from that controller classification.
 
-Reasonless `incomplete` is accepted because that is the shape observed in prior
-Interactions responses. An explicit output-budget reason is also accepted. An
-explicit safety or other non-budget termination is not relabeled as truncation.
-For a `completed` response, an absent finish reason or `STOP` is accepted; every
-other explicit finish reason is contradictory and terminates technically.
+A 2xx output-budget response is not retried or repaired. When its sole candidate
+contains replayable signed native `Content`, it is a real checkpoint even if the
+visible text is partial: preserve it, isolate it, and use it in the next
+exact-history planning request. Missing or unsupported finish reasons terminate
+technically even if signed content is present. If no replayable carrier exists,
+the runner must stop rather than silently restart from an earlier state.
 
-A 2xx `incomplete` response is not retried or repaired. If it is reasonless or
-has only an explicit output-budget reason and contains a replayable signed
-carrier, it is a real checkpoint: preserve it, isolate it, and use it in the next
-exact-history planning request. An explicit safety or other non-budget reason
-terminates technically even if a signed carrier is present. If no replayable
-carrier exists, the runner must stop rather than silently restart from an earlier
-state.
+Live continuation is native replay, not reconstruction. The runner appends the
+sole candidate's complete model `Content` to the ordered history without
+modifying its role, `Part` order, text, flags, or `thoughtSignature` values, then
+appends the neutral continuation as a new user `Content`. The original provider
+response bytes remain separately retained in the private raw archive and are
+cross-bound to the parsed content used for replay.
 
 The neutral continuation is identical after explicit non-readiness, truncation,
 or malformed status:
@@ -127,10 +133,17 @@ and execution baselines. Truncated checkpoints remain inspection-eligible.
 ## Isolation and observation
 
 The isolator must prove that it did not mutate the source checkpoint. It
-deep-copies the parsed field/value structure of thought steps and signatures,
-checks that the source's canonical structure remains unchanged, blanks only
-readable model-output text, excludes the system instruction, task, ordinary
-history, and readiness token, and adds a neutral structural user stub. Original
+deep-copies the sole candidate's parsed native model `Content`, checks that the
+source's canonical structure remains unchanged, and sets every allowed
+`Part.text` to `""` while preserving `Part` order, optional flags, and each
+`thoughtSignature` exactly. It excludes the system instruction, task, ordinary
+history, and readiness token and places the mutated model `Content` between a
+neutral structural user `Content` and the inspection query.
+
+This blank-text signed-`Part` carrier is an intentional **off-protocol semantic
+tomography mutation**. It is the experimentally established isolation operation,
+not the provider-supported live-continuation rule. Live planning, intervention,
+and execution always replay the complete unmodified native `Content`. Original
 provider response bytes are retained separately in the private raw archive; key
 order and wire serialization are not claimed as properties of the isolated
 carrier.
@@ -154,10 +167,10 @@ are not treated as authoritative evidence.
 
 The primary inspection uses one frozen seed and generation configuration across
 baseline and adjusted checkpoints. Opaque random checkpoint IDs label artifacts
-but do not determine readout randomness. A top-level provider error, incomplete
-inspection, malformed output, empty output, or `completed` response with an
-explicit finish reason other than `STOP` remains auditable but is not an eligible
-semantic observation. Raw explicit finish reasons are preserved in the row.
+but do not determine readout randomness. A top-level provider error, a response
+without exactly one candidate, any `finishReason` other than `STOP`, malformed
+output, or empty output remains auditable but is not an eligible semantic
+observation. The raw candidate `finishReason` is preserved in the row.
 
 ## Human intervention boundary
 
@@ -187,10 +200,9 @@ memorandum rather than a fresh planning exercise. Three paired continuations are
 taken from each frozen checkpoint using the same seed within each pair; a frozen
 master-seed-derived schedule interleaves branch order.
 
-An execution memorandum is eligible only from a provider-completed response with
-an absent finish reason or `STOP`. Any other explicit finish reason is preserved
-but makes that row ineligible, so it cannot contribute to a completed evidence
-chain.
+An execution memorandum is eligible only from exactly one candidate with
+`finishReason: STOP`. A missing or different finish reason is preserved but makes
+that row ineligible, so it cannot contribute to a completed evidence chain.
 
 The principal evidence is correspondence among the initial observation, sealed
 prediction, post-intervention observation, and execution families. A strong
@@ -205,10 +217,11 @@ Freeze preparation is deterministic and transport-free. It creates a reviewable
 `prepared_unexecuted` package and performs no model calls. Phase one may run only
 from an exact reviewed freeze identifier. It creates a consumption record before
 transport, preserves that start claim unchanged, and writes a separate terminal
-record after closure. Its verifier reconstructs the planning and isolated
-observation semantics from the exact raw requests and responses, binds them to
-the frozen dossier, and seals the exact raw-call prefix plus every review
-artifact. Human intervention sealing and no-target closure each reload the
+record after closure. Its verifier reconstructs exact native `Content` replay,
+the sole-candidate `finishReason` state machine, and isolated blank-text carrier
+semantics from the exact raw requests and responses, binds them to the frozen
+dossier, and seals the exact raw-call prefix plus every review artifact. Human
+intervention sealing and no-target closure each reload the
 reviewed freeze and independently bind the archive to its freeze ID and frozen
 task before claiming the mutually exclusive disposition. Mutation is also bound
 to the one canonical run directory for that freeze, so copied archives cannot

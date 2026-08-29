@@ -32,17 +32,16 @@ SAFE_PAYLOAD_FILES: Final[tuple[str, ...]] = (
 SAFE_FREEZE_FILES: Final[tuple[str, ...]] = (*SAFE_PAYLOAD_FILES, LOCK_NAME)
 DEFAULT_FREEZE_RELATIVE_PATH: Final[str] = (
     "thoughtlab/reasoningEngineering/freezes/"
-    "modernization_reasoning_engineering_review_01"
+    "modernization_reasoning_engineering_generate_content_review_01_occurrence_04"
 )
 
 SOURCE_FILES: Final[tuple[str, ...]] = (
     ".gitignore",
     "README.md",
     "thoughtlab/__init__.py",
-    "thoughtlab/gemini_interactions.py",
+    "thoughtlab/gemini_generate_content.py",
     "thoughtlab/opaque_ids.py",
-    "thoughtlab/stateTransitions/__init__.py",
-    "thoughtlab/stateTransitions/fork_pilot.py",
+    "thoughtlab/raw_call_store.py",
     "thoughtlab/reasoningEngineering/__init__.py",
     "thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md",
     "thoughtlab/reasoningEngineering/DOSSIER_CONSTRUCTION_NOTES.md",
@@ -402,6 +401,7 @@ def build_preregistration(
         "experiment_id": protocol.EXPERIMENT_ID,
         "protocol_revision": protocol.PROTOCOL_REVISION,
         "model": protocol.MODEL,
+        "api": protocol.API,
         "status": "prepared_unexecuted",
         "definition_canonical_sha256": protocol.sha256_json(definition),
         "manifest_canonical_sha256": protocol.sha256_json(manifest),
@@ -410,12 +410,20 @@ def build_preregistration(
             "assembled_task_sha256"
         ],
         "planning_visible_channel": "raw_text_no_schema_no_json_envelope",
-        "provider_status_precedes_visible_parse": True,
-        "reasonless_or_output_budget_incomplete_with_signed_carrier_continues_exactly": True,
-        "explicit_non_budget_incomplete_terminates_technically": True,
-        "provider_incomplete_without_signed_carrier_terminates_technically": True,
+        "exactly_one_candidate_required": True,
+        "candidate_finish_reason_precedes_visible_parse": True,
+        "stop_is_the_only_completed_finish_reason": True,
+        "max_tokens_with_signed_native_content_continues_exactly": True,
+        "missing_or_non_budget_finish_reason_terminates_technically": True,
+        "missing_signed_native_content_terminates_technically": True,
+        "live_candidate_content_is_replayed_without_mutation": True,
         "threshold_terminal": protocol.PLANNING_THRESHOLD_REACHED,
-        "primary_observation_surface": "isolated_blank-visible native carrier",
+        "primary_observation_surface": (
+            "isolated blank-text thoughtSignature native Content carrier"
+        ),
+        "isolation_mutation_status": (
+            "intentional off-protocol semantic tomography"
+        ),
         "phase_one_stops_before_human_intervention": True,
         "phase_two_requires_sealed_human_intervention": True,
         "all_completed_phase_one_terminals_are_integrity_verifiable": True,
@@ -452,6 +460,28 @@ def build_validation_report(
         "neutral_continuation_exact": (
             definition["planning"]["continuation_prompt"]
             == protocol.CONTINUE_PLANNING_PROMPT
+        ),
+        "one_candidate_finish_reason_policy_present": (
+            definition["planning"].get(
+                "provider_finish_reason_precedes_visible_parse"
+            )
+            is True
+            and definition["planning"].get(
+                "missing_or_non_budget_finish_reason_is_technical"
+            )
+            is True
+            and definition["isolation"].get("source")
+            == "sole target checkpoint candidate.content only"
+        ),
+        "exact_native_content_replay_frozen": definition["planning"].get(
+            "live_candidate_content_is_replayed_without_mutation"
+        )
+        is True,
+        "blank_text_signature_isolation_is_off_protocol": (
+            definition["isolation"].get("mutation_status")
+            == "intentional off-protocol semantic tomography"
+            and "blank every allowed Part text"
+            in str(definition["isolation"].get("detached_carrier_mutation", ""))
         ),
         "isolation_is_primary": definition["isolation"][
             "primary_observation_surface"

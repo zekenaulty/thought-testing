@@ -1,0 +1,28 @@
+{
+  "blank_text_signature_isolation_is_off_protocol": true,
+  "definition_errors": [],
+  "dossier_document_count": 11,
+  "exact_native_content_replay_frozen": true,
+  "function_or_tool_structure_present": false,
+  "isolation_is_primary": true,
+  "model_facing_json_readiness_envelope_present": false,
+  "neutral_continuation_exact": true,
+  "one_candidate_finish_reason_policy_present": true,
+  "planning_status_tokens_present": true,
+  "preparation_credential_access_path_present": false,
+  "preparation_transport_path_present": false,
+  "raw_provider_artifacts_present": false,
+  "response_format_or_schema_present": false,
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ],
+  "schema_version": "modernization_reasoning_engineering_validation_v1",
+  "source_closure_sha256": "840ba09692665b90c38de06cb390b6382bde923e757860da9c7290d27b13aa49",
+  "source_file_count": 27,
+  "validated": true,
+  "withheld_notes_sent_to_model": false
+}
