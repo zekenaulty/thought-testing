@@ -1,0 +1,29 @@
+{
+  "freeze_id": "15865775a8ea7bd18461793888d8622c86dd9567ea71ebad2c3da81c6a8bf134",
+  "payloads": {
+    "experiment_definition.json": {
+      "bytes": 133719,
+      "sha256": "7862b797c27b45dd87acacfc460ef97b5fe13fbf7d3dcfb9ae6070711f4c69e6"
+    },
+    "manifest.json": {
+      "bytes": 5760,
+      "sha256": "48fd2a074b8c2859d32ab7946e9b61a4dd5d74f6bb7a0b719fb3e8133c498035"
+    },
+    "preregistration.json": {
+      "bytes": 8914,
+      "sha256": "8bd8c1c20e933b9590fb54776397847dfd6085ff0153f441342f64bae7107e7c"
+    },
+    "validation_report.json": {
+      "bytes": 1241,
+      "sha256": "ef33cfa553f7952a1eefac176168729c00faee8fd1ae6c45fba95bd1103bb31f"
+    }
+  },
+  "prepared_unexecuted": true,
+  "safe_payload_files": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json"
+  ],
+  "schema_version": "modernization_iterative_reasoning_engineering_freeze_lock_v1"
+}

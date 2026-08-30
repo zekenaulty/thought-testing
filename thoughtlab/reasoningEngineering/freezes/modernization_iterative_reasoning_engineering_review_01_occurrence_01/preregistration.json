@@ -1,0 +1,275 @@
+{
+  "adaptive_human_interventions": {
+    "I1": {
+      "record_diagnosis_and_predicted_downstream_changes": true,
+      "seal_before_any_C1_call": true,
+      "select_one_material_reasoning_relationship": true,
+      "selection_after": "eligible O0 and recorded X1",
+      "source_observation_hash_bound": true
+    },
+    "I2": {
+      "must_cite_target_evidence_in_O1": true,
+      "must_record_prior_delta_disposition": true,
+      "record_predicted_downstream_and_execution_changes": true,
+      "seal_before_any_C2_call": true,
+      "selection_after": "eligible O1 and recorded X2",
+      "source_observation_hash_bound": true
+    },
+    "I3": {
+      "must_record_prior_delta_disposition": true,
+      "must_reintegrate_the_cumulative_trajectory": true,
+      "record_predicted_final_observation_and_execution_changes": true,
+      "seal_before_any_C3_call": true,
+      "selection_after": "eligible O2 and recorded X3",
+      "source_observation_hash_bound": true
+    },
+    "each_seal_binds": [
+      "source checkpoint and observation",
+      "source observation SHA-256",
+      "examination ID and charter ID",
+      "examiner input SHA-256",
+      "examiner output SHA-256",
+      "UTC seal time"
+    ],
+    "exact_treatment_text_is_not_preloaded": true,
+    "reconciliation": {
+      "exact_bytes_reference_both_review_hashes": true,
+      "human_approval_identity_and_time_archived": true,
+      "lock_after_examination_reviews_and_before_first_child_call": true,
+      "only_reconciled_intervention_text_is_model_facing": true
+    },
+    "review_streams": {
+      "A": {
+        "exact_bytes_and_input_artifact_hashes_archived": true,
+        "independently_recorded": true,
+        "type": "human researcher"
+      },
+      "B": {
+        "exact_bytes_and_input_artifact_hashes_archived": true,
+        "harness": "chatgpt",
+        "independently_recorded": true,
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "xhigh",
+        "type": "independent Sol/ChatGPT reviewer channel"
+      },
+      "mutually_unseen_before_reconciliation": true,
+      "neither_receives_raw_carrier_or_thought_signatures": true
+    },
+    "seal_chronology_is_runtime_archive_verifiable": true,
+    "selection_rules_are_bound_not_treatment_wording": true
+  },
+  "adjudication": {
+    "distinguishes_convergence_from_sophisticated_rationalization": true,
+    "mode": "semantic_relational_human_review",
+    "private_raw_artifacts": true,
+    "two_independent_review_streams_then_human_reconciliation": true
+  },
+  "api": "gemini_developer_v1beta_generateContent_stateless",
+  "definition_canonical_sha256": "4db6f3fd847e3947040379100953182874bc0963703ef16bf11aa3c8c93a6b82",
+  "dossier_assembled_sha256": "4f1a171d1af73f713e9c48f5da78d4e5a1bf19fcb2c7d38f63b64aec4d56590b",
+  "execution_requires_exact_reviewed_freeze_id": true,
+  "experiment_id": "modernization_reasoning_engineering_iterative_01",
+  "external_examinations": {
+    "X1": "epistemic_hinge_audit_v1",
+    "X2": "adversarial_alternative_falsification_audit_v1",
+    "X3": "global_reintegration_joint_feasibility_audit_v1",
+    "exactly_three_recorded_Sol_ChatGPT_turns": true,
+    "fixed_charter_order_adaptive_target_selection": true,
+    "inputs_and_outputs_are_runtime_hash_bound": true,
+    "no_fourth_examination": true
+  },
+  "external_examiner_turns_exact": 3,
+  "external_examiner_turns_excluded_from_gemini_call_bounds": true,
+  "gemini_logical_call_maximum": 60,
+  "gemini_logical_call_minimum": 20,
+  "gemini_physical_call_maximum": 180,
+  "manifest_canonical_sha256": "b76871956aca3d182c3cfccac5433722159e5567ac3dd88af59daf9e1713fa76",
+  "matched_execution": {
+    "checkpoints": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "execution_calls": 12,
+    "interleaved_frozen_schedule": true,
+    "replicates_per_checkpoint": 3,
+    "requires_eligible_O3_and_final_human_assessment_seal": true,
+    "shared_seed_within_replicate_quartet": true
+  },
+  "model": "gemini-3.7-flash",
+  "observation_assessments": {
+    "O0_O1_O2_assessments_are_bound_into": {
+      "O0": "I1 human seal",
+      "O1": "I2 human seal",
+      "O2": "I3 human seal"
+    },
+    "assessor": "human researcher",
+    "final_O3_assessment": {
+      "assessment_id": "FINAL_O3_PRE_EXECUTION_HUMAN_ASSESSMENT",
+      "creates_no_X4_or_I4_or_examiner_turn": true,
+      "human_only_non_examiner": true,
+      "must_be_sealed_before_execution_gate_opens": true,
+      "record_keys": [
+        "assessment",
+        "assessment_id",
+        "schema_version",
+        "seal_status",
+        "sealed_at",
+        "source_checkpoint",
+        "source_observation",
+        "source_observation_sha256"
+      ],
+      "schema_version": "iterative_final_o3_assessment_seal_v1",
+      "source_observation_hash_bound": true
+    },
+    "hard_contradiction_precludes_resolved_or_full_repair": true,
+    "observations_scored": [
+      "O0",
+      "O1",
+      "O2",
+      "O3"
+    ],
+    "same_rubric_dimensions": [
+      "defect_recognition",
+      "resolution",
+      "dependency_propagation",
+      "locality",
+      "evidentiary_discipline",
+      "joint_coherence"
+    ],
+    "score_range": [
+      0,
+      2
+    ],
+    "scores_are_descriptive_not_a_stop_rule": true,
+    "target_diagnostic_states": {
+      "O0": [
+        "I1"
+      ],
+      "O1": [
+        "I1",
+        "I2"
+      ],
+      "O2": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "O3": [
+        "I1",
+        "I2",
+        "I3"
+      ]
+    }
+  },
+  "participant_topology": {
+    "examiner": {
+      "exact_turns": 3,
+      "harness": "chatgpt",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "role": "three external semantic examinations"
+    },
+    "final_adjudicator": "human researcher",
+    "model_agents": 2,
+    "participant_roles": 3,
+    "planner": {
+      "api": "gemini_developer_v1beta_generateContent_stateless",
+      "model": "gemini-3.7-flash",
+      "role": "private planning state and matched execution"
+    }
+  },
+  "planned_calls": {
+    "completed_evidence_path_minimum": 20,
+    "execution_count_on_complete_path": 12,
+    "external_examiner_turns_exact": 3,
+    "external_examiner_turns_excluded_from_gemini_call_bounds": true,
+    "human_review_and_sealing_calls": 0,
+    "inspection_maximum": 24,
+    "inspection_minimum_on_complete_path": 4,
+    "planning_maximum": 24,
+    "transport_retry_physical_maximum_multiplier": 3,
+    "whole_experiment_maximum": 60,
+    "whole_experiment_physical_maximum": 180
+  },
+  "planning": {
+    "finish_reason_precedes_visible_parse": true,
+    "max_tokens_has_no_observed_readiness_judgment": true,
+    "max_tokens_signed_native_content_continues_exactly": true,
+    "threshold_is_experimental_termination_not_model_judgment": true,
+    "visible_channel": "raw_text_no_schema_no_json_envelope"
+  },
+  "primary_trajectory": {
+    "exact_native_parent_history_replay": true,
+    "examinations": [
+      "X1",
+      "X2",
+      "X3"
+    ],
+    "examiner_output_is_not_replayed_into_live_planning": true,
+    "no_X4_or_I4": true,
+    "observation_is_not_replayed_into_live_planning": true,
+    "observations": [
+      "O0",
+      "O1",
+      "O2",
+      "O3"
+    ],
+    "ordered_chain": [
+      "C0",
+      "O0",
+      "X1",
+      "I1",
+      "C1",
+      "O1",
+      "X2",
+      "I2",
+      "C2",
+      "O2",
+      "X3",
+      "I3",
+      "C3",
+      "O3"
+    ],
+    "post_O3_gate": "human-only final O3 rubric and diagnostic assessment seal, then execution",
+    "primary_completion_is_not_gated_by_optional_controls": true,
+    "state_transitions": [
+      "C0--X1/I1-->C1",
+      "C1--X2/I2-->C2",
+      "C2--X3/I3-->C3"
+    ]
+  },
+  "private_measurement_material": {
+    "contains_no_dossier_specific_answer": true,
+    "diagnostic_states": [
+      "UNRECOGNIZED",
+      "RECOGNIZED",
+      "BOUNDED",
+      "RESOLVED",
+      "RATIONALIZED"
+    ],
+    "excluded_from_planning_intervention_and_execution_requests": true,
+    "generic_fault_atlas": true,
+    "hard_contradiction_gates_full_repair": true,
+    "invisible_to_gemini_planner": true,
+    "rubric_anchor_range": [
+      0,
+      2
+    ],
+    "semantic_rubric_dimensions": 6
+  },
+  "protocol_revision": "modernization_reasoning_engineering_iterative_review_01",
+  "schema_version": "modernization_iterative_reasoning_engineering_preregistration_v1",
+  "source_closure_sha256": "0420ee2c8fef785fe82bb8040ae65f842bbc76ad2382f67ae06474e63d33b855",
+  "status": "prepared_unexecuted",
+  "tomography": {
+    "distinct_from_unmodified_live_continuation": true,
+    "every_replayable_planning_checkpoint_is_inspected": true,
+    "observability_does_not_entail_state_modification": true,
+    "observation_is_query_conditioned_semantic_projection": true,
+    "operator": "detached_blank_text_signed_part_isolation",
+    "state_modification_does_not_entail_successful_repair": true,
+    "status": "experiment_protocol_defined_primary_operator"
+  }
+}

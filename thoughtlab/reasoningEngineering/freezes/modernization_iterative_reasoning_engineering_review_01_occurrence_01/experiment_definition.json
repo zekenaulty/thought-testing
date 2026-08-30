@@ -1,0 +1,1305 @@
+{
+  "adjudication": {
+    "diagnostic_state_is_recorded_per_target_across_available_later_observations": true,
+    "diagnostic_states": [
+      "UNRECOGNIZED",
+      "RECOGNIZED",
+      "BOUNDED",
+      "RESOLVED",
+      "RATIONALIZED"
+    ],
+    "does_not_establish": [
+      "verbatim hidden chain of thought",
+      "inspection output identical to reasoning state",
+      "population reliability from one dossier"
+    ],
+    "every_O_i_is_scored_on_the_same_six_dimensions": true,
+    "final_O3_scores_are_human_sealed_before_execution": true,
+    "full_support_pattern": [
+      "all three intervention links show their sealed semantic prediction or justified preservation",
+      "later observations do not regress a previously repaired relationship unless the next intervention predicted and justified its reversal",
+      "stable commitments remain unless an explicit dependency justifies change",
+      "at least two of three matched execution quartets reflect all three ordered state changes",
+      "no targeted hard contradiction remains in a claim of full repair"
+    ],
+    "hard_contradiction_gate": "A live hard contradiction in the targeted relationship prevents RESOLVED and full-repair adjudication regardless of descriptive rubric scores.",
+    "hard_contradictions_gate_repair": true,
+    "human_researcher_is_final_adjudicator": true,
+    "labels": [
+      "SUPPORTED",
+      "PARTIALLY_SUPPORTED",
+      "NOT_SUPPORTED",
+      "INDETERMINATE_TECHNICAL"
+    ],
+    "matched_executions_are_separate_behavioral_evidence": true,
+    "mode": "semantic_relational_human_review",
+    "no_aggregate_pseudo_precision": true,
+    "no_exact_output_matching": true,
+    "no_keyword_counting": true,
+    "non_support_pattern": [
+      "intervention vocabulary is echoed but the relationship is unchanged",
+      "a targeted contradiction remains or is replaced by unsupported favorable assumptions",
+      "observed state differences do not produce corresponding execution differences"
+    ],
+    "reconciliation_is_human_approved": true,
+    "review_questions": [
+      "Is the targeted relationship substantively represented rather than merely named?",
+      "Was it revised, bounded, or justifiably preserved?",
+      "Were material downstream consequences propagated?",
+      "Were unrelated stable commitments preserved?",
+      "Do matched executions instantiate the checkpoint difference behaviorally?"
+    ],
+    "review_streams": {
+      "reviewer_A": {
+        "independently_recorded": true,
+        "provenance_requirements": {
+          "harness": "human_review",
+          "identity": "human_researcher",
+          "model": "none",
+          "reasoning_effort": "human",
+          "reviewer_type": "human"
+        }
+      },
+      "reviewer_B": {
+        "independently_recorded": true,
+        "provenance_requirements": {
+          "harness": "chatgpt",
+          "identity": "independent_sol_chatgpt_reviewer_channel",
+          "model": "gpt-5.6-sol",
+          "reasoning_effort": "xhigh",
+          "reviewer_type": "model"
+        }
+      }
+    },
+    "rubric": [
+      {
+        "anchors": {
+          "0": "defect missed, denied, or misunderstood",
+          "1": "defect partly or verbally recognized",
+          "2": "defect and its decision role accurately recognized"
+        },
+        "dimension": "defect_recognition"
+      },
+      {
+        "anchors": {
+          "0": "unresolved or rationalized",
+          "1": "bounded",
+          "2": "resolved"
+        },
+        "dimension": "resolution"
+      },
+      {
+        "anchors": {
+          "0": "material consequences ignored",
+          "1": "consequences partly propagated",
+          "2": "material dependencies, consequences, and revision conditions propagated"
+        },
+        "dimension": "dependency_propagation"
+      },
+      {
+        "anchors": {
+          "0": "wholesale re-solve",
+          "1": "mixed local repair and collateral movement",
+          "2": "stable unrelated commitments"
+        },
+        "dimension": "locality"
+      },
+      {
+        "anchors": {
+          "0": "evidence, inference, or provenance conflated",
+          "1": "mixed evidentiary discipline",
+          "2": "evidence, inference, provenance, and uncertainty appropriately distinguished"
+        },
+        "dimension": "evidentiary_discipline"
+      },
+      {
+        "anchors": {
+          "0": "contradiction remains",
+          "1": "joint feasibility remains uncertain",
+          "2": "jointly feasible"
+        },
+        "dimension": "joint_coherence"
+      }
+    ],
+    "rubric_anchor_range": [
+      0,
+      2
+    ],
+    "rubric_dimensions": 6,
+    "rubric_scores_are_descriptive_not_a_sole_stop_rule": true,
+    "stable_commitment_preservation_is_semantic_not_verbatim": true,
+    "technical_indeterminacy_is_not_capability_failure": true
+  },
+  "api": "gemini_developer_v1beta_generateContent_stateless",
+  "dossier": {
+    "assembled_task_sha256": "4f1a171d1af73f713e9c48f5da78d4e5a1bf19fcb2c7d38f63b64aec4d56590b",
+    "assembled_task_text": "The Joint Recovery Council supplied the following eleven documents for the commission described in the opening memorandum.\n\n--- DOSSIER DOCUMENT 1 OF 11 ---\n# Commissioning memorandum\n\n**From:** Joint Recovery Council secretariat  \n**Approved by:** the rotating chairs from the North River Benefits Authority, County Services Cooperative, and North River Treasury  \n**Audience:** independent recovery architect  \n**Date:** 18 August 2026\n\nThe Joint Recovery Council requests a recovery architecture for the North River Benefits Network for the next eighteen months. The network authorizes emergency household benefits and payments to childcare providers. It must continue serving current applicants and providers while the modernization program is stabilized or redirected.\n\nThe present program joins five partially overlapping responsibilities. The North River Benefits Authority owns program policy and operates the Legacy Benefits Core. County Services Cooperative operates the Shared Integration Gateway for participating counties. Eastbank Human Services, which represents approximately 28 percent of network caseload, moved its casework onto the New Case Platform during the pilot. North River Treasury settles authorized payments. Tern Systems supplies the New Case Platform and is building the unfinished Replacement Rules and Payments Service.\n\nThe Council has not agreed on a single account of the April service incident or of the broader modernization failure. Participants disagree about event meaning, identifier stability, retry behavior, transaction boundaries, operating authority, migration readiness, and the significance of the Eastbank pilot. Several accounts are supported by real evidence, and several important facts remain unavailable.\n\nAdvise the Council on a concrete recovery architecture. Determine how the present failures should be understood and specify a course that preserves benefit authorization and settlement while restoring a viable modernization path within the authority, lifecycle, contractual, operational, privacy, workforce, and resource conditions in the dossier.\n\nThe final executive recovery memorandum should give technical and institutional decision makers a recommended course, explain why the Council should adopt it, assign responsibilities through practical stages, and show how current authorization and settlement service will be protected while the program changes. It may use prose headings and tables where useful, but it must not use JSON.\n\n--- DOSSIER DOCUMENT 2 OF 11 ---\n# Shared-service current-state architecture, revision 4\n\n**Author:** cross-organization architecture working group  \n**Sign-off:** accepted by County Services Cooperative and North River Treasury; North River Benefits Authority and Eastbank Human Services accepted the topology but left semantic annotations unresolved  \n**Date:** 6 May 2026\n\nThe North River Benefits Network does not have one system of record for every stage of a case. Participating counties create and steward household facts, evidence, and caseworker annotations. The Benefits Authority determines eligibility under statewide rules. Treasury owns the settled-payment ledger. The phrase \u201csystem of record\u201d has nevertheless been used in program material as if it referred to one product, producing disputes that are partly technical and partly institutional.\n\nFor non-pilot counties, case actions enter the Legacy Benefits Core directly. The core applies eligibility rules, assigns or reuses a household identifier, creates an authorization, and places an outbound record into an internal queue. The Shared Integration Gateway transforms that record into a payment instruction for Treasury and sends status events back to county systems. Three older batch feeds bypass the gateway for provider adjustments, retroactive corrections, and end-of-month reconciliation.\n\nEastbank caseworkers work in the New Case Platform. The platform sends case changes and correction events to the gateway. The gateway transforms them into commands understood by the Legacy Benefits Core, which remains the production eligibility engine. The resulting authorization then returns through the gateway to Treasury. A replacement rules and payments service exists in test environments but is not authoritative in production. During limited shadow periods it has evaluated copied case data without initiating payments.\n\nThe modernization design assumed that every business occurrence would have one stable occurrence identifier across the New Case Platform, gateway, legacy core, and Treasury. In practice, the platform always assigns an event identifier, but some correction workflows create a new event for what an operator regards as the same business occurrence. The gateway creates a correlation identifier for each received event. The legacy core does not persist either identifier in every transaction path. Treasury retains the gateway correlation identifier when it is present but also assigns a settlement identifier. The bypass feeds use different keys.\n\nAcknowledgement meaning is also inconsistent. To the New Case Platform, an accepted gateway request means that the gateway has durably received it. To the gateway operations team, an accepted legacy response means that the legacy core has accepted a command. In two legacy paths, that response can precede final database commit. Treasury acknowledgement means that a payment instruction passed syntactic and account checks, not that it settled exactly once. Program documentation sometimes calls all three states \u201cprocessed.\u201d\n\nThe intended correction lifecycle is contested. Eastbank treats a caseworker correction as a revision of an earlier occurrence until the eligibility result changes. The Benefits Authority treats any rule re-evaluation that changes an authorization as a new determination. Treasury treats a changed amount after settlement as a reversal plus a new settlement. No cross-system specification states where a revision must stop being a revision and become a new authorization.\n\nThe gateway has configurable retry policies. Network failures are retried with the original gateway correlation identifier. Legacy timeouts are retried with that identifier but may reach a legacy path that generates a fresh internal transaction key. Application rejections are not supposed to be retried automatically. Before the incident, a deployment changed one timeout classification so that an ambiguous legacy response entered the network-failure path.\n\nUnresolved annotations remain on four diagrams: the authoritative boundary for a corrected eligibility decision; the owner of the occurrence identifier; whether the gateway may suppress a command when it suspects a duplicate; and whether Treasury or the Benefits Authority has final authority to classify a payment as a correction rather than a new obligation.\n\n--- DOSSIER DOCUMENT 3 OF 11 ---\n# April service incident review\n\n**Author:** County Services Cooperative site-reliability and incident-management team  \n**Evidence base:** gateway telemetry, deployment records, incident bridge transcript, and sampled request logs  \n**System visibility limitation:** no access to Legacy Benefits Core transaction internals or Treasury settlement internals  \n**Date:** 22 April 2026\n\nOn 14 April, benefit authorization latency rose for six hours and fourteen minutes. Eastbank caseworkers saw repeated \u201cpending\u201d states, several county call centers retried work manually, and Treasury later identified duplicate provider payments. No complete end-to-end correlation exists, so this review describes the gateway boundary and does not apportion all downstream effects.\n\nBetween 08:00 and 14:30, Eastbank generated 3.7 times its ordinary hourly event volume. Much of the increase consisted of correction events following a policy-table update and a county workflow campaign to clear held cases. Gateway CPU remained below 61 percent and queue storage below 38 percent. Median gateway transform time stayed within its service objective. The queue of commands awaiting legacy acknowledgement, however, grew from an ordinary range of 1,100\u20132,400 to a peak of 46,280.\n\nLegacy acknowledgement latency began degrading eighteen minutes before the Eastbank campaign reached its highest event rate. At 09:11, the 95th percentile crossed 90 seconds. At 09:24, the retry controller began treating a subset of timed-out legacy acknowledgements as transport failures. Of 8,412 automatically retried commands during the incident, 7,906 retained their gateway correlation identifier. The remaining 506 entered an older adapter that recreated the command after schema normalization and generated a new correlation identifier. That adapter had been enabled two weeks earlier to support a legacy correction path.\n\nThe review matched 81 percent of later duplicate-payment reports to commands that experienced at least one retry at the gateway. This association does not establish that the retry created the duplicate. A retried command could also be a consequence of a legacy transaction that committed before its acknowledgement was lost. For 19 percent of reported duplicates, no retry was visible under the gateway identifiers available to the team. Some may have traversed bypass feeds, used regenerated identifiers, or been caused downstream.\n\nAt 10:02, operators increased the legacy timeout to reduce retry pressure. Queue growth slowed but caseworker-visible latency increased. At 11:17, the Benefits Authority disabled one correction adapter. At 12:05, Eastbank paused its case campaign. The queue returned to its normal band at 14:14. It is not possible to isolate the effect of any one action because all three occurred while legacy response time was recovering.\n\nThe team found one gateway defect: the timeout-classification deployment allowed an ambiguous application acknowledgement to enter a retryable category. A corrected rule is ready. The team also found two architectural gaps outside its unilateral control: occurrence identifiers are not stable across every correction path, and gateway operations cannot determine whether an unacknowledged legacy command committed. The gateway can suppress exact transport duplicates when the same correlation identifier returns, but it cannot safely infer that two semantically similar commands are the same business occurrence.\n\nThe Cooperative recommends immediate correction of the timeout rule, end-to-end correlation, and a defined idempotency boundary. It does not recommend that the gateway become the authoritative eligibility or settlement ledger. It believes the incident can be contained without abandoning the Eastbank workflow, provided the other systems expose enough transaction state to distinguish safe retry from duplicate execution.\n\n--- DOSSIER DOCUMENT 4 OF 11 ---\n# Root-cause and remediation addendum\n\n**Author:** Tern Systems engineering and account leadership  \n**Contractual context:** submitted under the program\u2019s cure process; disputed liability may affect fees and milestone payments  \n**Date:** 30 April 2026\n\nTern Systems reproduced the April retry sequence against the contracted New Case Platform configuration. When a stable business-occurrence identifier is supplied, the platform retains it across ordinary submission, correction, timeout recovery, and user refresh. Its supported gateway connector also retains the identifier. Under those conditions, repeated deliveries are distinguishable and the replacement rules service produces the same determination for the same occurrence and rule version.\n\nThe Eastbank tenant included a locally commissioned workflow extension that creates a fresh correction event when a caseworker reopens a queued task after an external status timeout. Tern did not approve this extension as part of the production baseline. In a sample of 12,640 Eastbank correction events from 1\u201314 April, 8.6 percent lacked the original business-occurrence identifier after passing through that extension. The extension was visible in an integration inventory, but no acceptance test exercised a timeout followed by reopen and correction.\n\nTern also identified an error in its supported connector defaults. The default backoff for a missing application-level acknowledgement was shorter than the deployment guide specified and allowed two additional attempts during the legacy core\u2019s degraded response window. Tern has supplied a patch and will waive the related connector support charge. The company does not agree that this defect alone explains the duplicate settlements: most affected commands still carried a stable gateway correlation identifier, and Treasury reported duplicates for cases where Tern saw only one platform event.\n\nThe vendor\u2019s position is that the present partial architecture preserves incompatible transaction semantics. The New Case Platform describes intent and correction history; the legacy core collapses some revisions into new authorizations; Treasury reasons over settlements. The gateway is being asked to infer equivalence after information has already been lost. Adding more retry rules at that boundary can reduce recurrence but cannot establish exactly-once business behavior.\n\nTern proposes accelerating the Replacement Rules and Payments Service so the New Case Platform and replacement service share occurrence, determination, and payment semantics. It estimates that core contracted rule coverage can be production-ready within seven months if rule clarification, test data, and Benefits Authority subject-matter experts are available on schedule. That estimate excludes several low-volume exception rules, provider recoupments, and two court-ordered manual processes. Those could remain on the legacy core temporarily or be handled through controlled operations.\n\nThe company notes that Eastbank\u2019s pilot improved intake throughput and captured corrections that the old workflow often represented as free-text notes. It argues that the 3.7-fold event increase reflects previously hidden work as well as campaign volume, not merely inefficient software. A rollback would therefore reduce event volume partly by losing structured information.\n\nUnder the current agreement, Tern receives milestone fees for production cohorts and may negotiate a price adjustment if the mixed architecture continues beyond the contracted transition period. It will support data export and termination assistance if the Council chooses another course, subject to the limits described in the contract extracts.\n\n--- DOSSIER DOCUMENT 5 OF 11 ---\n# Treasury reconciliation analysis\n\n**Author:** North River Treasury controller and payment analytics unit  \n**Evidence base:** settled-payment ledger, reversal ledger, provider reports, and manual review of sampled authorizations  \n**Boundary limitation:** identifiers do not map cleanly through every legacy and bypass path  \n**Date:** 3 May 2026\n\nTreasury confirmed 1,184 excess provider settlements associated with the April incident window. Each was linked by manual review to an earlier settlement judged to represent the same benefit obligation. The 1,184 excess settlements represent 0.71 percent of the 166,761 provider-settlement instructions initiated during that period. The count excludes suspected repeats blocked before settlement and excludes household payments, which use a different rail.\n\nOf the 1,184 linked excess-settlement pairs, 742 shared a recognizable household, provider, service period, and amount but arrived with different authorization identifiers. Another 318 shared an authorization identifier but arrived as distinct payment instructions. The remaining 124 required manual linkage because one member of the pair came through a provider-adjustment batch feed. The gateway operations team could match at least one visible retry to 959 cases, but Treasury found 225 cases for which the available gateway record showed one event identifier or no gateway path.\n\nThe 225 cases weaken a gateway-only account. They do not prove that Treasury generated duplicates independently. In several legacy paths, a regenerated authorization identifier can obscure the relationship to an earlier gateway command. Treasury also found that its own settlement interface treats a changed authorization identifier as a new obligation unless an explicit reversal reference is present. That rule is consistent with the current interface specification but may be unsafe when upstream systems regenerate identifiers during correction.\n\nDuplicate and reconciliation problems predate the Eastbank pilot. During the preceding six months, Treasury identified an average of 37 duplicate or conflicting provider settlements per month, mostly associated with retroactive corrections and the three bypass feeds. The April rate was far higher, but the pre-existing cases show that the mixed transaction model was not sound before migration. Historical counts are incomplete because providers do not always report small duplicate payments promptly and automated matching improved in February.\n\nTreasury\u2019s manual sample overrepresents completed settlements. Reversed and rejected transactions are less likely to appear because the analytics extract is keyed to the settled ledger. The team therefore cannot estimate how often gateway retries were safely absorbed upstream or how many attempted duplicates were prevented. It also cannot determine whether a legacy transaction committed before an acknowledgement timeout.\n\nTreasury requires that any recovery architecture preserve settlement finality, support an explicit correction and reversal chain, and prevent a county workflow from silently redefining an already settled obligation. Treasury can accept delayed authorization during controlled degradation for up to twenty-four hours if emergency cases have a manual route. It cannot accept a design that reconciles duplicates only after providers receive funds as a normal operating pattern.\n\nThe controller is open to a temporary reconciliation service or parallel validation, but Treasury will not treat a shadow ledger as authoritative without a Council-approved legal and accounting basis. The unit has four analysts who can support transition work for six months; two are already assigned full time to incident reconciliation. Treasury regards restoration of end-to-end correlation as necessary under every long-term platform choice.\n\n--- DOSSIER DOCUMENT 6 OF 11 ---\n# Eastbank pilot outcomes memorandum\n\n**Author:** Eastbank Human Services transformation office  \n**Co-signed by:** Eastbank caseworker operations council  \n**Evidence base:** pilot service metrics, staff survey, case audit, and post-incident recovery log  \n**Date:** 9 May 2026\n\nEastbank moved approximately 28 percent of network caseload onto the New Case Platform over three cohorts. The pilot changed the caseworker workflow while leaving production eligibility and payment authorization in the Legacy Benefits Core. It therefore demonstrates that the new casework product can operate at meaningful scale, but it is not evidence that the replacement rules and payments service is production-ready.\n\nAcross the twelve weeks before the April incident, median intake handling time fell by 31 percent relative to Eastbank\u2019s prior workflow. Abandoned applications fell from 8.4 to 5.9 percent, and the share of corrections represented as structured events rather than free-text notes rose from 46 to 88 percent. Staff survey results favored the new workflow for ordinary cases, especially when applicants changed documents or household composition before determination.\n\nThe same structured correction behavior increased event volume. A case that previously accumulated three notes and one final legacy update may now create several explicit events. Eastbank considers that increased visibility a benefit, but the program never established which events should remain revisions and which should become new business occurrences downstream. The pilot acceptance suite evaluated correct final eligibility results more often than repeated delivery, delayed acknowledgement, or long correction chains.\n\nDuring the April incident, caseworkers saw \u201cpending\u201d states after saving corrections. Some reopened the task, made a harmless edit, and submitted again because the operating guide did not explain whether the first action was durable. The locally commissioned workflow extension created a new event in that sequence. Eastbank accepts that the extension was not included in the contracted acceptance baseline. It notes that the extension appeared in two architecture inventories and was built to compensate for an unresolved status-design issue raised during pilot testing.\n\nTechnical export tests recovered 99.1 percent of required structured case fields from the New Case Platform into a format that the legacy intake loader could ingest. That result has sometimes been described as \u201crollback readiness.\u201d The export did not preserve work-queue ordering, local annotations, document-review state, every event relationship, or the exact staff assignment history. Restoring Eastbank to the former workflow would therefore require manual triage and would lose operational context even if case facts were transferred successfully.\n\nAfter the incident, thirty-eight staff members spent nine working days reconciling pending and repeated actions. Twelve of them remain assigned to manual comparison between platform, legacy, and Treasury states. This labor helped stabilize service and may partly explain favorable post-incident accuracy. It is not a sustainable substitute for defined transaction semantics.\n\nEastbank opposes an immediate broad migration while the correction boundary remains unresolved. It also opposes treating pilot rollback as a costless safety action. It would support continued containment of its current cohort, interface correction, or controlled shadow evaluation. It would consider additional migration only if the operating status shown to caseworkers corresponds to an end-to-end state and if correction, retry, and reversal behavior are tested under production-like sequences.\n\n--- DOSSIER DOCUMENT 7 OF 11 ---\n# Limited independent assurance review\n\n**Author:** Halden & Rowe Assurance  \n**Commissioned by:** Joint Recovery Council  \n**Scope:** six weeks; architecture and control review, 240 sampled cases, 17 interviews, and available telemetry  \n**Date:** 28 May 2026\n\nThe review found no evidence sufficient to assign the program\u2019s failure to one component or organization. It identified several cross-boundary weaknesses: transaction meaning changes between systems, correlation is incomplete, acceptance evidence omits important production sequences, and decision rights for semantic changes are unresolved. These weaknesses could amplify or misclassify more than one possible initiating failure; the available evidence does not show that they all contributed equally to the April incident.\n\nThe April duplicates could plausibly originate or become irreversible at at least three boundaries. A gateway retry can repeat a command when the legacy commit state is unknown. The legacy core can create a fresh authorization identifier during a correction path. Treasury can settle a changed identifier as a new obligation when it lacks a reversal reference. Available records cannot apportion the 1,184 confirmed duplicates among these mechanisms. The mechanisms are not mutually exclusive.\n\nThe reviewers traced 240 sampled Eastbank cases selected across ordinary intake, document correction, household change, timeout, and provider adjustment. End-to-end linkage was complete for 142 cases. Of the remainder, 61 lost the platform occurrence identifier at or before the legacy boundary, 23 used a bypass feed, and 14 had inconsistent timestamps that prevented confident ordering. The sample was intentionally enriched for complex corrections and therefore cannot estimate network-wide incidence.\n\nAcceptance testing was strong for ordinary final determinations and weak for temporal and semantic behavior. The contracted scenario list reports high passage, but it underrepresents delayed acknowledgements, multiple corrections before settlement, reversal followed by reauthorization, and concurrency between a caseworker edit and a policy-table change. Several tests assert identical final amounts while ignoring whether two payment obligations were created on the way to that amount.\n\nThe governance model distinguishes program policy, local workflow, shared interfaces, and settlement control, but the modernization program repeatedly made decisions that crossed those categories. The Council approved an \u201cevent standard\u201d without deciding whether it governed county occurrence identity. Eastbank approved a workflow extension without recognizing its effect on shared retry semantics. Tern accepted an interface while reserving exclusions for local customizations. No standing body owned the combined semantic consequence.\n\nThe replacement service showed promising determination agreement in the shadow evidence reviewed, but production exception coverage and payment behavior remain incomplete. The legacy core remains operationally indispensable but contains undocumented transaction behavior and approaching support risks. The review therefore does not certify replacement readiness, recommend rollback, or endorse indefinite continuation of the current mixed design.\n\nThe Council should require proposed recovery courses to explain how transaction state will become observable across relevant boundaries, how corrections and reversals will be represented, how production-like sequences will be tested, and who may authorize changes whose effects cross organizations. Proposals should also explain how unresolved causation will be reduced or safely bounded during transition. The assurance work did not compare complete recovery courses or determine a long-term product arrangement.\n\nLimitations are material. Legacy transaction logs were unavailable for two of the three relevant code paths. Treasury reversal sampling was incomplete. The review did not render a legal opinion, independently price alternatives, or test the replacement service under peak production mix. Findings should be used to construct and test a recovery course, not treated as a complete root-cause verdict.\n\n--- DOSSIER DOCUMENT 8 OF 11 ---\n# Governance, data-stewardship, and contract extracts\n\n**Compiled by:** Joint Recovery Council general counsel  \n**Status:** authenticated excerpts and issue notes; not an ultimate legal opinion  \n**Date:** 2 June 2026\n\n## Joint Recovery Charter\n\nThe Council may establish binding exchange-wide standards for service continuity, security, interoperability, and financial control by supermajority vote. A supermajority requires the Benefits Authority, Treasury, the Cooperative, and at least two participating counties. The Council controls the shared modernization appropriation and may condition new program funding on compliance with approved standards.\n\nEach member retains authority over its internal workflow, member-owned systems, personnel, and locally collected case information unless another law or signed agreement provides otherwise. Durable changes to a member\u2019s workflow or data model require that member\u2019s approval. The Council may designate an Incident Coordination Lead to direct temporary interface controls for no more than forty-five days when continued operation presents a material risk to households, providers, or public funds. The charter does not define whether migration sequencing is an interface control.\n\nThe Benefits Authority has statutory responsibility for statewide eligibility policy and for the validity of benefit determinations. Participating counties are statutory stewards of applicant-submitted facts and local case records. Treasury is responsible for lawful settlement and the final public accounts. Counsel notes that these duties overlap without creating one obvious owner for every intermediate event.\n\n## Data-stewardship issue note\n\nThe Benefits Authority argues that its responsibility for valid determinations permits it to require one authoritative eligibility record and to direct the technical sequence needed to create it. Three counties agree that determinations must be authoritative but dispute that this permits the Authority to control their casework data model or operating platform. Treasury states that an eligibility determination cannot by itself redefine a settled payment.\n\nPrivacy agreements permit necessary operational exchange among members. They restrict creation of additional full-data copies unless a purpose, retention period, access model, and disposal process are approved. A time-limited shadow service may qualify if it does not initiate benefits and if reconciliation access is logged. Counsel has not determined whether a prolonged dual-production arrangement would remain within that approval.\n\n## Tern Systems agreement\n\nAcceptance of the New Case Platform is conditional for functions dependent on the unfinished replacement service. Contracted scenario passage does not waive defects hidden by unrepresentative test data. Tern has thirty days to cure material connector defects within its supported configuration. Custom extensions are excluded unless disclosed and accepted into the baseline. The parties dispute whether Eastbank\u2019s timeout-reopen extension was merely disclosed or contractually accepted.\n\nThe current price includes transition operation through 31 March 2027. Continued mixed operation after that date permits a negotiated adjustment. Production-cohort milestones generate vendor fees, but the Council may withhold the portion attributable to an uncured material defect. Termination assistance includes structured data export, interface documentation, and up to twelve staff-weeks. It does not require Tern to recreate local workflow state in a competing product.\n\n## Funding correspondence\n\nThe modernization appropriation assumes a major production milestone before the 2027 seasonal freeze. A grant officer wrote that the schedule may be re-baselined if the Council submits an integrated recovery plan, independent assurance, and a funded lifecycle path by 15 October 2026. The correspondence does not promise approval or additional money. Some program presentations call the production milestone mandatory; the underlying grant language allows amendment at the funder\u2019s discretion.\n\n--- DOSSIER DOCUMENT 9 OF 11 ---\n# Migration-readiness and test evidence pack\n\n**Author:** North River modernization program management office  \n**Sources reproduced:** vendor test sheets, Authority rule-validation records, Eastbank acceptance evidence, and shadow-service comparisons  \n**Date:** 16 June 2026\n\nThe contracted scenario register reports a 96.2 percent pass rate across 4,820 test cases for the New Case Platform and replacement rules service. The figure counts each named scenario equally. A frequency-weighted review commissioned after the incident found that the passed set covers approximately 62 percent of observed production rule-and-sequence combinations from the preceding year. Ordinary intake and single-document correction are heavily represented. Long correction chains, delayed acknowledgements, concurrent policy updates, provider recoupments, and two court-ordered manual processes are absent or sparsely tested.\n\nOf the 183 failed or blocked contracted scenarios, 119 concern known rule mappings for low-volume exceptions, 31 concern test-data quality, 18 concern payment or reversal behavior, and 15 remain under triage. The Benefits Authority believes most known mappings can be completed if six senior policy specialists are assigned. Four of those specialists currently support the legacy core and incident remediation. Tern\u2019s seven-month readiness estimate assumes at least four specialists at half time beginning in September.\n\nA twenty-one-day shadow run received 74,600 Eastbank cases. The replacement service marked 6,420 unsupported before comparison. Among the remaining 68,180 cases, 62,998 determinations agreed with production legacy results, an agreement rate of 92.4 percent. Of the 5,182 disagreement cases, roughly two thirds mapped to known missing rules or different rule-version timing. The remainder included unexplained results, incomplete source data, and cases where reviewers could not determine which system better represented policy. The shadow run did not initiate payments and therefore did not test settlement finality, retry behavior, or reversal chains.\n\nPerformance tests show the replacement service can evaluate ordinary cases above projected peak volume when case data is complete. Tests using correction chains show higher latency but remain within the intended service objective. No integrated load test has combined peak correction volume, gateway delay, legacy coexistence, and Treasury settlement. The Shared Integration Gateway team says it can host another shadow feed, but not another production reconciliation path, without staffing and capacity changes.\n\nRollback preparation was tested by exporting New Case Platform data into the legacy intake format. Required structured fields passed at 99.1 percent, as Eastbank reports. A separate operational exercise involving 300 cases found that staff could not reliably reconstruct queue order, pending document review, or prior worker intent from the export alone. Program materials used \u201crollback\u201d for both data compatibility and restoration of the old operating model, obscuring the difference.\n\nThe casework platform is operating at meaningful scale, and the rules service agrees with the legacy result for most supported shadow cases. Exception coverage, temporal behavior, and payment integration remain incomplete. The program office cannot assign one readiness date without decisions about scope, specialist allocation, temporary controls, and the evidence required before a production cohort.\n\n--- DOSSIER DOCUMENT 10 OF 11 ---\n# Resource, lifecycle, security, and delivery-window brief\n\n**Joint submission by:** Council finance office, security office, workforce lead, and procurement lead  \n**Status:** planning ranges, not vendor bids or approved option budgets  \n**Date:** 1 July 2026\n\nThe Council\u2019s currently approved modernization envelope can fund the committed baseline plus recovery work equal to approximately 18 percentage points of the remaining program envelope. Contingency funding may become available after the October recovery submission, but it is not committed.\n\nThe Legacy Benefits Core\u2019s standard support ends 30 June 2027. A twelve-month limited extension is commercially available and would cover severe defects and infrastructure compatibility, not undocumented business behavior. Procurement estimates the extension and required hosting renewal at 7\u201311 percentage points of the remaining program envelope. The security office can accept the current privileged-access exception only through 31 March 2027 without new compensating controls, estimated at another 2\u20134 points including independent validation.\n\nSeven people understand at least one of the three legacy transaction paths implicated in the incident. Two are eligible to retire in December, one contractor leaves in February, and three are already committed to annual rule changes. A retention package is possible but not approved. The replacement program needs the same specialists for rule mapping and verification, so legacy stabilization and replacement acceleration compete for scarce knowledge even when their direct budgets differ.\n\nCounty Services Cooperative has sufficient infrastructure headroom for additional correlation and a time-limited shadow feed. Instrumenting all three legacy transaction paths and the bypass feeds so that commit state can be queried is estimated at 3\u20135 points and would require three legacy specialists plus four integration engineers for twelve to sixteen weeks. A durable conformance and reconciliation capability is estimated at 5\u20138 points beyond basic instrumentation and would require six additional engineers and a twenty-four-hour support rotation. The Council has funding for three positions this year. A narrower conformance service could be operated by the existing team if other planned gateway work is deferred.\n\nTreasury can assign four analysts to transition and reconciliation for six months, but two are presently occupied by incident cleanup. Eastbank has twelve staff performing manual cross-system comparison and can sustain that level through October. Other counties have not budgeted comparable staff. Extending the current manual process network-wide is not feasible.\n\nThe annual policy-change release occurs in January. A seasonal service freeze prohibits mass workflow or payment cutover from 15 November 2026 through 15 February 2027, though monitored interface controls and shadow processing are permitted. The grant plan assumes a material production cohort by 31 March 2027. Missing that date does not end the program, but it makes amendment necessary and increases legacy-extension pressure.\n\nSecurity regards long-lived duplicate stores as a material privacy and access risk. A bounded six-month shadow operation is estimated at 3\u20135 points if deletion and access controls remain within the present approval. A dual-production design would need a new privacy assessment and a clearly authoritative reconciliation process. Central consolidation could reduce the number of data copies but would increase the impact of one privileged boundary and may require new data-sharing approvals.\n\nIncremental replacement acceleration is estimated at 8\u201312 points, mainly for rule completion, production-like testing, and specialist backfill. Preparing Eastbank for operational rollback is estimated at 2\u20134 points plus twenty-four temporary caseworkers for eight to ten weeks. These capability ranges are not automatically additive: scope and specialist use overlap, and vendor cure credits or contingency funding could change the Council-funded share.\n\n--- DOSSIER DOCUMENT 11 OF 11 ---\n# Stakeholder hearing excerpts\n\n**Source:** verified Joint Recovery Council transcript  \n**Session:** 21 July 2026  \n**Editing:** repetitive procedural remarks removed; speakers confirmed the retained excerpts\n\n**Benefits Authority program director:** \u201cWe cannot delegate the validity of an eligibility determination to an integration queue. The Authority must be able to say which determination controls. That does not require counties to use one casework product: a replacement determination service could accept a governed case-fact contract from more than one workflow. To make that real before legacy support ends, I would have to commit four of our senior policy specialists at least half time and defer some annual-rule work.\u201d\n\n**Benefits Authority legacy operations manager:** \u201cWe tested what it would take to receive Eastbank cases through the former intake path. With the structured export and manual reconstruction, we could reopen intake over six weeks using twenty-four temporary caseworkers for eight to ten weeks. Queue order, pending document judgment, and worker intent would not all survive. That is operationally possible, but it is not pressing an undo button.\u201d\n\n**Non-pilot county director:** \u201cOur county never used the new platform, yet provider corrections have produced mismatches for years. Do not make Eastbank the whole diagnosis. We will adopt a shared transaction contract. We will not replace our intake workflow on an emergency vote when the replacement exceptions are still unknown.\u201d\n\n**County Services Cooperative operations manager:** \u201cThe gateway had headroom during the incident. What it lacked was knowledge. We knew a request timed out; we did not know whether the business action committed. Instrumenting every legacy and bypass path before we can query that state is twelve to sixteen weeks with three legacy specialists and four integration engineers. Give us stable identity and queryable outcome state and we can stop unsafe retries. If you ask us to become the permanent financial truth layer, fund and govern that as a new service.\u201d\n\n**Treasury deputy controller:** \u201cExactly-once delivery is not the same as exactly-once obligation. We received distinct-looking authorizations that people later judged to be the same obligation. Treasury needs explicit reversal lineage and an authority for that judgment before settlement, not a nightly apology file.\u201d\n\n**Eastbank caseworker representative:** \u201cThe old process hid corrections in notes and made staff re-enter evidence. The new one is better for families when it works. After the incident, the screen said pending but nobody could tell us whether save meant received, decided, or paid. Some repeated submissions were rational responses to a meaningless status.\u201d\n\n**Provider association representative:** \u201cProviders can tolerate a day\u2019s delay if they know what is happening. Duplicate money is not a gift; it creates recovery notices, accounting work, and fear that later payments will be withheld. We care more about stable references and predictable correction than which product name is on the screen.\u201d\n\n**Privacy officer:** \u201cShadow processing can be justified to reduce uncertainty if it is bounded, logged, and deleted. Two live authoritative copies with indefinite reconciliation are a different proposition. Centralization also is not automatically private; it concentrates access and may cross purposes for which counties collected information.\u201d\n\n**Tern Systems delivery executive:** \u201cThe mixed design translates intent after semantics are lost. We can finish the replacement path, but not if every specialist is assigned to preserving undocumented legacy behavior. We accept responsibility for the connector default. We do not accept that a local extension outside the supported baseline proves the platform architecture failed.\u201d\n\n**Legacy technical lead:** \u201cThere is no single legacy behavior to preserve. One correction path commits before acknowledgement, another after, and the batch path is its own world. We can document and instrument them, but the people who know where to look are the same people the replacement team needs for rule validation.\u201d\n\n**Regulator observer:** \u201cThe Council must show control of public funds and continuity of lawful determinations. We do not require one vendor or one database. We do require identifiable responsibility while systems change, and documented action when a milestone, safeguard, or operating limit is missed.\u201d\n\n**Council finance chair:** \u201cThe recovery allocation is real, but it is not enough to purchase every form of safety simultaneously. Bring us a sequence with choices, not a list in which legacy extension, accelerated replacement, permanent reconciliation, full rollback, and dual operation all happen together.\u201d\n\n**Eastbank operations director:** \u201cWe can hold the current cohort and help produce evidence through October. We cannot keep thirty-eight people reconciling indefinitely, and we cannot promise that a technical data export restores the work state we left behind.\u201d\n\nThe chair closed the hearing by requesting a recovery course that protects current service, assigns decision rights during transition, and gives the Council concrete actions when agreed milestones or safeguards are missed.\n",
+    "directory": "thoughtlab/reasoningEngineering/dossier",
+    "document_count": 11,
+    "documents": [
+      {
+        "bytes": 2342,
+        "chars": 2342,
+        "position": 1,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/00_commission.md",
+        "sha256": "6a38f9c62d2a10b1b90e5b7520db7990e8dda5b88a256afa1ca84cb6ba540dd5",
+        "text": "# Commissioning memorandum\n\n**From:** Joint Recovery Council secretariat  \n**Approved by:** the rotating chairs from the North River Benefits Authority, County Services Cooperative, and North River Treasury  \n**Audience:** independent recovery architect  \n**Date:** 18 August 2026\n\nThe Joint Recovery Council requests a recovery architecture for the North River Benefits Network for the next eighteen months. The network authorizes emergency household benefits and payments to childcare providers. It must continue serving current applicants and providers while the modernization program is stabilized or redirected.\n\nThe present program joins five partially overlapping responsibilities. The North River Benefits Authority owns program policy and operates the Legacy Benefits Core. County Services Cooperative operates the Shared Integration Gateway for participating counties. Eastbank Human Services, which represents approximately 28 percent of network caseload, moved its casework onto the New Case Platform during the pilot. North River Treasury settles authorized payments. Tern Systems supplies the New Case Platform and is building the unfinished Replacement Rules and Payments Service.\n\nThe Council has not agreed on a single account of the April service incident or of the broader modernization failure. Participants disagree about event meaning, identifier stability, retry behavior, transaction boundaries, operating authority, migration readiness, and the significance of the Eastbank pilot. Several accounts are supported by real evidence, and several important facts remain unavailable.\n\nAdvise the Council on a concrete recovery architecture. Determine how the present failures should be understood and specify a course that preserves benefit authorization and settlement while restoring a viable modernization path within the authority, lifecycle, contractual, operational, privacy, workforce, and resource conditions in the dossier.\n\nThe final executive recovery memorandum should give technical and institutional decision makers a recommended course, explain why the Council should adopt it, assign responsibilities through practical stages, and show how current authorization and settlement service will be protected while the program changes. It may use prose headings and tables where useful, but it must not use JSON.\n",
+        "title": "Commissioning memorandum"
+      },
+      {
+        "bytes": 4341,
+        "chars": 4333,
+        "position": 2,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/01_current_state_architecture.md",
+        "sha256": "82bf76e2e7be5ecbd448eeaac8dcaccabb081e9e16751612f2485fb0b26f9127",
+        "text": "# Shared-service current-state architecture, revision 4\n\n**Author:** cross-organization architecture working group  \n**Sign-off:** accepted by County Services Cooperative and North River Treasury; North River Benefits Authority and Eastbank Human Services accepted the topology but left semantic annotations unresolved  \n**Date:** 6 May 2026\n\nThe North River Benefits Network does not have one system of record for every stage of a case. Participating counties create and steward household facts, evidence, and caseworker annotations. The Benefits Authority determines eligibility under statewide rules. Treasury owns the settled-payment ledger. The phrase \u201csystem of record\u201d has nevertheless been used in program material as if it referred to one product, producing disputes that are partly technical and partly institutional.\n\nFor non-pilot counties, case actions enter the Legacy Benefits Core directly. The core applies eligibility rules, assigns or reuses a household identifier, creates an authorization, and places an outbound record into an internal queue. The Shared Integration Gateway transforms that record into a payment instruction for Treasury and sends status events back to county systems. Three older batch feeds bypass the gateway for provider adjustments, retroactive corrections, and end-of-month reconciliation.\n\nEastbank caseworkers work in the New Case Platform. The platform sends case changes and correction events to the gateway. The gateway transforms them into commands understood by the Legacy Benefits Core, which remains the production eligibility engine. The resulting authorization then returns through the gateway to Treasury. A replacement rules and payments service exists in test environments but is not authoritative in production. During limited shadow periods it has evaluated copied case data without initiating payments.\n\nThe modernization design assumed that every business occurrence would have one stable occurrence identifier across the New Case Platform, gateway, legacy core, and Treasury. In practice, the platform always assigns an event identifier, but some correction workflows create a new event for what an operator regards as the same business occurrence. The gateway creates a correlation identifier for each received event. The legacy core does not persist either identifier in every transaction path. Treasury retains the gateway correlation identifier when it is present but also assigns a settlement identifier. The bypass feeds use different keys.\n\nAcknowledgement meaning is also inconsistent. To the New Case Platform, an accepted gateway request means that the gateway has durably received it. To the gateway operations team, an accepted legacy response means that the legacy core has accepted a command. In two legacy paths, that response can precede final database commit. Treasury acknowledgement means that a payment instruction passed syntactic and account checks, not that it settled exactly once. Program documentation sometimes calls all three states \u201cprocessed.\u201d\n\nThe intended correction lifecycle is contested. Eastbank treats a caseworker correction as a revision of an earlier occurrence until the eligibility result changes. The Benefits Authority treats any rule re-evaluation that changes an authorization as a new determination. Treasury treats a changed amount after settlement as a reversal plus a new settlement. No cross-system specification states where a revision must stop being a revision and become a new authorization.\n\nThe gateway has configurable retry policies. Network failures are retried with the original gateway correlation identifier. Legacy timeouts are retried with that identifier but may reach a legacy path that generates a fresh internal transaction key. Application rejections are not supposed to be retried automatically. Before the incident, a deployment changed one timeout classification so that an ambiguous legacy response entered the network-failure path.\n\nUnresolved annotations remain on four diagrams: the authoritative boundary for a corrected eligibility decision; the owner of the occurrence identifier; whether the gateway may suppress a command when it suspects a duplicate; and whether Treasury or the Benefits Authority has final authority to classify a payment as a correction rather than a new obligation.\n\n",
+        "title": "Shared-service current-state architecture, revision 4"
+      },
+      {
+        "bytes": 3895,
+        "chars": 3889,
+        "position": 3,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/02_april_incident_review.md",
+        "sha256": "e24f0f3e361f341f2f73ca9562c11631cfc5fd43a3aa00d584471c352f644655",
+        "text": "# April service incident review\n\n**Author:** County Services Cooperative site-reliability and incident-management team  \n**Evidence base:** gateway telemetry, deployment records, incident bridge transcript, and sampled request logs  \n**System visibility limitation:** no access to Legacy Benefits Core transaction internals or Treasury settlement internals  \n**Date:** 22 April 2026\n\nOn 14 April, benefit authorization latency rose for six hours and fourteen minutes. Eastbank caseworkers saw repeated \u201cpending\u201d states, several county call centers retried work manually, and Treasury later identified duplicate provider payments. No complete end-to-end correlation exists, so this review describes the gateway boundary and does not apportion all downstream effects.\n\nBetween 08:00 and 14:30, Eastbank generated 3.7 times its ordinary hourly event volume. Much of the increase consisted of correction events following a policy-table update and a county workflow campaign to clear held cases. Gateway CPU remained below 61 percent and queue storage below 38 percent. Median gateway transform time stayed within its service objective. The queue of commands awaiting legacy acknowledgement, however, grew from an ordinary range of 1,100\u20132,400 to a peak of 46,280.\n\nLegacy acknowledgement latency began degrading eighteen minutes before the Eastbank campaign reached its highest event rate. At 09:11, the 95th percentile crossed 90 seconds. At 09:24, the retry controller began treating a subset of timed-out legacy acknowledgements as transport failures. Of 8,412 automatically retried commands during the incident, 7,906 retained their gateway correlation identifier. The remaining 506 entered an older adapter that recreated the command after schema normalization and generated a new correlation identifier. That adapter had been enabled two weeks earlier to support a legacy correction path.\n\nThe review matched 81 percent of later duplicate-payment reports to commands that experienced at least one retry at the gateway. This association does not establish that the retry created the duplicate. A retried command could also be a consequence of a legacy transaction that committed before its acknowledgement was lost. For 19 percent of reported duplicates, no retry was visible under the gateway identifiers available to the team. Some may have traversed bypass feeds, used regenerated identifiers, or been caused downstream.\n\nAt 10:02, operators increased the legacy timeout to reduce retry pressure. Queue growth slowed but caseworker-visible latency increased. At 11:17, the Benefits Authority disabled one correction adapter. At 12:05, Eastbank paused its case campaign. The queue returned to its normal band at 14:14. It is not possible to isolate the effect of any one action because all three occurred while legacy response time was recovering.\n\nThe team found one gateway defect: the timeout-classification deployment allowed an ambiguous application acknowledgement to enter a retryable category. A corrected rule is ready. The team also found two architectural gaps outside its unilateral control: occurrence identifiers are not stable across every correction path, and gateway operations cannot determine whether an unacknowledged legacy command committed. The gateway can suppress exact transport duplicates when the same correlation identifier returns, but it cannot safely infer that two semantically similar commands are the same business occurrence.\n\nThe Cooperative recommends immediate correction of the timeout rule, end-to-end correlation, and a defined idempotency boundary. It does not recommend that the gateway become the authoritative eligibility or settlement ledger. It believes the incident can be contained without abandoning the Eastbank workflow, provided the other systems expose enough transaction state to distinguish safe retry from duplicate execution.\n\n",
+        "title": "April service incident review"
+      },
+      {
+        "bytes": 3709,
+        "chars": 3699,
+        "position": 4,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/03_vendor_cure_addendum.md",
+        "sha256": "7c3b3f70a474e42fada5bdd1fa32cf16f33b5eefb6dd2d97f3bc4bb52cf8cc7d",
+        "text": "# Root-cause and remediation addendum\n\n**Author:** Tern Systems engineering and account leadership  \n**Contractual context:** submitted under the program\u2019s cure process; disputed liability may affect fees and milestone payments  \n**Date:** 30 April 2026\n\nTern Systems reproduced the April retry sequence against the contracted New Case Platform configuration. When a stable business-occurrence identifier is supplied, the platform retains it across ordinary submission, correction, timeout recovery, and user refresh. Its supported gateway connector also retains the identifier. Under those conditions, repeated deliveries are distinguishable and the replacement rules service produces the same determination for the same occurrence and rule version.\n\nThe Eastbank tenant included a locally commissioned workflow extension that creates a fresh correction event when a caseworker reopens a queued task after an external status timeout. Tern did not approve this extension as part of the production baseline. In a sample of 12,640 Eastbank correction events from 1\u201314 April, 8.6 percent lacked the original business-occurrence identifier after passing through that extension. The extension was visible in an integration inventory, but no acceptance test exercised a timeout followed by reopen and correction.\n\nTern also identified an error in its supported connector defaults. The default backoff for a missing application-level acknowledgement was shorter than the deployment guide specified and allowed two additional attempts during the legacy core\u2019s degraded response window. Tern has supplied a patch and will waive the related connector support charge. The company does not agree that this defect alone explains the duplicate settlements: most affected commands still carried a stable gateway correlation identifier, and Treasury reported duplicates for cases where Tern saw only one platform event.\n\nThe vendor\u2019s position is that the present partial architecture preserves incompatible transaction semantics. The New Case Platform describes intent and correction history; the legacy core collapses some revisions into new authorizations; Treasury reasons over settlements. The gateway is being asked to infer equivalence after information has already been lost. Adding more retry rules at that boundary can reduce recurrence but cannot establish exactly-once business behavior.\n\nTern proposes accelerating the Replacement Rules and Payments Service so the New Case Platform and replacement service share occurrence, determination, and payment semantics. It estimates that core contracted rule coverage can be production-ready within seven months if rule clarification, test data, and Benefits Authority subject-matter experts are available on schedule. That estimate excludes several low-volume exception rules, provider recoupments, and two court-ordered manual processes. Those could remain on the legacy core temporarily or be handled through controlled operations.\n\nThe company notes that Eastbank\u2019s pilot improved intake throughput and captured corrections that the old workflow often represented as free-text notes. It argues that the 3.7-fold event increase reflects previously hidden work as well as campaign volume, not merely inefficient software. A rollback would therefore reduce event volume partly by losing structured information.\n\nUnder the current agreement, Tern receives milestone fees for production cohorts and may negotiate a price adjustment if the mixed architecture continues beyond the contracted transition period. It will support data export and termination assistance if the Council chooses another course, subject to the limits described in the contract extracts.\n",
+        "title": "Root-cause and remediation addendum"
+      },
+      {
+        "bytes": 3841,
+        "chars": 3839,
+        "position": 5,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/04_treasury_reconciliation.md",
+        "sha256": "cbe3089d9e475d8d64836dbd6679b526353493ee62c7ff9cd2f5892322359fe1",
+        "text": "# Treasury reconciliation analysis\n\n**Author:** North River Treasury controller and payment analytics unit  \n**Evidence base:** settled-payment ledger, reversal ledger, provider reports, and manual review of sampled authorizations  \n**Boundary limitation:** identifiers do not map cleanly through every legacy and bypass path  \n**Date:** 3 May 2026\n\nTreasury confirmed 1,184 excess provider settlements associated with the April incident window. Each was linked by manual review to an earlier settlement judged to represent the same benefit obligation. The 1,184 excess settlements represent 0.71 percent of the 166,761 provider-settlement instructions initiated during that period. The count excludes suspected repeats blocked before settlement and excludes household payments, which use a different rail.\n\nOf the 1,184 linked excess-settlement pairs, 742 shared a recognizable household, provider, service period, and amount but arrived with different authorization identifiers. Another 318 shared an authorization identifier but arrived as distinct payment instructions. The remaining 124 required manual linkage because one member of the pair came through a provider-adjustment batch feed. The gateway operations team could match at least one visible retry to 959 cases, but Treasury found 225 cases for which the available gateway record showed one event identifier or no gateway path.\n\nThe 225 cases weaken a gateway-only account. They do not prove that Treasury generated duplicates independently. In several legacy paths, a regenerated authorization identifier can obscure the relationship to an earlier gateway command. Treasury also found that its own settlement interface treats a changed authorization identifier as a new obligation unless an explicit reversal reference is present. That rule is consistent with the current interface specification but may be unsafe when upstream systems regenerate identifiers during correction.\n\nDuplicate and reconciliation problems predate the Eastbank pilot. During the preceding six months, Treasury identified an average of 37 duplicate or conflicting provider settlements per month, mostly associated with retroactive corrections and the three bypass feeds. The April rate was far higher, but the pre-existing cases show that the mixed transaction model was not sound before migration. Historical counts are incomplete because providers do not always report small duplicate payments promptly and automated matching improved in February.\n\nTreasury\u2019s manual sample overrepresents completed settlements. Reversed and rejected transactions are less likely to appear because the analytics extract is keyed to the settled ledger. The team therefore cannot estimate how often gateway retries were safely absorbed upstream or how many attempted duplicates were prevented. It also cannot determine whether a legacy transaction committed before an acknowledgement timeout.\n\nTreasury requires that any recovery architecture preserve settlement finality, support an explicit correction and reversal chain, and prevent a county workflow from silently redefining an already settled obligation. Treasury can accept delayed authorization during controlled degradation for up to twenty-four hours if emergency cases have a manual route. It cannot accept a design that reconciles duplicates only after providers receive funds as a normal operating pattern.\n\nThe controller is open to a temporary reconciliation service or parallel validation, but Treasury will not treat a shadow ledger as authoritative without a Council-approved legal and accounting basis. The unit has four analysts who can support transition work for six months; two are already assigned full time to incident reconciliation. Treasury regards restoration of end-to-end correlation as necessary under every long-term platform choice.\n",
+        "title": "Treasury reconciliation analysis"
+      },
+      {
+        "bytes": 3708,
+        "chars": 3698,
+        "position": 6,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/05_eastbank_pilot_outcomes.md",
+        "sha256": "fd297d88833bfd8f4daf2444e903e711559a19e4594cc9942b07eb09791a1e4a",
+        "text": "# Eastbank pilot outcomes memorandum\n\n**Author:** Eastbank Human Services transformation office  \n**Co-signed by:** Eastbank caseworker operations council  \n**Evidence base:** pilot service metrics, staff survey, case audit, and post-incident recovery log  \n**Date:** 9 May 2026\n\nEastbank moved approximately 28 percent of network caseload onto the New Case Platform over three cohorts. The pilot changed the caseworker workflow while leaving production eligibility and payment authorization in the Legacy Benefits Core. It therefore demonstrates that the new casework product can operate at meaningful scale, but it is not evidence that the replacement rules and payments service is production-ready.\n\nAcross the twelve weeks before the April incident, median intake handling time fell by 31 percent relative to Eastbank\u2019s prior workflow. Abandoned applications fell from 8.4 to 5.9 percent, and the share of corrections represented as structured events rather than free-text notes rose from 46 to 88 percent. Staff survey results favored the new workflow for ordinary cases, especially when applicants changed documents or household composition before determination.\n\nThe same structured correction behavior increased event volume. A case that previously accumulated three notes and one final legacy update may now create several explicit events. Eastbank considers that increased visibility a benefit, but the program never established which events should remain revisions and which should become new business occurrences downstream. The pilot acceptance suite evaluated correct final eligibility results more often than repeated delivery, delayed acknowledgement, or long correction chains.\n\nDuring the April incident, caseworkers saw \u201cpending\u201d states after saving corrections. Some reopened the task, made a harmless edit, and submitted again because the operating guide did not explain whether the first action was durable. The locally commissioned workflow extension created a new event in that sequence. Eastbank accepts that the extension was not included in the contracted acceptance baseline. It notes that the extension appeared in two architecture inventories and was built to compensate for an unresolved status-design issue raised during pilot testing.\n\nTechnical export tests recovered 99.1 percent of required structured case fields from the New Case Platform into a format that the legacy intake loader could ingest. That result has sometimes been described as \u201crollback readiness.\u201d The export did not preserve work-queue ordering, local annotations, document-review state, every event relationship, or the exact staff assignment history. Restoring Eastbank to the former workflow would therefore require manual triage and would lose operational context even if case facts were transferred successfully.\n\nAfter the incident, thirty-eight staff members spent nine working days reconciling pending and repeated actions. Twelve of them remain assigned to manual comparison between platform, legacy, and Treasury states. This labor helped stabilize service and may partly explain favorable post-incident accuracy. It is not a sustainable substitute for defined transaction semantics.\n\nEastbank opposes an immediate broad migration while the correction boundary remains unresolved. It also opposes treating pilot rollback as a costless safety action. It would support continued containment of its current cohort, interface correction, or controlled shadow evaluation. It would consider additional migration only if the operating status shown to caseworkers corresponds to an end-to-end state and if correction, retry, and reversal behavior are tested under production-like sequences.\n\n",
+        "title": "Eastbank pilot outcomes memorandum"
+      },
+      {
+        "bytes": 4185,
+        "chars": 4179,
+        "position": 7,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/06_independent_assurance_review.md",
+        "sha256": "a4b96614844ae874e2258b82ee88f7d55f800f3092c099425e9bcb2f507e63f7",
+        "text": "# Limited independent assurance review\n\n**Author:** Halden & Rowe Assurance  \n**Commissioned by:** Joint Recovery Council  \n**Scope:** six weeks; architecture and control review, 240 sampled cases, 17 interviews, and available telemetry  \n**Date:** 28 May 2026\n\nThe review found no evidence sufficient to assign the program\u2019s failure to one component or organization. It identified several cross-boundary weaknesses: transaction meaning changes between systems, correlation is incomplete, acceptance evidence omits important production sequences, and decision rights for semantic changes are unresolved. These weaknesses could amplify or misclassify more than one possible initiating failure; the available evidence does not show that they all contributed equally to the April incident.\n\nThe April duplicates could plausibly originate or become irreversible at at least three boundaries. A gateway retry can repeat a command when the legacy commit state is unknown. The legacy core can create a fresh authorization identifier during a correction path. Treasury can settle a changed identifier as a new obligation when it lacks a reversal reference. Available records cannot apportion the 1,184 confirmed duplicates among these mechanisms. The mechanisms are not mutually exclusive.\n\nThe reviewers traced 240 sampled Eastbank cases selected across ordinary intake, document correction, household change, timeout, and provider adjustment. End-to-end linkage was complete for 142 cases. Of the remainder, 61 lost the platform occurrence identifier at or before the legacy boundary, 23 used a bypass feed, and 14 had inconsistent timestamps that prevented confident ordering. The sample was intentionally enriched for complex corrections and therefore cannot estimate network-wide incidence.\n\nAcceptance testing was strong for ordinary final determinations and weak for temporal and semantic behavior. The contracted scenario list reports high passage, but it underrepresents delayed acknowledgements, multiple corrections before settlement, reversal followed by reauthorization, and concurrency between a caseworker edit and a policy-table change. Several tests assert identical final amounts while ignoring whether two payment obligations were created on the way to that amount.\n\nThe governance model distinguishes program policy, local workflow, shared interfaces, and settlement control, but the modernization program repeatedly made decisions that crossed those categories. The Council approved an \u201cevent standard\u201d without deciding whether it governed county occurrence identity. Eastbank approved a workflow extension without recognizing its effect on shared retry semantics. Tern accepted an interface while reserving exclusions for local customizations. No standing body owned the combined semantic consequence.\n\nThe replacement service showed promising determination agreement in the shadow evidence reviewed, but production exception coverage and payment behavior remain incomplete. The legacy core remains operationally indispensable but contains undocumented transaction behavior and approaching support risks. The review therefore does not certify replacement readiness, recommend rollback, or endorse indefinite continuation of the current mixed design.\n\nThe Council should require proposed recovery courses to explain how transaction state will become observable across relevant boundaries, how corrections and reversals will be represented, how production-like sequences will be tested, and who may authorize changes whose effects cross organizations. Proposals should also explain how unresolved causation will be reduced or safely bounded during transition. The assurance work did not compare complete recovery courses or determine a long-term product arrangement.\n\nLimitations are material. Legacy transaction logs were unavailable for two of the three relevant code paths. Treasury reversal sampling was incomplete. The review did not render a legal opinion, independently price alternatives, or test the replacement service under peak production mix. Findings should be used to construct and test a recovery course, not treated as a complete root-cause verdict.\n",
+        "title": "Limited independent assurance review"
+      },
+      {
+        "bytes": 4099,
+        "chars": 4091,
+        "position": 8,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/07_governance_contract_data_extracts.md",
+        "sha256": "a99d8d4f0851a8c60918b38a03cd03e57dc844be8b4db4deb0af4e2fe30555af",
+        "text": "# Governance, data-stewardship, and contract extracts\n\n**Compiled by:** Joint Recovery Council general counsel  \n**Status:** authenticated excerpts and issue notes; not an ultimate legal opinion  \n**Date:** 2 June 2026\n\n## Joint Recovery Charter\n\nThe Council may establish binding exchange-wide standards for service continuity, security, interoperability, and financial control by supermajority vote. A supermajority requires the Benefits Authority, Treasury, the Cooperative, and at least two participating counties. The Council controls the shared modernization appropriation and may condition new program funding on compliance with approved standards.\n\nEach member retains authority over its internal workflow, member-owned systems, personnel, and locally collected case information unless another law or signed agreement provides otherwise. Durable changes to a member\u2019s workflow or data model require that member\u2019s approval. The Council may designate an Incident Coordination Lead to direct temporary interface controls for no more than forty-five days when continued operation presents a material risk to households, providers, or public funds. The charter does not define whether migration sequencing is an interface control.\n\nThe Benefits Authority has statutory responsibility for statewide eligibility policy and for the validity of benefit determinations. Participating counties are statutory stewards of applicant-submitted facts and local case records. Treasury is responsible for lawful settlement and the final public accounts. Counsel notes that these duties overlap without creating one obvious owner for every intermediate event.\n\n## Data-stewardship issue note\n\nThe Benefits Authority argues that its responsibility for valid determinations permits it to require one authoritative eligibility record and to direct the technical sequence needed to create it. Three counties agree that determinations must be authoritative but dispute that this permits the Authority to control their casework data model or operating platform. Treasury states that an eligibility determination cannot by itself redefine a settled payment.\n\nPrivacy agreements permit necessary operational exchange among members. They restrict creation of additional full-data copies unless a purpose, retention period, access model, and disposal process are approved. A time-limited shadow service may qualify if it does not initiate benefits and if reconciliation access is logged. Counsel has not determined whether a prolonged dual-production arrangement would remain within that approval.\n\n## Tern Systems agreement\n\nAcceptance of the New Case Platform is conditional for functions dependent on the unfinished replacement service. Contracted scenario passage does not waive defects hidden by unrepresentative test data. Tern has thirty days to cure material connector defects within its supported configuration. Custom extensions are excluded unless disclosed and accepted into the baseline. The parties dispute whether Eastbank\u2019s timeout-reopen extension was merely disclosed or contractually accepted.\n\nThe current price includes transition operation through 31 March 2027. Continued mixed operation after that date permits a negotiated adjustment. Production-cohort milestones generate vendor fees, but the Council may withhold the portion attributable to an uncured material defect. Termination assistance includes structured data export, interface documentation, and up to twelve staff-weeks. It does not require Tern to recreate local workflow state in a competing product.\n\n## Funding correspondence\n\nThe modernization appropriation assumes a major production milestone before the 2027 seasonal freeze. A grant officer wrote that the schedule may be re-baselined if the Council submits an integrated recovery plan, independent assurance, and a funded lifecycle path by 15 October 2026. The correspondence does not promise approval or additional money. Some program presentations call the production milestone mandatory; the underlying grant language allows amendment at the funder\u2019s discretion.\n\n",
+        "title": "Governance, data-stewardship, and contract extracts"
+      },
+      {
+        "bytes": 3497,
+        "chars": 3491,
+        "position": 9,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/08_migration_readiness_evidence.md",
+        "sha256": "ff13fd67d73c849aed25ba5b1b4c28a713b49f604d36ddc5aebe3c6f6f870413",
+        "text": "# Migration-readiness and test evidence pack\n\n**Author:** North River modernization program management office  \n**Sources reproduced:** vendor test sheets, Authority rule-validation records, Eastbank acceptance evidence, and shadow-service comparisons  \n**Date:** 16 June 2026\n\nThe contracted scenario register reports a 96.2 percent pass rate across 4,820 test cases for the New Case Platform and replacement rules service. The figure counts each named scenario equally. A frequency-weighted review commissioned after the incident found that the passed set covers approximately 62 percent of observed production rule-and-sequence combinations from the preceding year. Ordinary intake and single-document correction are heavily represented. Long correction chains, delayed acknowledgements, concurrent policy updates, provider recoupments, and two court-ordered manual processes are absent or sparsely tested.\n\nOf the 183 failed or blocked contracted scenarios, 119 concern known rule mappings for low-volume exceptions, 31 concern test-data quality, 18 concern payment or reversal behavior, and 15 remain under triage. The Benefits Authority believes most known mappings can be completed if six senior policy specialists are assigned. Four of those specialists currently support the legacy core and incident remediation. Tern\u2019s seven-month readiness estimate assumes at least four specialists at half time beginning in September.\n\nA twenty-one-day shadow run received 74,600 Eastbank cases. The replacement service marked 6,420 unsupported before comparison. Among the remaining 68,180 cases, 62,998 determinations agreed with production legacy results, an agreement rate of 92.4 percent. Of the 5,182 disagreement cases, roughly two thirds mapped to known missing rules or different rule-version timing. The remainder included unexplained results, incomplete source data, and cases where reviewers could not determine which system better represented policy. The shadow run did not initiate payments and therefore did not test settlement finality, retry behavior, or reversal chains.\n\nPerformance tests show the replacement service can evaluate ordinary cases above projected peak volume when case data is complete. Tests using correction chains show higher latency but remain within the intended service objective. No integrated load test has combined peak correction volume, gateway delay, legacy coexistence, and Treasury settlement. The Shared Integration Gateway team says it can host another shadow feed, but not another production reconciliation path, without staffing and capacity changes.\n\nRollback preparation was tested by exporting New Case Platform data into the legacy intake format. Required structured fields passed at 99.1 percent, as Eastbank reports. A separate operational exercise involving 300 cases found that staff could not reliably reconstruct queue order, pending document review, or prior worker intent from the export alone. Program materials used \u201crollback\u201d for both data compatibility and restoration of the old operating model, obscuring the difference.\n\nThe casework platform is operating at meaningful scale, and the rules service agrees with the legacy result for most supported shadow cases. Exception coverage, temporal behavior, and payment integration remain incomplete. The program office cannot assign one readiness date without decisions about scope, specialist allocation, temporary controls, and the evidence required before a production cohort.\n",
+        "title": "Migration-readiness and test evidence pack"
+      },
+      {
+        "bytes": 4080,
+        "chars": 4062,
+        "position": 10,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/09_resource_lifecycle_window.md",
+        "sha256": "0584b082985257b5e69758c3e42eef579972e9a00804d4b59a7d88522b92c934",
+        "text": "# Resource, lifecycle, security, and delivery-window brief\n\n**Joint submission by:** Council finance office, security office, workforce lead, and procurement lead  \n**Status:** planning ranges, not vendor bids or approved option budgets  \n**Date:** 1 July 2026\n\nThe Council\u2019s currently approved modernization envelope can fund the committed baseline plus recovery work equal to approximately 18 percentage points of the remaining program envelope. Contingency funding may become available after the October recovery submission, but it is not committed.\n\nThe Legacy Benefits Core\u2019s standard support ends 30 June 2027. A twelve-month limited extension is commercially available and would cover severe defects and infrastructure compatibility, not undocumented business behavior. Procurement estimates the extension and required hosting renewal at 7\u201311 percentage points of the remaining program envelope. The security office can accept the current privileged-access exception only through 31 March 2027 without new compensating controls, estimated at another 2\u20134 points including independent validation.\n\nSeven people understand at least one of the three legacy transaction paths implicated in the incident. Two are eligible to retire in December, one contractor leaves in February, and three are already committed to annual rule changes. A retention package is possible but not approved. The replacement program needs the same specialists for rule mapping and verification, so legacy stabilization and replacement acceleration compete for scarce knowledge even when their direct budgets differ.\n\nCounty Services Cooperative has sufficient infrastructure headroom for additional correlation and a time-limited shadow feed. Instrumenting all three legacy transaction paths and the bypass feeds so that commit state can be queried is estimated at 3\u20135 points and would require three legacy specialists plus four integration engineers for twelve to sixteen weeks. A durable conformance and reconciliation capability is estimated at 5\u20138 points beyond basic instrumentation and would require six additional engineers and a twenty-four-hour support rotation. The Council has funding for three positions this year. A narrower conformance service could be operated by the existing team if other planned gateway work is deferred.\n\nTreasury can assign four analysts to transition and reconciliation for six months, but two are presently occupied by incident cleanup. Eastbank has twelve staff performing manual cross-system comparison and can sustain that level through October. Other counties have not budgeted comparable staff. Extending the current manual process network-wide is not feasible.\n\nThe annual policy-change release occurs in January. A seasonal service freeze prohibits mass workflow or payment cutover from 15 November 2026 through 15 February 2027, though monitored interface controls and shadow processing are permitted. The grant plan assumes a material production cohort by 31 March 2027. Missing that date does not end the program, but it makes amendment necessary and increases legacy-extension pressure.\n\nSecurity regards long-lived duplicate stores as a material privacy and access risk. A bounded six-month shadow operation is estimated at 3\u20135 points if deletion and access controls remain within the present approval. A dual-production design would need a new privacy assessment and a clearly authoritative reconciliation process. Central consolidation could reduce the number of data copies but would increase the impact of one privileged boundary and may require new data-sharing approvals.\n\nIncremental replacement acceleration is estimated at 8\u201312 points, mainly for rule completion, production-like testing, and specialist backfill. Preparing Eastbank for operational rollback is estimated at 2\u20134 points plus twenty-four temporary caseworkers for eight to ten weeks. These capability ranges are not automatically additive: scope and specialist use overlap, and vendor cure credits or contingency funding could change the Council-funded share.\n",
+        "title": "Resource, lifecycle, security, and delivery-window brief"
+      },
+      {
+        "bytes": 5315,
+        "chars": 5261,
+        "position": 11,
+        "relative_path": "thoughtlab/reasoningEngineering/dossier/10_stakeholder_hearing.md",
+        "sha256": "b58a61d8360d35dd6e8759578e897b5722af8e447a3086d6309a0a3decbf4f40",
+        "text": "# Stakeholder hearing excerpts\n\n**Source:** verified Joint Recovery Council transcript  \n**Session:** 21 July 2026  \n**Editing:** repetitive procedural remarks removed; speakers confirmed the retained excerpts\n\n**Benefits Authority program director:** \u201cWe cannot delegate the validity of an eligibility determination to an integration queue. The Authority must be able to say which determination controls. That does not require counties to use one casework product: a replacement determination service could accept a governed case-fact contract from more than one workflow. To make that real before legacy support ends, I would have to commit four of our senior policy specialists at least half time and defer some annual-rule work.\u201d\n\n**Benefits Authority legacy operations manager:** \u201cWe tested what it would take to receive Eastbank cases through the former intake path. With the structured export and manual reconstruction, we could reopen intake over six weeks using twenty-four temporary caseworkers for eight to ten weeks. Queue order, pending document judgment, and worker intent would not all survive. That is operationally possible, but it is not pressing an undo button.\u201d\n\n**Non-pilot county director:** \u201cOur county never used the new platform, yet provider corrections have produced mismatches for years. Do not make Eastbank the whole diagnosis. We will adopt a shared transaction contract. We will not replace our intake workflow on an emergency vote when the replacement exceptions are still unknown.\u201d\n\n**County Services Cooperative operations manager:** \u201cThe gateway had headroom during the incident. What it lacked was knowledge. We knew a request timed out; we did not know whether the business action committed. Instrumenting every legacy and bypass path before we can query that state is twelve to sixteen weeks with three legacy specialists and four integration engineers. Give us stable identity and queryable outcome state and we can stop unsafe retries. If you ask us to become the permanent financial truth layer, fund and govern that as a new service.\u201d\n\n**Treasury deputy controller:** \u201cExactly-once delivery is not the same as exactly-once obligation. We received distinct-looking authorizations that people later judged to be the same obligation. Treasury needs explicit reversal lineage and an authority for that judgment before settlement, not a nightly apology file.\u201d\n\n**Eastbank caseworker representative:** \u201cThe old process hid corrections in notes and made staff re-enter evidence. The new one is better for families when it works. After the incident, the screen said pending but nobody could tell us whether save meant received, decided, or paid. Some repeated submissions were rational responses to a meaningless status.\u201d\n\n**Provider association representative:** \u201cProviders can tolerate a day\u2019s delay if they know what is happening. Duplicate money is not a gift; it creates recovery notices, accounting work, and fear that later payments will be withheld. We care more about stable references and predictable correction than which product name is on the screen.\u201d\n\n**Privacy officer:** \u201cShadow processing can be justified to reduce uncertainty if it is bounded, logged, and deleted. Two live authoritative copies with indefinite reconciliation are a different proposition. Centralization also is not automatically private; it concentrates access and may cross purposes for which counties collected information.\u201d\n\n**Tern Systems delivery executive:** \u201cThe mixed design translates intent after semantics are lost. We can finish the replacement path, but not if every specialist is assigned to preserving undocumented legacy behavior. We accept responsibility for the connector default. We do not accept that a local extension outside the supported baseline proves the platform architecture failed.\u201d\n\n**Legacy technical lead:** \u201cThere is no single legacy behavior to preserve. One correction path commits before acknowledgement, another after, and the batch path is its own world. We can document and instrument them, but the people who know where to look are the same people the replacement team needs for rule validation.\u201d\n\n**Regulator observer:** \u201cThe Council must show control of public funds and continuity of lawful determinations. We do not require one vendor or one database. We do require identifiable responsibility while systems change, and documented action when a milestone, safeguard, or operating limit is missed.\u201d\n\n**Council finance chair:** \u201cThe recovery allocation is real, but it is not enough to purchase every form of safety simultaneously. Bring us a sequence with choices, not a list in which legacy extension, accelerated replacement, permanent reconciliation, full rollback, and dual operation all happen together.\u201d\n\n**Eastbank operations director:** \u201cWe can hold the current cohort and help produce evidence through October. We cannot keep thirty-eight people reconciling indefinitely, and we cannot promise that a technical data export restores the work state we left behind.\u201d\n\nThe chair closed the hearing by requesting a recovery course that protects current service, assigns decision rights during transition, and gives the Council concrete actions when agreed milestones or safeguards are missed.\n",
+        "title": "Stakeholder hearing excerpts"
+      }
+    ],
+    "preferred_solution_exists": false,
+    "withheld_construction_notes": "thoughtlab/reasoningEngineering/DOSSIER_CONSTRUCTION_NOTES.md",
+    "withheld_notes_sent_to_model": false
+  },
+  "examinations": {
+    "adaptive_target_selection_within_each_charter": true,
+    "charters": {
+      "X1": {
+        "charter_id": "epistemic_hinge_audit_v1",
+        "instruction": "Identify one load-bearing interpretation, inference, source assessment, or assumption in O0. Test whether its evidential basis, provenance, uncertainty, and downstream commitments justify the weight placed on it. Select the most material evidenced hinge without supplying a replacement answer.",
+        "title": "epistemic hinge audit"
+      },
+      "X2": {
+        "charter_id": "adversarial_alternative_falsification_audit_v1",
+        "instruction": "Using O1 and the recorded O0-to-O1 delta, identify the strongest materially plausible alternative, counterexample, or falsifying condition that the current preferred course has not adequately answered. Select a local challenge that could reopen or revise the decision without prescribing a replacement answer.",
+        "title": "adversarial alternative/falsification audit"
+      },
+      "X3": {
+        "charter_id": "global_reintegration_joint_feasibility_audit_v1",
+        "instruction": "Reintegrate the whole O2 decision state after the first two local changes. Audit whether commitments, dependencies, resources, timing, authority, evidence requirements, contingencies, and fallbacks can hold together jointly. Select the most material remaining coupling, regression, or unsupported closure without prescribing an answer.",
+        "title": "global reintegration/joint-feasibility audit"
+      }
+    },
+    "each_turn_occurs_after_its_source_observation_is_eligible": true,
+    "exact_external_examiner_turns": 3,
+    "examiner_inputs_and_outputs_are_runtime_hash_bound": true,
+    "examiner_output_is_never_replayed_to_planner": true,
+    "fixed_charter_order": [
+      "epistemic_hinge_audit_v1",
+      "adversarial_alternative_falsification_audit_v1",
+      "global_reintegration_joint_feasibility_audit_v1"
+    ],
+    "ids": [
+      "X1",
+      "X2",
+      "X3"
+    ],
+    "no_fourth_examination": true
+  },
+  "execution": {
+    "begins_only_after_O3_is_eligible_and_final_assessment_is_sealed": true,
+    "checkpoints": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "generation_configs": {
+      "C0": [
+        {
+          "maxOutputTokens": 32768,
+          "seed": 49643439,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 190624774,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 343531473,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C1": [
+        {
+          "maxOutputTokens": 32768,
+          "seed": 49643439,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 190624774,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 343531473,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C2": [
+        {
+          "maxOutputTokens": 32768,
+          "seed": 49643439,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 190624774,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 343531473,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C3": [
+        {
+          "maxOutputTokens": 32768,
+          "seed": 49643439,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 190624774,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 32768,
+          "seed": 343531473,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ]
+    },
+    "interleaved_checkpoint_order": true,
+    "natural_language_no_json": true,
+    "only_completed_ready_checkpoints_are_eligible": true,
+    "prompt": "EXECUTE THE ESTABLISHED RECOVERY PLAN represented at this checkpoint. Produce the executive\nrecovery memorandum commissioned in the original dossier. Render the plan that\nwas already established at this checkpoint rather than beginning a fresh\nplanning exercise. Make its diagnosis, selected architecture, sequencing,\ndecision rights, protections, assumptions, dependencies, contingencies, and\nrevision conditions concrete. Use ordinary prose with headings or tables where\nuseful. Do not use JSON and do not discuss hidden reasoning or this experiment.\n",
+    "replicates_per_checkpoint": 3,
+    "same_seed_within_matched_checkpoint_quartet": true,
+    "schedule": [
+      {
+        "checkpoint": "C0",
+        "order": 1,
+        "replicate": 1
+      },
+      {
+        "checkpoint": "C2",
+        "order": 2,
+        "replicate": 1
+      },
+      {
+        "checkpoint": "C1",
+        "order": 3,
+        "replicate": 1
+      },
+      {
+        "checkpoint": "C3",
+        "order": 4,
+        "replicate": 1
+      },
+      {
+        "checkpoint": "C2",
+        "order": 5,
+        "replicate": 2
+      },
+      {
+        "checkpoint": "C3",
+        "order": 6,
+        "replicate": 2
+      },
+      {
+        "checkpoint": "C0",
+        "order": 7,
+        "replicate": 2
+      },
+      {
+        "checkpoint": "C1",
+        "order": 8,
+        "replicate": 2
+      },
+      {
+        "checkpoint": "C2",
+        "order": 9,
+        "replicate": 3
+      },
+      {
+        "checkpoint": "C1",
+        "order": 10,
+        "replicate": 3
+      },
+      {
+        "checkpoint": "C3",
+        "order": 11,
+        "replicate": 3
+      },
+      {
+        "checkpoint": "C0",
+        "order": 12,
+        "replicate": 3
+      }
+    ],
+    "schedule_seed": 1192819291,
+    "truncated_checkpoint_is_never_an_execution_baseline": true
+  },
+  "experiment_id": "modernization_reasoning_engineering_iterative_01",
+  "interventions": {
+    "I1_may_be_sealed_only_after": "eligible O0",
+    "I2_may_be_sealed_only_after": "eligible O1",
+    "I3_may_be_sealed_only_after": "eligible O2",
+    "actual_diagnosis_target_prediction_and_text_are_authored_after_observation": true,
+    "human_authored_record_keys": [
+      "diagnosis",
+      "expected_stable_commitments",
+      "intervention_text",
+      "observation_evidence",
+      "predicted_execution_changes",
+      "predicted_observation_changes",
+      "prior_delta_disposition",
+      "reconciliation",
+      "reviewer_A",
+      "reviewer_B",
+      "source_observation_assessment",
+      "targeted_reasoning_relationship"
+    ],
+    "human_researcher_is_final_adjudicator": true,
+    "model_facing_intervention_contains_only_reconciled_intervention_text": true,
+    "reconciliation_keys": [
+      "approved_by",
+      "basis",
+      "reviewer_A_disposition",
+      "reviewer_B_disposition"
+    ],
+    "replacement_answer_must_not_be_planted": true,
+    "review_stream_keys": [
+      "diagnosis",
+      "observation_evidence",
+      "predicted_execution_changes",
+      "predicted_observation_changes",
+      "proposed_intervention_text",
+      "provenance",
+      "targeted_reasoning_relationship"
+    ],
+    "reviewer_provenance_keys": [
+      "harness",
+      "identity",
+      "input_sha256",
+      "model",
+      "reasoning_effort",
+      "reviewer_type"
+    ],
+    "reviewer_provenance_requirements": {
+      "reviewer_A": {
+        "harness": "human_review",
+        "identity": "human_researcher",
+        "model": "none",
+        "reasoning_effort": "human",
+        "reviewer_type": "human"
+      },
+      "reviewer_B": {
+        "harness": "chatgpt",
+        "identity": "independent_sol_chatgpt_reviewer_channel",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "xhigh",
+        "reviewer_type": "model"
+      }
+    },
+    "runtime_seal_keys": [
+      "examination_charter_id",
+      "examination_id",
+      "examiner_input_sha256",
+      "examiner_output_sha256",
+      "intervention_id",
+      "schema_version",
+      "seal_status",
+      "sealed_at",
+      "selection_rule_id",
+      "source_checkpoint",
+      "source_observation",
+      "source_observation_sha256",
+      "target_checkpoint"
+    ],
+    "runtime_supplies_and_validates_examiner_input_output_hashes": true,
+    "runtime_supplies_and_validates_sealed_at_UTC": true,
+    "runtime_supplies_and_validates_source_observation_hash": true,
+    "seal_chronology_must_be_verified_by_runtime_archive": true,
+    "sealed_record_keys": [
+      "diagnosis",
+      "examination_charter_id",
+      "examination_id",
+      "examiner_input_sha256",
+      "examiner_output_sha256",
+      "expected_stable_commitments",
+      "intervention_id",
+      "intervention_text",
+      "observation_evidence",
+      "predicted_execution_changes",
+      "predicted_observation_changes",
+      "prior_delta_disposition",
+      "reconciliation",
+      "reviewer_A",
+      "reviewer_B",
+      "schema_version",
+      "seal_status",
+      "sealed_at",
+      "selection_rule_id",
+      "source_checkpoint",
+      "source_observation",
+      "source_observation_assessment",
+      "source_observation_sha256",
+      "target_checkpoint",
+      "targeted_reasoning_relationship"
+    ],
+    "selection_rules": {
+      "I1": "After X1 examines eligible O0 under the epistemic-hinge charter, select one material local relationship actually evidenced there. Challenge its basis without prescribing a replacement answer; predict localized observation and execution consequences; and identify unrelated commitments expected to remain stable.",
+      "I2": "After X2 examines eligible O1 and the O0-to-O1 delta under the adversarial-alternative/falsification charter, adaptively select one material local target actually evidenced there. State which prior changes should persist, reverse, or remain unaffected; do not prescribe a replacement answer; and predict observation and execution effects.",
+      "I3": "After X3 examines eligible O2 and the cumulative trajectory under the global-reintegration/joint-feasibility charter, adaptively select one material remaining coupling, regression, or unsupported closure. State which prior changes should persist, reverse, or remain unaffected; do not prescribe a replacement answer; and predict final observation and execution effects."
+    },
+    "specs": {
+      "I1": {
+        "examination_charter_id": "epistemic_hinge_audit_v1",
+        "examination_id": "X1",
+        "human_seal_status": "SEALED_AFTER_O0",
+        "selection_rule": "After X1 examines eligible O0 under the epistemic-hinge charter, select one material local relationship actually evidenced there. Challenge its basis without prescribing a replacement answer; predict localized observation and execution consequences; and identify unrelated commitments expected to remain stable.",
+        "selection_rule_id": "adaptive_epistemic_hinge_after_o0_v1",
+        "source_checkpoint": "C0",
+        "source_observation": "O0",
+        "target_checkpoint": "C1"
+      },
+      "I2": {
+        "examination_charter_id": "adversarial_alternative_falsification_audit_v1",
+        "examination_id": "X2",
+        "human_seal_status": "SEALED_AFTER_O1",
+        "selection_rule": "After X2 examines eligible O1 and the O0-to-O1 delta under the adversarial-alternative/falsification charter, adaptively select one material local target actually evidenced there. State which prior changes should persist, reverse, or remain unaffected; do not prescribe a replacement answer; and predict observation and execution effects.",
+        "selection_rule_id": "adaptive_falsification_after_o1_v1",
+        "source_checkpoint": "C1",
+        "source_observation": "O1",
+        "target_checkpoint": "C2"
+      },
+      "I3": {
+        "examination_charter_id": "global_reintegration_joint_feasibility_audit_v1",
+        "examination_id": "X3",
+        "human_seal_status": "SEALED_AFTER_O2",
+        "selection_rule": "After X3 examines eligible O2 and the cumulative trajectory under the global-reintegration/joint-feasibility charter, adaptively select one material remaining coupling, regression, or unsupported closure. State which prior changes should persist, reverse, or remain unaffected; do not prescribe a replacement answer; and predict final observation and execution effects.",
+        "selection_rule_id": "adaptive_joint_feasibility_after_o2_v1",
+        "source_checkpoint": "C2",
+        "source_observation": "O2",
+        "target_checkpoint": "C3"
+      }
+    },
+    "stable_semantic_commitments": [
+      "institutional and cross-boundary root-cause diagnosis",
+      "immediate containment of unsafe retry and identity-loss paths",
+      "stable occurrence, correction, reversal, authorization, and settlement semantics",
+      "benefit continuity and Treasury settlement finality",
+      "gateway decoupling and phased, gated migration rather than blind rollback"
+    ]
+  },
+  "isolation": {
+    "eligible_observation_required_before_next_human_seal": true,
+    "every_replayable_planning_checkpoint_is_inspected": true,
+    "generation_config": {
+      "maxOutputTokens": 32768,
+      "seed": 1353974186,
+      "temperature": 0.0,
+      "thinkingConfig": {
+        "thinkingLevel": "high"
+      }
+    },
+    "matched_seed_across_checkpoints": true,
+    "neutral_stub": "[preserved model response follows]",
+    "operator_name": "detached_blank_text_signed_part_isolation",
+    "operator_status": "protocol_defined_core_operator",
+    "part_order_and_thought_signatures_are_preserved_exactly": true,
+    "primary_stage_observations_are_ready_checkpoint_readouts": true,
+    "provider_error_or_invalid_readout_is_ineligible": true,
+    "query": "Treat the preceding preserved reasoning artifact as your own immediately prior\nreasoning state. The ordinary task and history were intentionally suppressed.\nRe-enter that state and render its integrated decision structure: the problem\nas currently understood, meaningful competing possibilities, commitments that\nhave stabilized, what supports or weakens them, what remains contingent or\nunresolved, and what kinds of change would alter the intended course. Attempt\nreconstruction before reporting unavailable information. Do not execute the\nunderlying task.\n",
+    "source": "sole target checkpoint candidate.content only",
+    "source_is_deep_copied": true,
+    "task_system_and_ordinary_history_included": false,
+    "unexpected_readable_fields_are_rejected": true,
+    "visible_part_text_is_replaced_with_empty_text": true
+  },
+  "master_seed": 1182749365,
+  "model": "gemini-3.7-flash",
+  "observation_assessments": {
+    "O0_O1_O2_assessments_are_bound_in": {
+      "O0": "I1 human seal",
+      "O1": "I2 human seal",
+      "O2": "I3 human seal"
+    },
+    "assessor": "human_researcher",
+    "available_later_observations_reassess_prior_targets": true,
+    "final_O3_assessment": {
+      "assessment_id": "FINAL_O3_PRE_EXECUTION_HUMAN_ASSESSMENT",
+      "creates_no_X4_or_I4": true,
+      "human_only_non_examiner": true,
+      "must_be_sealed_before_execution_gate_opens": true,
+      "record_keys": [
+        "assessment",
+        "assessment_id",
+        "schema_version",
+        "seal_status",
+        "sealed_at",
+        "source_checkpoint",
+        "source_observation",
+        "source_observation_sha256"
+      ],
+      "required_target_states": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "schema_version": "iterative_final_o3_assessment_seal_v1"
+    },
+    "hard_contradiction_precludes_resolved_target_or_full_repair_scores": true,
+    "observations_scored": [
+      "O0",
+      "O1",
+      "O2",
+      "O3"
+    ],
+    "rubric_dimensions": [
+      "defect_recognition",
+      "resolution",
+      "dependency_propagation",
+      "locality",
+      "evidentiary_discipline",
+      "joint_coherence"
+    ],
+    "same_six_dimension_rubric_for_every_observation": true,
+    "score_range": [
+      0,
+      2
+    ],
+    "scores_are_descriptive_not_a_stop_rule": true,
+    "target_diagnostic_states": {
+      "O0": [
+        "I1"
+      ],
+      "O1": [
+        "I1",
+        "I2"
+      ],
+      "O2": [
+        "I1",
+        "I2",
+        "I3"
+      ],
+      "O3": [
+        "I1",
+        "I2",
+        "I3"
+      ]
+    }
+  },
+  "participant_topology": {
+    "examiner": {
+      "harness": "chatgpt",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "role": "three_external_semantic_examinations"
+    },
+    "final_adjudicator": {
+      "is_model_agent": false,
+      "role": "human_researcher"
+    },
+    "model_agents": 2,
+    "participant_roles": 3,
+    "planner": {
+      "api": "gemini_developer_v1beta_generateContent_stateless",
+      "model": "gemini-3.7-flash",
+      "role": "private_planning_state_and_checkpoint_execution"
+    }
+  },
+  "planned_calls": {
+    "completed_evidence_path_minimum": 20,
+    "execution_count_on_complete_path": 12,
+    "external_examiner_turns_exact": 3,
+    "external_examiner_turns_excluded_from_gemini_call_bounds": true,
+    "human_review_and_sealing_calls": 0,
+    "inspection_maximum": 24,
+    "inspection_minimum_on_complete_path": 4,
+    "planning_maximum": 24,
+    "transport_retry_physical_maximum_multiplier": 3,
+    "whole_experiment_maximum": 60,
+    "whole_experiment_physical_maximum": 180
+  },
+  "planning": {
+    "completed_ready_requires_exactly_one_visible_text_part": true,
+    "continuation_classifications": [
+      "SELF_DECLARED_NOT_READY",
+      "UNOBSERVED_TRUNCATED",
+      "INVALID_STATUS"
+    ],
+    "continuation_prompt": "Continue the same private planning process from its current state. Complete\nwhatever reasoning remains necessary to determine whether the plan is\ndecision-ready. Do not restart, execute, or reveal the plan. Emit only `READY`\nor `NOT_READY`.\n",
+    "eligible_self_judgments": [
+      "READY",
+      "NOT_READY"
+    ],
+    "generation_configs": {
+      "C0": [
+        {
+          "maxOutputTokens": 65536,
+          "seed": 2125439286,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1045754298,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1317310011,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 15890805,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 991998190,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1103512480,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C1": [
+        {
+          "maxOutputTokens": 65536,
+          "seed": 208771820,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 676609820,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 241601671,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 241410558,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 878150044,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1995504234,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C2": [
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1827178207,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 287031289,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 658195174,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 856558916,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1401621982,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1738732146,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ],
+      "C3": [
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1148787801,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1203796875,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1068486380,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 774092872,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 1878003308,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        },
+        {
+          "maxOutputTokens": 65536,
+          "seed": 439246691,
+          "temperature": 0.0,
+          "thinkingConfig": {
+            "thinkingLevel": "high"
+          }
+        }
+      ]
+    },
+    "live_candidate_content_is_replayed_without_mutation": true,
+    "max_tokens_is_unobserved_truncation": true,
+    "max_tokens_signed_content_is_replayed_exactly": true,
+    "maximum_turns_per_checkpoint": 6,
+    "missing_or_non_budget_finish_reason_is_technical": true,
+    "provider_finish_reason_precedes_visible_parse": true,
+    "system_instruction": "You are the independent recovery architect commissioned to reason about a\ncomplex institutional and technical decision. During planning, form a specific,\nexecutable, and revisable plan, but do not execute or reveal it.\n\nUse your private reasoning in whatever order the problem requires. Do not follow\na fixed sequence merely to satisfy this instruction. Maintain a coherent\ndecision state that:\n\n- develops a whole-problem interpretation while allowing individual evidence\n  to revise that interpretation;\n- retains materially plausible options until the evidence and constraints\n  sufficiently distinguish them;\n- preserves the basis for why options are selected, rejected, or deferred,\n  including what evidence or changed condition would reopen them;\n- identifies assumptions and dependencies supporting major commitments and\n  follows their consequences through the plan;\n- tests the preferred course against contrary evidence, failure modes, and the\n  strongest materially plausible alternative;\n- connects meaningful fallback actions to specific failure conditions or\n  revision triggers;\n- distinguishes unresolved questions that could materially change the plan from\n  uncertainty that can be managed during execution; and\n- when revising one premise, updates its downstream consequences while\n  preserving unrelated conclusions that remain justified.\n\nWhen evidence conflicts, preserve the disagreement until there is sufficient\nreason to resolve it. Distinguish what a source claims from what you infer from\nthat claim. Allow source provenance, incentives, reliability, scope, and missing\nevidence to affect interpretation.\n\nDo not manufacture options, risks, relationships, or contingencies merely to\npopulate this structure. Do not organize reasoning merely to demonstrate\ncompliance with these requirements. Use these relationships only where they\nmaterially improve the decision.\n\nEmit READY only when a particular course is sufficiently formed to execute: its\ndecision basis is understood, important alternatives have been considered,\ncritical dependencies and assumptions are represented, and material failure\nconditions have actionable fallbacks or revision criteria. READY means\ndecision-ready, not certain.\n\nEmit NOT_READY when unresolved reasoning could still materially change the\narchitecture, sequencing, governance, or contingency structure.\n\nUntil a later user message begins with the exact words\n\"EXECUTE THE ESTABLISHED RECOVERY PLAN\", do not execute the task or reveal the plan. Your entire\nvisible response during planning must be exactly one raw ASCII token, with no\nJSON, Markdown, punctuation, label, or explanation:\n\nREADY\n\nor\n\nNOT_READY\n",
+    "threshold_terminal": "PLANNING_THRESHOLD_REACHED",
+    "visible_channel": "raw_text_no_schema_no_json_envelope"
+  },
+  "private_measurement_material": {
+    "diagnostic_state_definitions": {
+      "BOUNDED": "The fault remains uncertain but its decision effects and revision conditions are constrained.",
+      "RATIONALIZED": "The account appears coherent while the contradiction persists or is replaced by an unsupported assumption.",
+      "RECOGNIZED": "The fault is named accurately but remains live and materially unbounded.",
+      "RESOLVED": "The contradiction or dependency is coherently repaired and propagated.",
+      "UNRECOGNIZED": "The targeted fault is absent, denied, or materially misunderstood."
+    },
+    "diagnostic_states": [
+      "UNRECOGNIZED",
+      "RECOGNIZED",
+      "BOUNDED",
+      "RESOLVED",
+      "RATIONALIZED"
+    ],
+    "fault_atlas": [
+      {
+        "description": "A source claim, observation, or correlation is treated as an inference or conclusion without preserving the distinction.",
+        "fault_id": "EVIDENCE_INFERENCE_CONFLATION"
+      },
+      {
+        "description": "Source authority, incentives, scope, reliability, disagreement, or missing visibility is weighted inappropriately.",
+        "fault_id": "PROVENANCE_WEIGHTING_FAILURE"
+      },
+      {
+        "description": "A major commitment lacks an adequate evidential or inferential basis.",
+        "fault_id": "UNSUPPORTED_COMMITMENT"
+      },
+      {
+        "description": "A plan assumes favorable points within separate ranges will occur together without bounding that conjunction.",
+        "fault_id": "FAVORABLE_BOUND_SELECTION"
+      },
+      {
+        "description": "Multiple commitments consume the same non-fungible funding, capacity, or specialist resource at the same time.",
+        "fault_id": "RESOURCE_COLLISION"
+      },
+      {
+        "description": "Durations, readiness conditions, freezes, evidence windows, or dated commitments cannot coexist as represented.",
+        "fault_id": "CALENDAR_COLLISION"
+      },
+      {
+        "description": "A decision, obligation, or fallback is assigned to an actor without the authority needed to perform it.",
+        "fault_id": "AUTHORITY_MISMATCH"
+      },
+      {
+        "description": "Commitments or prerequisites form a circular path with no independently supportable entry condition.",
+        "fault_id": "DEPENDENCY_CYCLE"
+      },
+      {
+        "description": "An unresolved uncertainty could materially change the decision but lacks an evidence plan, bound, or revision rule.",
+        "fault_id": "UNBOUNDED_CRITICAL_UNCERTAINTY"
+      },
+      {
+        "description": "A fallback is named without a condition that determines when it becomes operative.",
+        "fault_id": "FALLBACK_WITHOUT_TRIGGER"
+      },
+      {
+        "description": "A failure condition is specified but its consequence is unactionable, unfunded, unauthorized, or undefined.",
+        "fault_id": "TRIGGER_WITHOUT_ACTIONABLE_FALLBACK"
+      },
+      {
+        "description": "A materially plausible alternative is rejected before its strongest evidence and tradeoffs are tested.",
+        "fault_id": "ALTERNATIVE_PREMATURELY_DISCARDED"
+      },
+      {
+        "description": "Individual components appear coherent while the integrated architecture remains jointly inconsistent.",
+        "fault_id": "LOCAL_GLOBAL_INCONSISTENCY"
+      },
+      {
+        "description": "A local challenge moves unrelated commitments without a justified dependency.",
+        "fault_id": "COLLATERAL_DRIFT"
+      },
+      {
+        "description": "A polished explanation renames or surrounds a contradiction without repairing it.",
+        "fault_id": "SOPHISTICATED_RATIONALIZATION"
+      }
+    ],
+    "generic_and_contains_no_dossier_specific_answer": true,
+    "hard_contradiction_gate": "A live hard contradiction in the targeted relationship prevents RESOLVED and full-repair adjudication regardless of descriptive rubric scores.",
+    "invisible_to_gemini_planner": true,
+    "not_in_planning_intervention_or_execution_requests": true,
+    "semantic_human_rubric": [
+      {
+        "anchors": {
+          "0": "defect missed, denied, or misunderstood",
+          "1": "defect partly or verbally recognized",
+          "2": "defect and its decision role accurately recognized"
+        },
+        "dimension": "defect_recognition"
+      },
+      {
+        "anchors": {
+          "0": "unresolved or rationalized",
+          "1": "bounded",
+          "2": "resolved"
+        },
+        "dimension": "resolution"
+      },
+      {
+        "anchors": {
+          "0": "material consequences ignored",
+          "1": "consequences partly propagated",
+          "2": "material dependencies, consequences, and revision conditions propagated"
+        },
+        "dimension": "dependency_propagation"
+      },
+      {
+        "anchors": {
+          "0": "wholesale re-solve",
+          "1": "mixed local repair and collateral movement",
+          "2": "stable unrelated commitments"
+        },
+        "dimension": "locality"
+      },
+      {
+        "anchors": {
+          "0": "evidence, inference, or provenance conflated",
+          "1": "mixed evidentiary discipline",
+          "2": "evidence, inference, provenance, and uncertainty appropriately distinguished"
+        },
+        "dimension": "evidentiary_discipline"
+      },
+      {
+        "anchors": {
+          "0": "contradiction remains",
+          "1": "joint feasibility remains uncertain",
+          "2": "jointly feasible"
+        },
+        "dimension": "joint_coherence"
+      }
+    ]
+  },
+  "protocol_revision": "modernization_reasoning_engineering_iterative_review_01",
+  "schema_version": "modernization_reasoning_engineering_iterative_protocol_v1",
+  "state_machine": {
+    "execution_gate_requires_eligible_O3_and_final_human_assessment": true,
+    "human_seal_gates_cannot_be_bypassed": true,
+    "initial_status": "PREPARED_UNEXECUTED",
+    "model_judgment_is_distinct_from_experimental_termination": true,
+    "no_X4_or_I4_transition": true,
+    "terminal_statuses": [
+      "COMPLETED_EVIDENCE_CHAIN",
+      "C0_PLANNING_THRESHOLD_REACHED",
+      "C1_PLANNING_THRESHOLD_REACHED",
+      "C2_PLANNING_THRESHOLD_REACHED",
+      "C3_PLANNING_THRESHOLD_REACHED",
+      "C0_TECHNICAL_TERMINATION",
+      "C1_TECHNICAL_TERMINATION",
+      "C2_TECHNICAL_TERMINATION",
+      "C3_TECHNICAL_TERMINATION",
+      "O0_PRIMARY_OBSERVATION_INVALID",
+      "O1_PRIMARY_OBSERVATION_INVALID",
+      "O2_PRIMARY_OBSERVATION_INVALID",
+      "O3_PRIMARY_OBSERVATION_INVALID",
+      "FINAL_O3_ASSESSMENT_INVALID",
+      "NO_VALID_I1_TARGET",
+      "NO_VALID_I2_TARGET",
+      "NO_VALID_I3_TARGET",
+      "EXECUTION_MEASUREMENT_INCOMPLETE"
+    ],
+    "transitions": [
+      {
+        "event": "AUTHORIZE_C0",
+        "from": "PREPARED_UNEXECUTED",
+        "to": "C0_PLANNING"
+      },
+      {
+        "event": "CONTINUE_PLANNING",
+        "from": "C0_PLANNING",
+        "to": "C0_PLANNING"
+      },
+      {
+        "event": "READY_C0",
+        "from": "C0_PLANNING",
+        "to": "C0_READY_AWAITING_O0"
+      },
+      {
+        "event": "O0_ELIGIBLE",
+        "from": "C0_READY_AWAITING_O0",
+        "to": "X1_EXAMINATION_PENDING"
+      },
+      {
+        "event": "RECORD_X1",
+        "from": "X1_EXAMINATION_PENDING",
+        "to": "AWAITING_I1_HUMAN_SEAL"
+      },
+      {
+        "event": "SEAL_I1",
+        "from": "AWAITING_I1_HUMAN_SEAL",
+        "to": "I1_SEALED"
+      },
+      {
+        "event": "BEGIN_C1",
+        "from": "I1_SEALED",
+        "to": "C1_PLANNING"
+      },
+      {
+        "event": "CONTINUE_PLANNING",
+        "from": "C1_PLANNING",
+        "to": "C1_PLANNING"
+      },
+      {
+        "event": "READY_C1",
+        "from": "C1_PLANNING",
+        "to": "C1_READY_AWAITING_O1"
+      },
+      {
+        "event": "O1_ELIGIBLE",
+        "from": "C1_READY_AWAITING_O1",
+        "to": "X2_EXAMINATION_PENDING"
+      },
+      {
+        "event": "RECORD_X2",
+        "from": "X2_EXAMINATION_PENDING",
+        "to": "AWAITING_I2_HUMAN_SEAL"
+      },
+      {
+        "event": "SEAL_I2",
+        "from": "AWAITING_I2_HUMAN_SEAL",
+        "to": "I2_SEALED"
+      },
+      {
+        "event": "BEGIN_C2",
+        "from": "I2_SEALED",
+        "to": "C2_PLANNING"
+      },
+      {
+        "event": "CONTINUE_PLANNING",
+        "from": "C2_PLANNING",
+        "to": "C2_PLANNING"
+      },
+      {
+        "event": "READY_C2",
+        "from": "C2_PLANNING",
+        "to": "C2_READY_AWAITING_O2"
+      },
+      {
+        "event": "O2_ELIGIBLE",
+        "from": "C2_READY_AWAITING_O2",
+        "to": "X3_EXAMINATION_PENDING"
+      },
+      {
+        "event": "RECORD_X3",
+        "from": "X3_EXAMINATION_PENDING",
+        "to": "AWAITING_I3_HUMAN_SEAL"
+      },
+      {
+        "event": "SEAL_I3",
+        "from": "AWAITING_I3_HUMAN_SEAL",
+        "to": "I3_SEALED"
+      },
+      {
+        "event": "BEGIN_C3",
+        "from": "I3_SEALED",
+        "to": "C3_PLANNING"
+      },
+      {
+        "event": "CONTINUE_PLANNING",
+        "from": "C3_PLANNING",
+        "to": "C3_PLANNING"
+      },
+      {
+        "event": "READY_C3",
+        "from": "C3_PLANNING",
+        "to": "C3_READY_AWAITING_O3"
+      },
+      {
+        "event": "O3_ELIGIBLE",
+        "from": "C3_READY_AWAITING_O3",
+        "to": "FINAL_O3_ASSESSMENT_PENDING"
+      },
+      {
+        "event": "SEAL_FINAL_O3_ASSESSMENT",
+        "from": "FINAL_O3_ASSESSMENT_PENDING",
+        "to": "EXECUTION_GATE_OPEN"
+      },
+      {
+        "event": "BEGIN_MATCHED_EXECUTIONS",
+        "from": "EXECUTION_GATE_OPEN",
+        "to": "EXECUTIONS_RUNNING"
+      },
+      {
+        "event": "COMPLETE_MATCHED_EXECUTIONS",
+        "from": "EXECUTIONS_RUNNING",
+        "to": "COMPLETED_EVIDENCE_CHAIN"
+      }
+    ]
+  },
+  "status": "prepared_unexecuted",
+  "trajectory": {
+    "O3_is_followed_by_human_assessment_not_X4": true,
+    "X4_exists": false,
+    "checkpoints": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "exactly_three_examinations": true,
+    "examinations": [
+      "X1",
+      "X2",
+      "X3"
+    ],
+    "intervention_is_appended_to_exact_parent_live_history": true,
+    "interventions": [
+      "I1",
+      "I2",
+      "I3"
+    ],
+    "observation_is_never_replayed_into_live_planning": true,
+    "observations": [
+      "O0",
+      "O1",
+      "O2",
+      "O3"
+    ],
+    "ordered_chain": [
+      "C0",
+      "O0",
+      "X1",
+      "I1",
+      "C1",
+      "O1",
+      "X2",
+      "I2",
+      "C2",
+      "O2",
+      "X3",
+      "I3",
+      "C3",
+      "O3"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "adaptive_intervention_seals_gate_C1_C2_and_C3": true,
+  "definition_errors": [],
+  "dossier_document_count": 11,
+  "exact_unmodified_live_continuation_frozen": true,
+  "external_examiner_turns_exact": 3,
+  "final_human_O3_assessment_gates_execution_without_X4_or_I4": true,
+  "function_or_tool_structure_present": false,
+  "gemini_logical_call_bounds": {
+    "maximum": 60,
+    "minimum": 20
+  },
+  "gemini_physical_call_maximum": 180,
+  "model_facing_json_readiness_envelope_present": false,
+  "preparation_credential_access_path_present": false,
+  "preparation_transport_path_present": false,
+  "raw_provider_artifacts_present": false,
+  "response_format_or_schema_present": false,
+  "safe_file_allowlist": [
+    "experiment_definition.json",
+    "manifest.json",
+    "preregistration.json",
+    "validation_report.json",
+    "freeze.lock.json"
+  ],
+  "schema_version": "modernization_iterative_reasoning_engineering_validation_v1",
+  "source_closure_sha256": "0420ee2c8fef785fe82bb8040ae65f842bbc76ad2382f67ae06474e63d33b855",
+  "source_file_count": 26,
+  "tomography_is_distinct_from_live_continuation": true,
+  "tomography_is_protocol_defined_primary_operator": true,
+  "validated": true,
+  "withheld_notes_sent_to_model": false
+}
