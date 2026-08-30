@@ -1,62 +1,234 @@
 # thought-testing
 
-Controlled experiments around provider-native LLM reasoning state.
+Controlled black-box experiments on opaque provider-native LLM continuation
+artifacts and the practical discipline we call **reasoning engineering**.
 
-## Research program
+## Current conclusion: do not model this as ViewState
 
-The empirical object is not hidden chain-of-thought. It is the **observable
-semantics and transition behavior of an opaque provider continuation state**:
+A Gemini `thoughtSignature` is not a transparent, self-describing serialization
+of model cognition. There is no documented object schema here that this project
+can deserialize into the model's exact beliefs, variables, plan, or hidden
+chain-of-thought.
 
-- which task-relevant distinctions can be recovered through an exact signed
-  thought-step carrier under controlled probes;
-- whether those distinctions follow the source artifact rather than the probe
-  context;
-- whether detached readouts predict the originating state's prospective actions,
-  conditional branches, revisions, and stopping behavior across a real tool
-  interruption; and
-- whether an assigned metacognitive/hermeneutic planning scaffold makes
-  decision structure observable enough to diagnose and revise locally.
+The experimentally usable object is also not the bare signature byte string. It
+is the complete provider-native signed `Content`/`Part` carrier, together with
+its part order, role, provider, model, API surface, generation configuration,
+request topology, and lineage.
 
-The current experiment is aimed at the practical reasoning-engineering loop:
+The central measurement is a new model inference from a protocol-defined
+derivative of that carrier:
+
+```text
+C_t     live planning checkpoint, including its exact native response
+N_t     exact captured provider-native signed carrier within C_t
+T_t     isolate(C_t): sibling derivative of N_t with visible text blanked,
+        signature/topology preserved, and ordinary task/history withheld
+O_t(q)  new, query-conditioned projection returned after query q is appended to T_t
+```
+
+Exact live replay and observation are different operations:
+
+- **Live continuation** preserves the authorized parent `Content` unchanged and
+  appends only the permitted continuation or intervention input.
+- **Tomography** constructs the isolated sibling `T_t` and appends query `q`.
+  Its response `O_t(q)` never enters the live planner history.
+
+`O_t(q)` can be detailed and experimentally useful without being the original
+state. It may be incomplete, probe-shaped, stale, or wrong. The signature bytes
+remain opaque throughout.
+
+The experiments cannot distinguish direct retrieval, provider-conditioned
+reconstruction, or a mixture of both. “State,” “checkpoint,” and “carrier” name
+an experimentally observable continuation interface and lineage—not an
+implementation theory about what Gemini stores.
+
+| A ViewState-like interpretation would imply | The evidence here supports |
+|---|---|
+| A decodable, field-level serialization | An opaque native carrier usable only through provider inference |
+| A complete, canonical snapshot | A scoped, query-conditioned projection |
+| Passive retrieval of stored fields | A new model call over a controlled carrier derivative |
+| A portable blob with stable semantics | Evidence only under a declared provider/model/API/configuration/topology |
+| Exact reconstruction of arbitrary state | Relational semantic recovery in some tasks; complete detached-carrier exact-ledger recovery failed in the S0–S6 protocol |
+
+The practical object of study is therefore a control loop, not a state viewer:
+
+```text
+preserve checkpoint
+→ isolate and project
+→ diagnose a reasoning relationship
+→ apply a bounded intervention to the untouched live lineage
+→ re-project
+→ compare predicted semantic and behavioral consequences
+→ continue, execute, or stop under explicit authority
+```
+
+## What we found
+
+The claims below are deliberately scoped.
+
+1. **Exact capture and authorized replay worked in occurrence 04.** Through the
+   Gemini Developer API `generateContent` method on `gemini-3.7-flash`, the
+   transport preserved complete live-parent content when constructing
+   continuation requests. Both baseline and adjusted planning branches reached
+   eligible `READY` checkpoints.
+2. **Blank-visible isolation recovered useful dossier-specific semantics.** A
+   planning turn whose only visible status was `READY` yielded a detailed
+   projection of interpretations, commitments, alternatives, dependencies,
+   uncertainties, and revision triggers after task/history suppression and
+   signed-carrier isolation.
+3. **A bounded intervention produced a predicted local semantic change.** The
+   adjusted projection made the targeted coupling among cost, staffing, and
+   calendar assumptions more explicit.
+4. **Multiple unrelated commitments survived, and the targeted change propagated
+   into matched behavior.** Several protected architectural and governance
+   commitments persisted after intervention. All three adjusted execution
+   replicates more explicitly exposed cost ranges, funding provenance, and
+   conditioned legacy/security fallbacks.
+5. **`READY` was contradicted as substantive validation.** Both baseline and
+   adjusted states emitted `READY`; isolation showed improvement without robust
+   resolution of the diagnosed relationship.
+6. **The exact-state failure was informative.** The native S0-S6 experiment did
+   not recover an exact synthetic ledger or localize changed transitions from
+   detached carriers. That is a construct boundary for mathematical state
+   reconstruction, not evidence that reasoning semantics are absent.
+
+The strongest completed result is occurrence 04. Its public adjudication is
+[`thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_OCCURRENCE_04_ADJUDICATION.md`](thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_OCCURRENCE_04_ADJUDICATION.md),
+and its claim-to-source map is
+[`thoughtlab/reasoningEngineering/AGENTICA_REASONING_ENGINEERING_EVIDENCE_INDEX.md`](thoughtlab/reasoningEngineering/AGENTICA_REASONING_ENGINEERING_EVIDENCE_INDEX.md).
+The verified final seal hash is
+`613996094ab2379fec7f34935c391c3fc8ce2c7ddd04f561b87c35c865b3f2de`.
+
+## What we did not find
+
+This repository does **not** establish:
+
+- decoded, verbatim, complete, or canonical hidden chain-of-thought;
+- a ViewState-like serialization or a universal, stable, query-independent
+  readout;
+- that a bare `thoughtSignature` is sufficient, that every carrier is
+  replayable, or that carriers are portable across provider/model/API/config
+  profiles;
+- a one-to-one mapping from opaque bytes to recovered semantic claims;
+- general fidelity or completeness of tomography projections;
+- robust semantic repair in occurrence 04—the adjusted plan still contained
+  favorable-range/vendor-offset assumptions and unresolved calendar coupling;
+- replication across task families, independent participants, models, or a
+  population;
+- statistical independence among isolated actors using the same model family;
+- a reusable generic cognitive carrier, a qualified `CognitiveModule`,
+  cross-lineage carrier splicing, multi-carrier composition, or compaction
+  recovery;
+- a reliable autonomous all-Gemini reasoning supervisor; or
+- production-safe execution authority.
+
+An HTTP 200, exact transport acceptance, articulate projection, higher rubric
+score, or `READY` token proves none of the later claims by itself.
+
+## Completed occurrence 04
+
+The completed reasoning-engineering loop was:
 
 ```text
 complex modernization dossier
-        -> private scaffolded planning state C_t
-        -> READY / continuation threshold
-        -> blank-visible isolated native carrier T_t
-        -> holistic semantic observation O_t(q)
-        -> sealed human diagnosis + local intervention prediction
-        -> adjusted continuation from the untouched READY state
-        -> re-isolation and matched baseline/adjusted executions
+→ private scaffolded baseline checkpoint C0
+→ raw READY
+→ blank-visible isolated carrier
+→ baseline projection O0(q)
+→ sealed diagnosis, prediction, and bounded intervention
+→ adjusted child checkpoint C1 from the untouched live parent
+→ adjusted projection O1(q)
+→ three baseline and three adjusted execution continuations
+→ human semantic adjudication
 ```
 
-Isolation/mutation is the primary observation instrument: it suppresses the
-ordinary task and visible answer while preserving the provider-native signed
-thought carrier. The experiment asks whether that view is useful for observing
-option structure, commitments, assumptions, unresolved tensions, and revision
-conditions—and whether a diagnostic intervention can produce a predicted,
-localized state change that survives into behavior.
+All ten physical calls returned HTTP 200 on their first attempt, both isolated
+observations were eligible, all six matched execution continuations were
+eligible, and the terminal was `COMPLETED_EVIDENCE_CHAIN`. Transport and seal
+validity do not replace the semantic limitations listed above. The three
+replicates in each branch are nested repetitions from one frozen host, not six
+independent participants.
 
-This is a black-box behavioral science of provider-native continuation artifacts,
-not an attempt to decrypt signatures, serialize complete cognition, or claim
-access to original internal reasoning.
+## Current iterative occurrence
 
-If the preregistered observation/intervention/execution chain is positive, it
-would establish a practical form of **reasoning-state engineering**: shaping the
-originating deliberative procedure, observing its recoverable decision state,
-and making a bounded diagnostic correction—not editing or decoding the opaque
-artifact itself.
+The active design extends the loop across three bounded examinations and
+potential interventions:
+
+```text
+C0 → O0 → X1/I1 → C1 → O1 → X2/I2 → C2 → O2 → X3/I3 → C3 → O3
+```
+
+Current status is intentionally incomplete:
+
+- freeze `15865775a8ea7bd18461793888d8622c86dd9567ea71ebad2c3da81c6a8bf134`
+  remains valid;
+- `C0/O0` is valid with exactly two physical calls;
+- one external `X1` examination is recorded, but `I1` is not sealed; and
+- no iterative repair trajectory or execution comparison has completed.
+
+Because the recorded `X1` content entered the working conversation, it cannot
+by itself satisfy the preregistered mutually unseen human-review stream. A
+blinded replacement stream is required for a protocol-compliant `I1`.
+Otherwise, the deviation must be recorded and any continuation labeled
+noncompliant or exploratory.
+
+The governing design is
+[`thoughtlab/reasoningEngineering/MODERNIZATION_ITERATIVE_REASONING_ENGINEERING_DESIGN.md`](thoughtlab/reasoningEngineering/MODERNIZATION_ITERATIVE_REASONING_ENGINEERING_DESIGN.md).
+
+## Agentica direction: architecture, not a finding
+
+This Python repository is the calibration rig, controlled transport,
+golden-trace generator, adversarial fixture source, and conformance suite. The
+intended product direction is Agentica: an agentic runtime in which reasoning is
+governed as observable, revisable work under explicit goals, information rights,
+budgets, evidence, and execution authority.
+
+The current abstraction is deliberately conservative:
+
+```text
+CognitiveProgram
+→ CognitiveCarrier
+→ empirically qualified CognitiveModule
+```
+
+A single opaque carrier is not a module. Carrier splicing is one unproven
+treatment primitive, not the architecture itself.
+
+- [Agentica reasoning-engineering architecture](thoughtlab/reasoningEngineering/AGENTICA_REASONING_ENGINEERING_ARCHITECTURE.md)
+- [Fresh-context Agentica review brief](thoughtlab/reasoningEngineering/AGENTICA_FRESH_CONTEXT_ARCHITECTURE_REVIEW.md)
+
+## Protocol invariants
+
+- New controlled runs use Gemini 3.7 Flash through the Gemini Developer API
+  `generateContent` method. Historical transports and model IDs remain labeled
+  as historical evidence.
+- Live continuation replays authorized native parent content unchanged;
+  tomography uses a derived sibling carrier and never contaminates the live
+  history.
+- Planning status is a raw visible `READY` or `NOT_READY` token. `MAX_TOKENS`
+  records `UNOBSERVED_TRUNCATED`; it is never converted into a model readiness
+  judgment and permits only neutral continuation when a replayable checkpoint
+  exists.
+- Canonical infrastructure JSON is normalized and round-trip stable. Model JSON
+  is not required at the starvation-sensitive readiness boundary.
+- Canonical identifiers are random, opaque, type-neutral `ID_` plus Crockford
+  base32; semantic roles never leak through identifiers.
+- Raw signed carriers are private bearer-like artifacts. Public carrier records
+  expose opaque references, hashes, counts, sizes, and classifications; semantic
+  projections, prompts, reviews, and interventions require separate explicit
+  release authority.
 
 ## Relation to Raistlin Bridge
 
 Raistlin Bridge is a downstream motivation, not an experimental dependency or
-success criterion. If the research holds, an ordinary live turn could retain a
-sensitive original-turn receipt—input, exact approved context/prompt, visible
-output, model/configuration provenance, and the whole provider response/signed
-thought-step artifact—without a second interpretive model invocation. This is
-contemporaneous generation evidence, not identity truth or a readable self-
-record. Capture, secure storage, validation, transport, and governance still
-have real cost.
+success criterion. The completed work supports treating a whole provider
+response/signed carrier as a sensitive original-turn receipt and experimentally
+useful continuation artifact. It does not establish a readable self-record,
+identity truth, or complete cognition snapshot. A Bridge implementation could
+capture the input, exact approved context/prompt, visible output,
+model/configuration provenance, and whole provider response without a second
+interpretive model call at capture time; storage, later interpretation,
+validation, transport, and governance still have real cost.
 
 Expensive identity interpretation belongs on an asynchronous cold path. Its
 counterfactual forks and merge remain one evidence lineage derived from the same
@@ -76,36 +248,42 @@ p50/p95 latency, quality, cost, concurrency, storage, and security measurements.
 ```text
 thoughtlab/
   initialTests/
-    googleThoughts.py
-    gemini_thought_ablation_results.json
-    harvest_bookforge_thoughts.py
   historicalTests/
-    inspect_corpus.py
-    historical_probe.py
-    tomography.py
-    capsule.py
-    probes.py
+  stateTransitions/
+  reasoningTraces/
+  executablePlans/
+  reasoningEngineering/
+    MODERNIZATION_REASONING_ENGINEERING_OCCURRENCE_04_ADJUDICATION.md
+    MODERNIZATION_ITERATIVE_REASONING_ENGINEERING_DESIGN.md
+    AGENTICA_REASONING_ENGINEERING_ARCHITECTURE.md
+    AGENTICA_REASONING_ENGINEERING_EVIDENCE_INDEX.md
+    freezes/
   gemini_legacy.py
 
 historical_probe.py   # compatibility launcher
+results/              # ignored/private run artifacts plus authorized summaries
 ```
 
-## Established result
+## Historical calibration: initial Interactions trials
 
-`thoughtlab/initialTests/googleThoughts.py` demonstrated, in two independent
+`thoughtlab/initialTests/googleThoughts.py` demonstrated, in two separate
 Gemini Interactions API trials, that a fact created only inside a `thought` step
 could be recovered from the detached thought artifact while seed-only,
 output-only, and probe-only controls failed to recover the original fact.
+
+That was an early calibration result, not the transport used by the current
+reasoning-engineering occurrences. Current controlled runs use the Gemini
+Developer API `generateContent` method.
 
 ## Historical BookForge corpus
 
 The historical corpus comes from old BookForge `generateContent` logs containing
 `thoughtSignature` metadata.
 
-Raw capsules and probe results are intentionally **not committed**. We have direct
-evidence that provider-native reasoning artifacts can preserve semantically
-recoverable hidden state, so treat them as potentially sensitive bearer-like
-artifacts.
+Raw capsules and probe results are intentionally **not committed**. Tested
+provider-native carriers have supported recovery of source-specific semantic
+information under query-conditioned probes, so treat them as potentially
+sensitive bearer-like artifacts.
 
 ### 1. Inspect the local scrape (zero API calls)
 
@@ -122,7 +300,7 @@ $env:GEMINI_API_KEY="your-throwaway-key"
 
 python .\historical_probe.py `
   --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
-  --model gemini-3.6-flash
+  --model gemini-3.7-flash
 ```
 
 The five arms are:
@@ -139,8 +317,11 @@ only as ground truth.
 The completed 2026-08-27 blunt three-source diagnostic is reported in
 [`thoughtlab/historicalTests/BOOKFORGE_BLUNT_ONE_OFF_2026-08-27.md`](thoughtlab/historicalTests/BOOKFORGE_BLUNT_ONE_OFF_2026-08-27.md).
 Its modified signature-only arms recovered extensive source-specific context,
-but the mutation is off-protocol and does not establish faithful historical
-reasoning replay. Raw outputs remain local and ignored.
+but those exploratory mutations were not governed by the later occurrence-04
+protocol and do not establish faithful historical reasoning replay. Isolation
+and mutation are not inherently off-protocol: occurrence 04 froze blank-visible
+signed-carrier isolation as its primary tomography operator. Raw outputs remain
+local and ignored.
 
 Some legacy history shapes may be rejected because the request begins with a
 `model` role. If that happens, rerun with a content-free structural stub:
@@ -148,11 +329,12 @@ Some legacy history shapes may be rejected because the request begins with a
 ```powershell
 python .\historical_probe.py `
   --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
-  --model gemini-3.6-flash `
+  --model gemini-3.7-flash `
   --neutral-stub
 ```
 
-An HTTP 4xx from a deliberately mutilated carrier is experimental evidence.
+An HTTP 4xx from a deliberately mutilated carrier is evidence of transport or
+request-topology rejection, not evidence about the carrier's semantics.
 
 ### 3. Cognitive tomography
 
@@ -161,12 +343,13 @@ Only after a historical capsule proves usable:
 ```powershell
 python .\thoughtlab\historicalTests\tomography.py `
   --capsule .\bookforge-thought-corpus\capsules\0001_example.json `
-  --model gemini-3.6-flash
+  --model gemini-3.7-flash
 ```
 
-That asks independent stateless questions of the exact same reasoning artifact:
+That asks separately scoped stateless questions through the same source carrier:
 objective, constraints, uncertainty, intended next steps, and a counterfactual
-alternative.
+alternative. Each answer is a query-conditioned projection, not a decoded field
+from the carrier.
 
 Add `--controls` to run text-only and probe-only controls for every semantic
 slice. That costs three API calls per slice, so use it intentionally.
@@ -203,10 +386,27 @@ not a general reasoning-persistence result; see
 The earlier `thoughtlab/stateTransitions/PLANNING_SLICE_TEST_PLAN.md` is a
 consumed historical specification, not the governing next design.
 
-The current freeze-ready review design is
+The completed single-intervention design remains at
 [`thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md`](thoughtlab/reasoningEngineering/MODERNIZATION_REASONING_ENGINEERING_DESIGN.md).
-It induces a complex planning state with a semantic-state scaffold, observes
-each checkpoint through a blank-visible isolated native carrier, pauses for a
-sealed human diagnostic intervention, and compares the resulting trace and
-execution deltas. Planning emits only raw `READY` or `NOT_READY`; provider
-truncation is carried forward only when an exact signed checkpoint is replayable.
+It is historical protocol evidence, not the governing next design.
+
+## Post-freeze documentation provenance
+
+Occurrence 04 byte-bound the then-current root README into its source closure:
+
+```text
+bytes: 9413
+sha256: 7fe130fe54a6a67a274e2f26f9d7e8f56b69c7536634470f0d805577a8be06a7
+recorded_git_head: dbf8569a2e7a8673e86dbb56cea16bcc7842b180
+```
+
+This README revision is an explicitly post-freeze correction. It intentionally
+changes the current working-tree source closure, so strict occurrence-04
+verification against the live tree must report `README.md` as changed. That is
+provenance enforcement, not retroactive alteration of the sealed occurrence.
+The old manifest, lock, results, and final seal remain unchanged; the old README
+is reconstructable from the recorded Git snapshot.
+
+The active iterative freeze does not include the root README, so this
+documentation update does not alter its frozen 26-file source closure or its
+completed `C0/O0` artifacts.
